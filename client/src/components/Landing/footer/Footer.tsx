@@ -19,8 +19,8 @@ export const Footer: React.FC = () => {
 
   return (
     <>
-      <footer className="fotter-container">
-        <section className="fotter-container__top">
+      <footer className="footer-container">
+        <section className="footer-container__top">
           <div className="flex items-center gap-3 flex-wrap">
             <div className="w-10 h-10 bg-blue-950 rounded-full"></div>
             <p className="text-sm opacity-80 font-normal">
@@ -35,101 +35,101 @@ export const Footer: React.FC = () => {
           </div>
         </section>
 
-        <section className="fotter-container__bottom">
-          <div className="fotter-container__bottom-container">
-            <h5 className="fotter-container__bottom-container__header">
+        <section className="footer-container__bottom">
+          <div className="footer-container__bottom-container">
+            <h5 className="footer-container__bottom-container__header">
               HELP CONNECT
             </h5>
-            <ul className="fotter-container__bottom-container__links">
-              <li className="fotter-container__bottom-container__links-link">
+            <ul className="footer-container__bottom-container__links">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Help and support</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">About Us</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Contact Us</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Features</Link>
               </li>
             </ul>
           </div>
-          <div className="fotter-container__bottom-container">
-            <h5 className="fotter-container__bottom-container__header">
+          <div className="footer-container__bottom-container">
+            <h5 className="footer-container__bottom-container__header">
               CONTENTS
             </h5>
-            <ul className="fotter-container__bottom-container__links">
-              <li className="fotter-container__bottom-container__links-link">
+            <ul className="footer-container__bottom-container__links">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Primary content</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Secondary content</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
-                <Link to="#">Tirtiary content</Link>
+              <li className="footer-container__bottom-container__links-link">
+                <Link to="#">Tertiary content</Link>
               </li>
             </ul>
           </div>
-          <div className="fotter-container__bottom-container">
-            <h5 className="fotter-container__bottom-container__header">
+          <div className="footer-container__bottom-container">
+            <h5 className="footer-container__bottom-container__header">
               RESOURCES
             </h5>
-            <ul className="fotter-container__bottom-container__links">
-              <li className="fotter-container__bottom-container__links-link">
+            <ul className="footer-container__bottom-container__links">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Revision Sheets</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Past Question papers</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Quiz</Link>
               </li>
             </ul>
           </div>
-          <div className="fotter-container__bottom-container">
-            <h5 className="fotter-container__bottom-container__header">HELP</h5>
-            <ul className="fotter-container__bottom-container__links">
-              <li className="fotter-container__bottom-container__links-link">
+          <div className="footer-container__bottom-container">
+            <h5 className="footer-container__bottom-container__header">HELP</h5>
+            <ul className="footer-container__bottom-container__links">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Home work</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Tutoring</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
-                <Link to="#">Private Lession</Link>
+              <li className="footer-container__bottom-container__links-link">
+                <Link to="#">Private Lesson</Link>
               </li>
             </ul>
           </div>
-          <div className="fotter-container__bottom-container">
-            <h5 className="fotter-container__bottom-container__header">
+          <div className="footer-container__bottom-container">
+            <h5 className="footer-container__bottom-container__header">
               EXTERNAL SERVICES
             </h5>
-            <ul className="fotter-container__bottom-container__links">
-              <li className="fotter-container__bottom-container__links-link">
+            <ul className="footer-container__bottom-container__links">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Home work</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Tutoring</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
-                <Link to="#">Private Lession</Link>
+              <li className="footer-container__bottom-container__links-link">
+                <Link to="#">Private Lesson</Link>
               </li>
             </ul>
           </div>
-          <div className="fotter-container__bottom-container">
-            <h5 className="fotter-container__bottom-container__header">
+          <div className="footer-container__bottom-container">
+            <h5 className="footer-container__bottom-container__header">
               GET OUR MOBILE APP
             </h5>
-            <ul className="fotter-container__bottom-container__links">
-              <li className="fotter-container__bottom-container__links-link">
+            <ul className="footer-container__bottom-container__links">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Home work</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
+              <li className="footer-container__bottom-container__links-link">
                 <Link to="#">Tutoring</Link>
               </li>
-              <li className="fotter-container__bottom-container__links-link">
-                <Link to="#">Private Lession</Link>
+              <li className="footer-container__bottom-container__links-link">
+                <Link to="#">Private Lesson</Link>
               </li>
             </ul>
           </div>
