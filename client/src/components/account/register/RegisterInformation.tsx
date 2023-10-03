@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import LearningStudent from "../../../assets/images/learner.jpg";
-import LecturerTeaching from "../../../assets/images/teaching.jpg";
+// import LecturerTeaching from "../../../assets/images/teaching.jpg";
 import WorkersImage from "../../../assets/images/workers.png";
 import StudentLearningImage from "../../../assets/images/learning.jpg";
 import LecturerTeachingImage from "../../../assets/images/teaching-two.jpg";
@@ -40,11 +40,11 @@ export const RegisterInformation: React.FC = () => {
               alt="customer values"
               className="border-8"
             />
-            <img
+            {/* <img
               src={LecturerTeaching}
               alt="lecturer teaching"
               className="absolute -bottom-7 border-8 left-[17rem]"
-            />
+            /> */}
           </div>
         </section>
 
