@@ -34,6 +34,14 @@ export const Navigation: React.FC = () => {
     type: "spring",
   };
 
+  const navigateUserToRegister = function(): void {
+    window.location.href = "/register-information"
+  }
+
+  const navigateUserToLogin = function(): void {
+    window.location.href = "/login-account"
+  }
+
   return (
     <>
       <motion.nav
@@ -61,8 +69,8 @@ export const Navigation: React.FC = () => {
             </li>
           </ul>
           <div className="flex items-center gap-2">
-            <ButtonPrimary name="Register" />
-            <ButtonSecondary name="Login" />
+            <ButtonPrimary name="Register" onclickFunc={navigateUserToRegister.bind(this)} />
+            <ButtonSecondary name="Login" onClickFunc={navigateUserToLogin.bind(this)} />
           </div>
         </div>
         <div
