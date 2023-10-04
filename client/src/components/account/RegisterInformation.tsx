@@ -2,11 +2,10 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-import LearningStudent from "../../../assets/images/learner.jpg";
-// import LecturerTeaching from "../../../assets/images/teaching.jpg";
-import WorkersImage from "../../../assets/images/workers.png";
-import StudentLearningImage from "../../../assets/images/learning.jpg";
-import LecturerTeachingImage from "../../../assets/images/teaching-two.jpg";
+import LearningStudent from "../../assets/images/learner.jpg";
+import WorkersImage from "../../assets/images/workers.png";
+import StudentLearningImage from "../../assets/images/learning.jpg";
+import LecturerTeachingImage from "../../assets/images/teaching-two.jpg";
 
 export const RegisterInformation: React.FC = () => {
   return (

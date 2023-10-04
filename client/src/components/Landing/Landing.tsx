@@ -4,7 +4,7 @@ import {
   Course,
   Features,
   Learn,
-  Pricing,
+  // Pricing,
   StudentReview,
   Footer,
 } from "./Landing.imports";
@@ -16,7 +16,7 @@ export const Landing: React.FC = () => {
       <Features />
       <Course />
       <Learn />
-      <Pricing />
+      {/* <Pricing /> */}
       <StudentReview />
       <Footer />
     </>

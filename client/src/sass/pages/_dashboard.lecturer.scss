@@ -1,0 +1,17 @@
+.dashboard-container {
+  display: flex;
+
+  &__aside {
+    background-color: red;
+    padding: 1rem;
+    width: 20%;
+    height: 100vh;
+  }
+
+  &__main {
+    background-color: antiquewhite;
+    padding: 1rem;
+    width: 80%;
+    height: 100vh;
+  }
+}

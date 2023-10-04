@@ -1,5 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Landing, RegisterInformation, Register, Login } from "./App.imports";
+import {
+  Landing,
+  RegisterInformation,
+  Register,
+  Login,
+  LecturerRegister,
+  LecturerLogin,
+  DashboardLecture,
+} from "./App.imports";
 
 const App = createBrowserRouter([
   {
@@ -17,6 +25,18 @@ const App = createBrowserRouter([
   {
     path: "/login-account",
     element: <Login />,
+  },
+  {
+    path: "/lecturer-register-account",
+    element: <LecturerRegister />,
+  },
+  {
+    path: "/lecturer-login-account",
+    element: <LecturerLogin />,
+  },
+  {
+    path: "/lecturer-dashboard",
+    element: <DashboardLecture />,
   },
 ]);
 

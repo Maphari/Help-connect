@@ -29,3 +29,21 @@
   border-radius: 5px;
   @include transition;
 }
+
+// GOOGLE BUTTON
+.google-login-button {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+
+.google-logo {
+  $SIZE: 16px;
+  width: $SIZE;
+  height: $SIZE;
+  margin-right: 10px;
+}
