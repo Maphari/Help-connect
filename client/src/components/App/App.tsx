@@ -6,7 +6,6 @@ import {
   Login,
   LecturerRegister,
   LecturerLogin,
-  DashboardLecture,
 } from "./App.imports";
 
 const App = createBrowserRouter([
@@ -33,10 +32,6 @@ const App = createBrowserRouter([
   {
     path: "/lecturer-login-account",
     element: <LecturerLogin />,
-  },
-  {
-    path: "/lecturer-dashboard",
-    element: <DashboardLecture />,
   },
 ]);
 

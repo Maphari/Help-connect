@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import axios, { AxiosError } from "axios";
+
 import { Link } from "react-router-dom";
 
 import { RiUserFill as Profile } from "react-icons/ri";
@@ -10,6 +12,13 @@ import { PiStudentFill as StudentIcon } from "react-icons/pi";
 import { AiFillSetting as ServicesIcon } from "react-icons/ai";
 
 import { toast } from "react-toastify";
+
+interface IUserData {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 export const Register: React.FC = () => {
   const [username, setUsername] = useState<string>("");
@@ -74,11 +83,8 @@ export const Register: React.FC = () => {
     }
   };
 
-
   const passwordValidatorHandler: () => void = function () {
-    const passwordRegex: RegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-
-    if (!passwordRegex.test(password.trim())) {
+    if (password.trim().length < 8) {
       setPasswordError("Password must be more than 8 characters");
     } else if (!password.trim()) {
       setPasswordError("Please Enter password");
@@ -98,7 +104,7 @@ export const Register: React.FC = () => {
   };
 
   const submitDataHandler: (e: React.FormEvent<HTMLFormElement>) => void =
-    function (e: React.FormEvent<HTMLFormElement>) {
+    async function (e: React.FormEvent<HTMLFormElement>) {
       try {
         e.preventDefault();
 
@@ -107,18 +113,50 @@ export const Register: React.FC = () => {
         passwordValidatorHandler();
         confirmPasswordValidatorHandler();
 
+        const userData: IUserData = {
+          username,
+          email,
+          password,
+          confirmPassword,
+        };
+
         if (
           !username.trim() ||
           !email.trim() ||
-          password.trim() ||
-          confirmPassword.trim()
+          !password.trim() ||
+          !confirmPassword.trim() ||
+          usernameError.trim() ||
+          emailError.trim() ||
+          passwordError.trim() ||
+          confirmPasswordError.trim()
         ) {
-          failedNotification("something went wrong please try again later");
+          // Handle validation errors
+          failedNotification("Please fix the validation errors.");
         } else {
-          successNotification("Thank you fo registering an account with us😎!");
+          const res = (await axios.post("/api/register-account", userData))
+            .data;
+
+          if (res) {
+            successNotification(
+              "Thank you for registering an account with us😎!"
+            );
+            console.log(res);
+          } else {
+            failedNotification("Failed");
+            console.log("error");
+          }
         }
       } catch (error) {
-        console.error(error);
+        if (axios.isAxiosError(error)) {
+          const axiosError: AxiosError<unknown, unknown> = error as AxiosError;
+          const axios_response = axiosError.response;
+
+          if (axios_response) {
+            console.log(axios_response)
+          }
+        } else {
+          console.error(error);
+        }
       }
     };
 
@@ -215,9 +253,9 @@ export const Register: React.FC = () => {
                 className="w-full flex-1 text-sm outline-none px-[3px] py-[8px] bg-slate-100 rounded-r"
               />
             </div>
-            {/* <span className="text-sm text-red-500 mt-1">
+            <span className="text-sm text-red-500 mt-1">
               {passwordError && passwordError}
-            </span> */}
+            </span>
           </div>
           <div className="flex items-start flex-col w-full mb-2">
             <label
@@ -240,15 +278,14 @@ export const Register: React.FC = () => {
                 placeholder="Password must be more than 8 characters"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setConfirmPassword(e.target.value);
-                  confirmPasswordValidatorHandler();
                 }}
                 value={confirmPassword}
                 className="w-full flex-1 text-sm outline-none px-[3px] py-[8px] bg-slate-100 rounded-r"
               />
             </div>
-            {/* <span className="text-sm text-red-500 mt-1">
+            <span className="text-sm text-red-500 mt-1">
               {confirmPasswordError && confirmPasswordError}
-            </span> */}
+            </span>
           </div>
           <p className="text-xs opacity-50">
             By registering an account you agree to our{" "}
@@ -299,7 +336,9 @@ export const Register: React.FC = () => {
           </Link>
           <div className="flex items-center justify-center gap-2 flex-wrap mt-5 opacity-60 text-sm">
             <p>Already have an account?</p>
-            <Link className="font-bold text-blue-900" to="/login-account">Log in</Link>
+            <Link className="font-bold text-blue-900" to="/login-account">
+              Log in
+            </Link>
           </div>
         </form>
       </section>
