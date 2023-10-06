@@ -28,9 +28,7 @@ async function startServer(): Promise<void> {
     }
   } else {
     await connect();
-    server.listen(PORT, function () {
-      console.log(`Listening on port ${PORT}`);
-    });
+    server.listen(PORT);
   }
 }
 

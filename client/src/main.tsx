@@ -6,7 +6,10 @@ import "./sass/main.scss";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { RouterProvider } from "react-router-dom";
+import { store } from "./redux/store/student.store.ts";
+import { Provider } from "react-redux";
+
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -22,6 +25,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       pauseOnHover
       theme="colored"
     />
-    <RouterProvider router={App} />
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );

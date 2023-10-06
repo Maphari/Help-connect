@@ -1,38 +1,39 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import {
   Landing,
-  RegisterInformation,
-  Register,
-  Login,
+  StudentRegister,
+  StudentLogin,
   LecturerRegister,
   LecturerLogin,
+  PageNotFound,
+  AccountOptionsLogin,
+  AccountOptionsRegister,
+  DashBoardStudent,
+  DashBoardLecturer
 } from "./App.imports";
 
-const App = createBrowserRouter([
-  {
-    path: "/",
-    element: <Landing />,
-  },
-  {
-    path: "/register-information",
-    element: <RegisterInformation />,
-  },
-  {
-    path: "/register-account",
-    element: <Register />,
-  },
-  {
-    path: "/login-account",
-    element: <Login />,
-  },
-  {
-    path: "/lecturer-register-account",
-    element: <LecturerRegister />,
-  },
-  {
-    path: "/lecturer-login-account",
-    element: <LecturerLogin />,
-  },
-]);
 
-export default App;
+
+export default function App() {
+  const studentToken = localStorage.getItem("student-token")
+  const lecturerToken = localStorage.getItem("lecturer-token")
+  // const helperToken = localStorage.getItem("helper-token")
+
+  return (
+    <Routes>
+        <Route path="*" element={<PageNotFound />} />
+        <Route path="/" element={studentToken ? <DashBoardStudent/>: lecturerToken ? <DashBoardLecturer /> : <Landing />} />
+        {/* CHOICES ROUTES */}
+        <Route path="/account/register-choice" element={<AccountOptionsRegister />} />
+        <Route path="/account/login-choice" element={<AccountOptionsLogin />} />
+        {/* STUDENT ROUTES */}
+        {!studentToken && <Route path="/student/register-account" element={<StudentRegister />} />}
+        {!studentToken && <Route path="/student/login-account" element={<StudentLogin />} />}
+        {/* LECTURER ROUTES */}
+        {!lecturerToken && <Route path="/lecturer/register-account" element={<LecturerRegister />} />}
+        {!studentToken && <Route path="/lecturer/login-account" element={<LecturerLogin />} />}
+        {/* HELPER ROUTES */}
+    </Routes>
+  )
+}
+

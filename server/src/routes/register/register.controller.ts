@@ -49,7 +49,10 @@ async function HttpRegisterUserController(
       newStudent.studentID = studentToken;
 
       // setting students session
-      handleSessionMiddleware(req, res, next, newStudent);
+      if (req.session) {
+        req.session.user = {...newStudent};
+      }
+
       // saving student to database
       await newStudent.save();
       // sending back data to client
@@ -66,11 +69,14 @@ async function HttpRegisterUserController(
         expiresIn: "24",
       });
 
-      handleSessionMiddleware(req, res, next, student);
-
       student.studentID = studentToken;
 
-      return res.status(401).json({
+      if (req.session) {
+        req.session.user = {...student};
+      }
+
+      
+      return res.json({
         message: "Student already exists",
         hasAccount: true,
       });

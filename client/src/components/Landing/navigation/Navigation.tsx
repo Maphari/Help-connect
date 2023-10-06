@@ -34,13 +34,13 @@ export const Navigation: React.FC = () => {
     type: "spring",
   };
 
-  const navigateUserToRegister = function(): void {
-    window.location.href = "/register-information"
-  }
+  const navigateUserToRegister = function (): void {
+    window.location.href = "/account/register-choice";
+  };
 
-  const navigateUserToLogin = function(): void {
-    window.location.href = "/login-account"
-  }
+  const navigateUserToLogin = function (): void {
+    window.location.href = "/account/login-choice";
+  };
 
   return (
     <>
@@ -69,8 +69,14 @@ export const Navigation: React.FC = () => {
             </li>
           </ul>
           <div className="flex items-center gap-2">
-            <ButtonPrimary name="Register" onclickFunc={navigateUserToRegister.bind(this)} />
-            <ButtonSecondary name="Login" onClickFunc={navigateUserToLogin.bind(this)} />
+            <ButtonPrimary
+              name="Register"
+              onclickFunc={navigateUserToRegister.bind(this)}
+            />
+            <ButtonSecondary
+              name="Login"
+              onClickFunc={navigateUserToLogin.bind(this)}
+            />
           </div>
         </div>
         <div

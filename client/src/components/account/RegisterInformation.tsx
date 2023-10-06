@@ -134,7 +134,7 @@ export const RegisterInformation: React.FC = () => {
         </p>
         <div className="ml-5 mt-7">
           <Link
-            to="/register-account"
+            to="/student/register-account"
             className="inline-block p-[0.5rem] text-center bg-blue-950 text-white font-medium"
           >
             Get started
