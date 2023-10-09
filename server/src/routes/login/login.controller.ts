@@ -14,21 +14,27 @@ export async function HttpLoginUserController(
     const student = await Student.findOne({ email });
 
     if (!student) {
-      return res.status(401).json({ message: "User is not found!😥", hasAccount: false });
+      return res
+        .status(401)
+        .json({ message: "User is not found!😥", hasAccount: false });
     }
 
     const passwordMatch = bcrypt.compare(password, student.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({
+      return res.json({
         errorMessage: "Incorrect email or password😥",
       });
     }
 
-    handleSessionMiddleware(req, res, next, student);
+    if (req.session) {
+      req.session.user = { ...student };
+      await new Promise<void>((resolve) => setTimeout(() => resolve(), 5)); // wait for the session to be saved before sending response back
+    }
 
     return res.status(200).json({
       message: "You have successfully logged in 😁",
+      hasAccount: true,
       student,
     });
   } catch (error) {

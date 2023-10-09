@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch-server": "nodemon ./src/server.ts",
-    "pm2-cluster": "pm2 start ./src/server.ts -i max"
+    "watch-server": "nodemon ./src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +18,7 @@
     "@types/jsonwebtoken": "^9.0.3",
     "@types/node": "^20.7.1",
     "bcrypt": "^5.1.1",
+    "concurrently": "^8.2.1",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",

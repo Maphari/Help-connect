@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
-import { Mail, StudentIcon, LockIcon,Profile, Link, SetUsername, SetEmail } from "./student.imports";
-
+import {successNotification, infoNotification, failedNotification} from "./Students.functions"
+import {
+  Mail,
+  StudentIcon,
+  LockIcon,
+  Profile,
+  Link,
+  SetUsername,
+  SetEmail,
+  SetStudentID,
+} from "./student.imports";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
 import axios, { AxiosError } from "axios";
-
 
 interface IUserData {
   username: string;
@@ -13,6 +20,12 @@ interface IUserData {
   password: string;
   confirmPassword: string;
 }
+
+interface IErrorMessage {
+  errorMessage: string;
+}
+
+
 
 export const StudentRegister: React.FC = () => {
   const [username, setUsername] = useState<string>("");
@@ -23,55 +36,8 @@ export const StudentRegister: React.FC = () => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
-  const dispatch = useDispatch()
-
-  const successNotification: (message: string) => void = function (
-    message: string
-  ) {
-    toast.success(message, {
-      toastId: "success-notification",
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-  };
-
-  const infoNotification: (message: string) => void = function (
-    message: string
-  ) {
-    toast.info(message, {
-      toastId: "success-notification",
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-  };
-
-  const failedNotification: (message: string) => void = function (
-    message: string
-  ) {
-    toast.error(message, {
-      toastId: "error-notification",
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-  };
+  const dispatch = useDispatch();
+  const navigate:NavigateFunction = useNavigate()
 
   const usernameValidationHandler: () => void = function () {
     if (username.trim().length < 5) {
@@ -149,30 +115,38 @@ export const StudentRegister: React.FC = () => {
           // if account exist we want to redirect the user to login form
           if (res.hasAccount) {
             infoNotification(res.message);
-            window.location.href = "/account/login-account";
+            window.location.href = "/student/login-account";
             // if account doesn't exist then we welcome the user to the dash board
           } else if (!res.hasAccount) {
-            successNotification(res.message);
+            const studentID: string = res.studentID;
+            const studentUsername: string = res.username;
+            const studentEmail: string = res.email;
+            const message: string = res.message;
+
+            successNotification(message);
             // saving token to local storage
-            localStorage.setItem("student-token", res.studentID)
+            // localStorage.setItem("student-token", res.studentID);
             // dispatching data to redux store
-            dispatch(SetUsername(res.username))
-            dispatch(SetEmail(res.email))
-            window.location.href = "#";
+            dispatch(SetStudentID(studentID));
+            dispatch(SetUsername(studentUsername));
+            dispatch(SetEmail(studentEmail));
+            navigate("verify/email");
           } else {
             failedNotification(res.errorMessage);
           }
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          const axiosError: AxiosError<unknown, unknown> = error as AxiosError;
+          const axiosError: AxiosError<IErrorMessage> =
+            error as AxiosError<IErrorMessage>;
           const axios_response = axiosError.response;
 
           if (axios_response) {
-            console.log(axios_response);
+            const { data } = axios_response;
+            failedNotification(data.errorMessage);
           }
         } else {
-          console.error(error);
+          failedNotification("Internal server error😓");
         }
       }
     };
@@ -331,7 +305,16 @@ export const StudentRegister: React.FC = () => {
                 alt="Google Logo"
                 className="google-logo"
               />
-              Google
+            </Link>
+            <Link
+              to="#"
+              className="transition-all duration-700 ease-linear hover:bg-slate-100 px-[0.4rem] py-[0.5rem] google-login-button text-sm border flex items-center justify-center text-[#333]"
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/c/c2/F_icon.svg"
+                alt="Facebook Logo"
+                className="google-logo"
+              />
             </Link>
           </div>
           <div className="flex items-center justify-center gap-2 flex-wrap mt-5 opacity-60 text-sm">

@@ -8,11 +8,17 @@ import { LecturerRegister } from "../account/lecturer/Lecturer.register";
 import { PageNotFound } from "../UI/PageNotFound";
 import { AccountOptionsLogin } from "../account/AccountOptions.login";
 import { AccountOptionsRegister } from "../account/AccountOptions.register";
+import { VerifyEmail } from "../account/email/VerifyEmail";
+import { RegisterService } from "../account/service/Register.service";
+import { LoginService } from "../account/service/Login.service";
+import { DashboardService } from "../account/service/Dashboard.service";
 
 import { DashBoardStudent } from "../dashboard/Dashboard.student";
 import { DashBoardLecturer } from "../dashboard/Dashboard.lecturer";
 
+
 export { React };
+
 export {
   Landing,
   RegisterInformation,
@@ -22,10 +28,14 @@ export {
   LecturerLogin,
   PageNotFound,
   AccountOptionsLogin,
-  AccountOptionsRegister
+  AccountOptionsRegister,
+  VerifyEmail,
+  RegisterService,
+  LoginService,
 };
 
 export {
   DashBoardStudent,
-  DashBoardLecturer
+  DashBoardLecturer,
+  DashboardService
 }

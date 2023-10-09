@@ -1,6 +1,27 @@
 import React, { useState } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Mail, StudentIcon, LockIcon, Link } from "./student.imports";
+import {
+  Mail,
+  StudentIcon,
+  LockIcon,
+  Link,
+  SetUsername,
+  SetEmail,
+  SetStudentID,
+} from "./student.imports";
+import { useDispatch } from "react-redux";
+import axios, { AxiosError } from "axios";
+import { AnyAction, Dispatch } from "@reduxjs/toolkit";
+
+interface IUserData {
+  email: string;
+  password: string;
+}
+
+interface IErrorMessage {
+  errorMessage: string;
+}
 
 export const StudentLogin: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -8,10 +29,29 @@ export const StudentLogin: React.FC = () => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
 
+  const dispatch: Dispatch<AnyAction> = useDispatch();
+  const navigate: NavigateFunction = useNavigate();
+
   const successNotification: (message: string) => void = function (
     message: string
   ) {
     toast.success(message, {
+      toastId: "success-notification",
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
+
+  const infoNotification: (message: string) => void = function (
+    message: string
+  ) {
+    toast.info(message, {
       toastId: "success-notification",
       position: "bottom-left",
       autoClose: 5000,
@@ -54,9 +94,7 @@ export const StudentLogin: React.FC = () => {
   };
 
   const passwordValidatorHandler: () => void = function () {
-    const passwordRegex: RegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-
-    if (!passwordRegex.test(password.trim())) {
+    if (password.trim().length < 8) {
       setPasswordError("Password must be more than 8 characters");
     } else if (!password.trim()) {
       setPasswordError("Please Enter password");
@@ -66,20 +104,61 @@ export const StudentLogin: React.FC = () => {
   };
 
   const submitDataHandler: (e: React.FormEvent<HTMLFormElement>) => void =
-    function (e: React.FormEvent<HTMLFormElement>) {
+    async function (e: React.FormEvent<HTMLFormElement>) {
       try {
         e.preventDefault();
 
         emailValidatorHandler();
         passwordValidatorHandler();
 
-        if (!email.trim() || password.trim()) {
-          failedNotification("something went wrong please try again later");
+        const userData: IUserData = {
+          email,
+          password,
+        };
+
+        if (emailError.trim() || passwordError.trim()) {
+          // Handle validation errors
+          failedNotification("Please fix the validation errors.");
         } else {
-          successNotification("Thank you fo registering an account with us😎!");
+          const res = (await axios.post("/api/login-account", userData)).data;
+
+          console.log(res);
+          // if account exist we want to redirect the user to login form
+          if (!res.hasAccount) {
+            infoNotification(res.message);
+            navigate("/student/register-account");
+            // if account doesn't exist then we welcome the user to the dash board
+          } else if (res.hasAccount) {
+            const studentID: string = res.studentID;
+            const studentUsername: string = res.username;
+            const studentEmail: string = res.email;
+            const message: string = res.message;
+
+            successNotification(message);
+            // saving token to local storage
+            // localStorage.setItem("student-token", res.studentID);
+            // dispatching data to redux store
+            dispatch(SetStudentID(studentID));
+            dispatch(SetUsername(studentUsername));
+            dispatch(SetEmail(studentEmail));
+            navigate("./verify/email");
+          } else {
+            failedNotification(res.errorMessage);
+          }
         }
       } catch (error) {
-        console.error(error);
+        if (axios.isAxiosError(error)) {
+          const axiosError: AxiosError<IErrorMessage> =
+            error as AxiosError<IErrorMessage>;
+          const axios_response = axiosError.response;
+
+          if (axios_response) {
+            const { data } = axios_response;
+            failedNotification(data.errorMessage);
+          }
+        } else {
+          failedNotification("Internal server error😓");
+        }
       }
     };
 
@@ -188,7 +267,7 @@ export const StudentLogin: React.FC = () => {
               className="font-bold text-blue-900"
               to="/student/register-account"
             >
-              Log in
+              Register
             </Link>
           </div>
         </form>

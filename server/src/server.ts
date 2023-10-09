@@ -32,4 +32,10 @@ async function startServer(): Promise<void> {
   }
 }
 
-startServer();
+startServer()
+  .then(() => {
+    console.log(`Server running on port ${PORT}`);
+  })
+  .catch((err) => {
+    console.error(err);
+  });

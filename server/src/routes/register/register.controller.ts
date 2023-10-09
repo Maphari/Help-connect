@@ -3,7 +3,7 @@ import mongoose, { Document } from "mongoose";
 import jwt from "jsonwebtoken";
 
 import { keys } from "../../key/key";
-import { handleSessionMiddleware } from "../../middleware/handleSessionMiddleware.middleware";
+
 
 const Student = mongoose.model("Student");
 
@@ -51,6 +51,7 @@ async function HttpRegisterUserController(
       // setting students session
       if (req.session) {
         req.session.user = {...newStudent};
+        await new Promise<void>((resolve)=>setTimeout(()=> resolve(), 5)); // wait for the session to be saved before sending response back  
       }
 
       // saving student to database
@@ -73,6 +74,7 @@ async function HttpRegisterUserController(
 
       if (req.session) {
         req.session.user = {...student};
+        await new Promise<void>((resolve)=>setTimeout(()=> resolve(), 5)); // wait for the session to be saved before sending response back
       }
 
       
