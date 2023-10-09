@@ -25,11 +25,10 @@ const UnVerifiedRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="*" element={<PageNotFound />} />
-      <Route path="/" element={<Landing />} />
-      
-      {/* DASHBOARD ROUTES */}
+
+      {/* HOME ROUTES */}
       <Route
-        path="/dashboard"
+        path="/"
         element={
           studentToken ? (
             <DashBoardStudent />
@@ -37,7 +36,9 @@ const UnVerifiedRoutes: React.FC = () => {
             <DashBoardLecturer />
           ) : helperToken ? (
             <DashboardService />
-          ) : null
+          ) : (
+            <Landing />
+          )
         }
       />
 
@@ -46,23 +47,19 @@ const UnVerifiedRoutes: React.FC = () => {
 
       {/* CHOICES ROUTES */}
       <Route path="/account/login-choice" element={<AccountOptionsLogin />} />
-      <Route
-        path="/account/register-choice"
-        element={<AccountOptionsRegister />}
-      />
+      <Route path="/account/register-choice" element={<AccountOptionsRegister />} />
 
       {/* STUDENT ROUTES */}
-      <Route path="/student/register-account" element={<StudentRegister />} />
-      <Route path="/student/login-account" element={<StudentLogin />} />
+      <Route path="/student/register-account" element={studentToken ? <DashBoardStudent /> : <StudentRegister />} />
+      <Route path="/student/login-account" element={studentToken ? <DashBoardStudent /> :<StudentLogin />} />
 
       {/* LECTURER ROUTES */}
-      <Route path="/lecturer/register-account" element={<LecturerRegister />} />
-      <Route path="/lecturer/login-account" element={<LecturerLogin />} />
+      <Route path="/lecturer/register-account" element={lecturerToken ? <DashBoardLecturer /> : <LecturerRegister />} />
+      <Route path="/lecturer/login-account" element={lecturerToken ? <DashBoardLecturer /> : <LecturerLogin />} />
 
       {/* HELPER ROUTES */}
-      <Route path="/helper/register-account" element={<RegisterService />} />
-      <Route path="/helper/login-account" element={<LoginService />} />
-      
+      <Route path="/helper/register-account" element={helperToken ? <DashboardService /> : <RegisterService />} />
+      <Route path="/helper/login-account" element={helperToken ? <DashboardService /> : <LoginService />} />
     </Routes>
   );
 };

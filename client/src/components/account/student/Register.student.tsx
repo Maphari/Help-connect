@@ -130,6 +130,7 @@ export const StudentRegister: React.FC = () => {
             dispatch(SetStudentID(studentID));
             dispatch(SetUsername(studentUsername));
             dispatch(SetEmail(studentEmail));
+
             navigate("verify/email");
           } else {
             failedNotification(res.errorMessage);
@@ -295,7 +296,7 @@ export const StudentRegister: React.FC = () => {
               <span> Continue as Student</span>
             </button>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center justify-center gap-1">
             <Link
               className="transition-all duration-700 ease-linear hover:bg-slate-100 px-[0.4rem] py-[0.5rem] google-login-button text-sm border flex items-center justify-center text-[#333]"
               to="#"
@@ -305,6 +306,7 @@ export const StudentRegister: React.FC = () => {
                 alt="Google Logo"
                 className="google-logo"
               />
+              <span className="text-sm">Google</span>
             </Link>
             <Link
               to="#"
@@ -315,6 +317,7 @@ export const StudentRegister: React.FC = () => {
                 alt="Facebook Logo"
                 className="google-logo"
               />
+              <span className="text-sm">Facebook</span>
             </Link>
           </div>
           <div className="flex items-center justify-center gap-2 flex-wrap mt-5 opacity-60 text-sm">

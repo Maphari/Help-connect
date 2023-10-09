@@ -8,3 +8,6 @@ export const store: ToolkitStore = configureStore({
     student: studentSlice,
   },
 });
+
+
+export type RootState = ReturnType<typeof store.getState>
