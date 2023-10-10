@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import { handleSessionMiddleware } from "../../middleware/handleSessionMiddleware.middleware";
 const Student = mongoose.model("Student");
 
 export async function HttpLoginUserController(

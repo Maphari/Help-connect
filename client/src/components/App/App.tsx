@@ -15,6 +15,9 @@ import {
   LoginService,
   DashBoardLecturer,
   VerifyEmail,
+  MoreInfoLecturer,
+  MoreInfoStudent,
+  VerifyEmailPin
 } from "./App.imports";
 
 const studentToken = localStorage.getItem("student-token");
@@ -43,7 +46,8 @@ const UnVerifiedRoutes: React.FC = () => {
       />
 
       {/* VERIFY EMAIL ROUTE  */}
-      <Route path="/verify/email" element={<VerifyEmail />} />
+      <Route path="/:id/verify/email" element={<VerifyEmail />} />
+      <Route path="/:id/verify/email-pin" element={<VerifyEmailPin /> } />
 
       {/* CHOICES ROUTES */}
       <Route path="/account/login-choice" element={<AccountOptionsLogin />} />
@@ -52,10 +56,12 @@ const UnVerifiedRoutes: React.FC = () => {
       {/* STUDENT ROUTES */}
       <Route path="/student/register-account" element={studentToken ? <DashBoardStudent /> : <StudentRegister />} />
       <Route path="/student/login-account" element={studentToken ? <DashBoardStudent /> :<StudentLogin />} />
+      <Route path="/student/more-information" element={<MoreInfoStudent />} />
 
       {/* LECTURER ROUTES */}
       <Route path="/lecturer/register-account" element={lecturerToken ? <DashBoardLecturer /> : <LecturerRegister />} />
       <Route path="/lecturer/login-account" element={lecturerToken ? <DashBoardLecturer /> : <LecturerLogin />} />
+      <Route path="/lecturer/more-information" element={<MoreInfoLecturer />} />
 
       {/* HELPER ROUTES */}
       <Route path="/helper/register-account" element={helperToken ? <DashboardService /> : <RegisterService />} />

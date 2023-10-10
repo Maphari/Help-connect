@@ -3,9 +3,11 @@ import express from "express";
 import cors from "cors";
 import cookieSession from "cookie-session";
 import { keys } from "./key/key";
+
 import { registerRouter 
 } from "./routes/register/register.route";
 import { loginRouter } from "./routes/login/login.route";
+import { pinRouter } from "./routes/pinGenerator/pinGenerator.route";
 
 const app = express();
 
@@ -20,7 +22,8 @@ app.use(
   })
 );
 
-app.use("/api/register-account", registerRouter);
-app.use("/api/login-account", loginRouter);
+app.use(registerRouter);
+app.use(loginRouter);
+app.use(pinRouter)
 
 export default app;

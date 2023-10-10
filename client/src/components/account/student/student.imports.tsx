@@ -8,10 +8,10 @@ import { PiStudentFill as StudentIcon } from "react-icons/pi";
 import {FaUser as Profile} from "react-icons/fa6"
 
 // REDUX IMPORTS
-import { SetEmail, SetUsername, SetStudentID } from "../../../redux/slice/student.slice";
+import { SetStudentEmail, SetStudentUsername, SetStudentID } from "../../../redux/slice/student.slice";
 
 
-export { SetEmail, SetUsername, SetStudentID };
+export { SetStudentEmail, SetStudentUsername, SetStudentID };
 
 export { Link };
 

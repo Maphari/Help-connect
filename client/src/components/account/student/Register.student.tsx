@@ -1,18 +1,23 @@
-import React, { useState } from "react";
-import {successNotification, infoNotification, failedNotification} from "./Students.functions"
+import React, { Dispatch, useState } from "react";
+import {
+  failedNotification,
+  infoNotification,
+  successNotification,
+} from "../../../global/ToastNotification.function";
 import {
   Mail,
   StudentIcon,
   LockIcon,
   Profile,
   Link,
-  SetUsername,
-  SetEmail,
+  SetStudentUsername,
+  SetStudentEmail,
   SetStudentID,
 } from "./student.imports";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios, { AxiosError } from "axios";
+import { AnyAction } from "@reduxjs/toolkit";
 
 interface IUserData {
   username: string;
@@ -25,8 +30,6 @@ interface IErrorMessage {
   errorMessage: string;
 }
 
-
-
 export const StudentRegister: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -36,8 +39,8 @@ export const StudentRegister: React.FC = () => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
-  const dispatch = useDispatch();
-  const navigate:NavigateFunction = useNavigate()
+  const dispatch: Dispatch<AnyAction> = useDispatch();
+  const navigate: NavigateFunction = useNavigate();
 
   const usernameValidationHandler: () => void = function () {
     if (username.trim().length < 5) {
@@ -75,6 +78,8 @@ export const StudentRegister: React.FC = () => {
   const confirmPasswordValidatorHandler: () => void = function () {
     if (password.trim() != confirmPassword.trim()) {
       setConfirmPasswordError("Password does'nt match");
+    } else if (confirmPassword.trim().length < 8) {
+      setConfirmPasswordError("Password must be more than 8 characters");
     } else if (!confirmPassword.trim()) {
       setConfirmPasswordError("Please enter password");
     } else {
@@ -125,13 +130,12 @@ export const StudentRegister: React.FC = () => {
 
             successNotification(message);
             // saving token to local storage
-            // localStorage.setItem("student-token", res.studentID);
             // dispatching data to redux store
             dispatch(SetStudentID(studentID));
-            dispatch(SetUsername(studentUsername));
-            dispatch(SetEmail(studentEmail));
+            dispatch(SetStudentUsername(studentUsername));
+            dispatch(SetStudentEmail(studentEmail));
 
-            navigate("verify/email");
+            navigate("/student/verify/email");
           } else {
             failedNotification(res.errorMessage);
           }

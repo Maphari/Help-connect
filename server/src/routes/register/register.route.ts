@@ -4,6 +4,6 @@ import { HttpRegisterUserController } from "./register.controller";
 
 const registerRouter: Router = express.Router();
 
-registerRouter.post("/", HttpRegisterUserController);
+registerRouter.post("/api/register-account", HttpRegisterUserController);
 
 export { registerRouter};

@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import {
+  failedNotification,
+  infoNotification,
+  successNotification,
+} from "../../../global/ToastNotification.function";
 import {
   Mail,
   StudentIcon,
   LockIcon,
   Link,
-  SetUsername,
-  SetEmail,
+  SetStudentUsername,
+  SetStudentEmail,
   SetStudentID,
 } from "./student.imports";
 import { useDispatch } from "react-redux";
@@ -31,54 +35,6 @@ export const StudentLogin: React.FC = () => {
 
   const dispatch: Dispatch<AnyAction> = useDispatch();
   const navigate: NavigateFunction = useNavigate();
-
-  const successNotification: (message: string) => void = function (
-    message: string
-  ) {
-    toast.success(message, {
-      toastId: "success-notification",
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-  };
-
-  const infoNotification: (message: string) => void = function (
-    message: string
-  ) {
-    toast.info(message, {
-      toastId: "success-notification",
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-  };
-
-  const failedNotification: (message: string) => void = function (
-    message: string
-  ) {
-    toast.error(message, {
-      toastId: "error-notification",
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-  };
 
   const emailValidatorHandler: () => void = function () {
     const emailRegex: RegExp =
@@ -139,8 +95,8 @@ export const StudentLogin: React.FC = () => {
             // localStorage.setItem("student-token", res.studentID);
             // dispatching data to redux store
             dispatch(SetStudentID(studentID));
-            dispatch(SetUsername(studentUsername));
-            dispatch(SetEmail(studentEmail));
+            dispatch(SetStudentUsername(studentUsername));
+            dispatch(SetStudentEmail(studentEmail));
             navigate("./verify/email");
           } else {
             failedNotification(res.errorMessage);

@@ -11,8 +11,11 @@ import { AccountOptionsRegister } from "../account/AccountOptions.register";
 import { VerifyEmail } from "../account/email/VerifyEmail";
 import { RegisterService } from "../account/service/Register.service";
 import { LoginService } from "../account/service/Login.service";
-import { DashboardService } from "../account/service/Dashboard.service";
+import { MoreInfoLecturer } from "../account/lecturer/MoreInfo.lecturer";
+import { MoreInfoStudent } from "../account/student/MoreInfo.student";
+import { VerifyEmailPin } from "../account/email/VerifyEmail.pin";
 
+import { DashboardService } from "../account/service/Dashboard.service";
 import { DashBoardStudent } from "../dashboard/Dashboard.student";
 import { DashBoardLecturer } from "../dashboard/Dashboard.lecturer";
 
@@ -32,6 +35,9 @@ export {
   VerifyEmail,
   RegisterService,
   LoginService,
+  MoreInfoLecturer,
+  MoreInfoStudent,
+  VerifyEmailPin
 };
 
 export {

@@ -9,10 +9,10 @@ import {FaUser as Profile} from "react-icons/fa6"
 import { GiTeacher as LecturerIcon } from "react-icons/gi";
 
 // REDUX IMPORTS
-import { SetEmail, SetUsername } from "../../../redux/slice/student.slice";
+import { SetLecturerEmail, SetLecturerUsername } from "../../../redux/slice/lecturer.slice";
 
 
-export { SetEmail, SetUsername };
+export { SetLecturerEmail, SetLecturerUsername };
 
 export { Link };
 

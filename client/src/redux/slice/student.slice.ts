@@ -4,14 +4,16 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface IInitialState {
   studentID: string;
-  username: string;
-  email: string;
+  studentUsername: string;
+  studentEmail: string;
+  studentPin: string;
 }
 
 const initialState: IInitialState = {
   studentID : "",
-  username: "",
-  email: "",
+  studentUsername: "",
+  studentEmail: "",
+  studentPin: ""
 };
 
 export const studentSlice = createSlice({
@@ -21,15 +23,18 @@ export const studentSlice = createSlice({
     SetStudentID: (state, action) => {
       state.studentID = action.payload;
     },
-    SetUsername: (state, action) => {
-      state.username += action.payload;
+    SetStudentUsername: (state, action) => {
+      state.studentUsername += action.payload;
     },
-    SetEmail: (state, action) => {
-      state.email = action.payload;
+    SetStudentEmail: (state, action) => {
+      state.studentEmail = action.payload;
     },
+    SetStudentPin: (state, action) => {
+      state.studentPin = action.payload;
+    }
   },
 });
 
-export const { SetStudentID, SetUsername, SetEmail } = studentSlice.actions;
+export const { SetStudentID, SetStudentUsername, SetStudentEmail, SetStudentPin } = studentSlice.actions;
 
 export default studentSlice.reducer;
