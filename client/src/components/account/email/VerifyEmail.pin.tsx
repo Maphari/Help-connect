@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../../redux/store/student.store";
 import { useSelector } from "react-redux";
-import { failedNotification } from "../../../global/ToastNotification.function";
+import { failedNotification, successNotification } from "../../../global/ToastNotification.function";
 import axios from "axios";
 
 interface IPin {
   pin: string;
   generatedPin: string;
+}
+interface IData {
+  username: string;
+  email: string;
 }
 
 export const VerifyEmailPin: React.FC = () => {
@@ -16,8 +20,8 @@ export const VerifyEmailPin: React.FC = () => {
   const studentData = useSelector((state: RootState) => state.student);
   const lecturerData = useSelector((state: RootState) => state.lecturer);
   const navigate = useNavigate();
-  const { studentID, studentPin } = studentData;
-  const { lecturerID, lecturerPin } = lecturerData;
+  const { studentID, studentUsername, studentEmail, studentPin } = studentData;
+  const { lecturerID, lecturerUsername, lecturerEmail, lecturerPin } = lecturerData;
 
   const sendPins: IPin = {
     pin: userPin,
@@ -29,11 +33,13 @@ export const VerifyEmailPin: React.FC = () => {
         : null,
   };
 
+  const sendData: IData = {
+    username: studentID ? studentUsername : lecturerID && lecturerUsername,
+    email: studentID ? studentEmail : lecturerID && lecturerEmail,
+  };
   const pinValidatorHandler: () => void = function () {
     if (!userPin.trim()) {
       setUserPinError("Verification code is required");
-    } else if (userPin.trim().length < 4) {
-      setUserPinError("Verification code must be 4 digits");
     } else {
       setUserPinError("");
     }
@@ -75,6 +81,21 @@ export const VerifyEmailPin: React.FC = () => {
       }
     };
 
+  const resendPinHandler = async function () {
+    try {
+      const res = await axios.post("/api/verify-email-pin", sendData);
+      const data = res.data;
+
+      if(data.messageID) {
+        successNotification("Verification code sent")
+      } else {
+        failedNotification("Something went wrong while sending code")
+      }
+    } catch (error) {
+      failedNotification("Internal server error")
+    }
+  };
+
   return (
     <>
       <section className="bg-opacity-80 h-screen w-full flex items-center justify-center">
@@ -105,7 +126,11 @@ export const VerifyEmailPin: React.FC = () => {
                 className="outline-none bg-slate-100 rounded p-2 text-sm"
               />
               <div className="flex items-end justify-end mb-5 mt-1">
-                <Link to="#" className="text-sm text-blue-950">
+                <Link
+                  onClick={resendPinHandler}
+                  to="#"
+                  className="text-sm text-blue-950"
+                >
                   Resend code
                 </Link>
               </div>

@@ -1,7 +1,35 @@
 import React, { useState } from "react";
-import {Link, Mail, Profile, LockIcon, LecturerIcon} from "./Lecturer.imports"
+import {
+  Link,
+  Mail,
+  Profile,
+  LockIcon,
+  LecturerIcon,
+  SetLecturerEmail,
+  SetLecturerID,
+  SetLecturerUsername
+} from "./Lecturer.imports";
+import {
+  successNotification,
+  failedNotification,
+  infoNotification,
+} from "../../../global/ToastNotification.function";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import axios, {AxiosError} from "axios";
+import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 
-import { toast } from "react-toastify";
+
+interface IUserData {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface IErrorMessage {
+  errorMessage: string;
+}
 
 export const LecturerRegister: React.FC = () => {
   const [username, setUsername] = useState<string>("");
@@ -12,38 +40,8 @@ export const LecturerRegister: React.FC = () => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
-
-  const successNotification: (message: string) => void = function (
-    message: string
-  ) {
-    toast.success(message, {
-      toastId: "success-notification",
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-  };
-
-  const failedNotification: (message: string) => void = function (
-    message: string
-  ) {
-    toast.error(message, {
-      toastId: "error-notification",
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-  };
+  const navigate = useNavigate()
+  const dispatch: Dispatch<AnyAction> = useDispatch()
 
   const usernameValidationHandler: () => void = function () {
     if (username.trim().length < 5) {
@@ -89,7 +87,7 @@ export const LecturerRegister: React.FC = () => {
   };
 
   const submitDataHandler: (e: React.FormEvent<HTMLFormElement>) => void =
-    function (e: React.FormEvent<HTMLFormElement>) {
+    async function (e: React.FormEvent<HTMLFormElement>) {
       try {
         e.preventDefault();
 
@@ -98,18 +96,62 @@ export const LecturerRegister: React.FC = () => {
         passwordValidatorHandler();
         confirmPasswordValidatorHandler();
 
+        const userData: IUserData = {
+          username,
+          email,
+          password,
+          confirmPassword,
+        };
+
         if (
           !username.trim() ||
           !email.trim() ||
-          password.trim() ||
-          confirmPassword.trim()
+          !password.trim() ||
+          !confirmPassword.trim()
         ) {
-          failedNotification("something went wrong please try again later");
+          // Handle validation errors
+          failedNotification("Please fix the validation errors.");
         } else {
-          successNotification("Thank you fo registering an account with us😎!");
+          const res = (await axios.post("/api/lecturer/register-account", userData))
+            .data;
+
+          console.log(res);
+          // if account exist we want to redirect the user to login form
+          if (res.hasAccount) {
+            infoNotification(res.message);
+            navigate("/lecturer/login-account", { replace: true });
+            // if account doesn't exist then we welcome the user to the dash board
+          } else if (!res.hasAccount) {
+            const lecturerID: string = res.lecturer.ID;
+            const lecturerUsername: string = res.lecturerUsername;
+            const lecturerEmail: string = res.lecturerEmail;
+            const message: string = res.message;
+
+            successNotification(message);
+            // saving token to local storage
+            // dispatching data to redux store
+            dispatch(SetLecturerID(lecturerID));
+            dispatch(SetLecturerUsername(lecturerUsername));
+            dispatch(SetLecturerEmail(lecturerEmail));
+
+            navigate("/lecturer/verify/email", { replace: true });
+          } else {
+            failedNotification(res.errorMessage);
+          }
         }
       } catch (error) {
-        console.error(error);
+        if (axios.isAxiosError(error)) {
+          const axiosError: AxiosError<IErrorMessage> =
+            error as AxiosError<IErrorMessage>;
+          const axios_response = axiosError.response;
+
+          if (axios_response) {
+            const { data } = axios_response;
+            failedNotification(data.errorMessage);
+          }
+        } else {
+          failedNotification("Internal server error😓");
+        }
       }
     };
 

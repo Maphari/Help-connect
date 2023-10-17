@@ -9,22 +9,23 @@ import {
   PageNotFound,
   AccountOptionsLogin,
   AccountOptionsRegister,
-  DashBoardStudent,
-  DashboardService,
+  // DashBoardStudent,
+  // DashboardService,
   RegisterService,
   LoginService,
-  DashBoardLecturer,
+  // DashBoardLecturer,
   VerifyEmail,
   MoreInfoLecturer,
   MoreInfoStudent,
-  VerifyEmailPin
+  VerifyEmailPin,
+  DashBoardHandler
 } from "./App.imports";
 
 const studentToken = localStorage.getItem("student-token");
 const lecturerToken = localStorage.getItem("lecturer-token");
 const helperToken = localStorage.getItem("helper-token");
 
-const UnVerifiedRoutes: React.FC = () => {
+const AppRouter: React.FC = () => {
   return (
     <Routes>
       <Route path="*" element={<PageNotFound />} />
@@ -32,44 +33,38 @@ const UnVerifiedRoutes: React.FC = () => {
       {/* HOME ROUTES */}
       <Route
         path="/"
-        element={
-          studentToken ? (
-            <DashBoardStudent />
-          ) : lecturerToken ? (
-            <DashBoardLecturer />
-          ) : helperToken ? (
-            <DashboardService />
-          ) : (
-            <Landing />
-          )
-        }
+        element={studentToken || helperToken || lecturerToken ? <DashBoardHandler /> : <Landing />}
       />
-
+      {/* DASHBOARD ROUTES */}
+      <Route
+        path="/:id/dashboard"
+        element={studentToken || helperToken || lecturerToken ? <DashBoardHandler /> : <Landing />}
+      />
       {/* VERIFY EMAIL ROUTE  */}
       <Route path="/:id/verify/email" element={<VerifyEmail />} />
       <Route path="/:id/verify/email-pin" element={<VerifyEmailPin /> } />
 
       {/* CHOICES ROUTES */}
-      <Route path="/account/login-choice" element={<AccountOptionsLogin />} />
-      <Route path="/account/register-choice" element={<AccountOptionsRegister />} />
+      <Route path="/account/login-choice" element={studentToken || helperToken || lecturerToken ? <DashBoardHandler /> : <AccountOptionsLogin />} />
+      <Route path="/account/register-choice" element={studentToken || helperToken || lecturerToken ? <DashBoardHandler /> :<AccountOptionsRegister />} />
 
       {/* STUDENT ROUTES */}
-      <Route path="/student/register-account" element={studentToken ? <DashBoardStudent /> : <StudentRegister />} />
-      <Route path="/student/login-account" element={studentToken ? <DashBoardStudent /> :<StudentLogin />} />
+      <Route path="/student/register-account" element={studentToken ?  <DashBoardHandler />: <StudentRegister />} />
+      <Route path="/student/login-account" element={studentToken ?  <DashBoardHandler /> :<StudentLogin />} />
       <Route path="/student/more-information" element={<MoreInfoStudent />} />
 
       {/* LECTURER ROUTES */}
-      <Route path="/lecturer/register-account" element={lecturerToken ? <DashBoardLecturer /> : <LecturerRegister />} />
-      <Route path="/lecturer/login-account" element={lecturerToken ? <DashBoardLecturer /> : <LecturerLogin />} />
+      <Route path="/lecturer/register-account" element={lecturerToken ?  <DashBoardHandler />: <LecturerRegister />} />
+      <Route path="/lecturer/login-account" element={lecturerToken ?  <DashBoardHandler /> : <LecturerLogin />} />
       <Route path="/lecturer/more-information" element={<MoreInfoLecturer />} />
 
       {/* HELPER ROUTES */}
-      <Route path="/helper/register-account" element={helperToken ? <DashboardService /> : <RegisterService />} />
-      <Route path="/helper/login-account" element={helperToken ? <DashboardService /> : <LoginService />} />
+      <Route path="/helper/register-account" element={helperToken ?  <DashBoardHandler /> : <RegisterService />} />
+      <Route path="/helper/login-account" element={helperToken ?  <DashBoardHandler /> : <LoginService />} />
     </Routes>
   );
 };
 
 export default function App() {
-  return <UnVerifiedRoutes />;
+  return <AppRouter />;
 }

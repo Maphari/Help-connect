@@ -1,4 +1,4 @@
-import React, { Dispatch, useState } from "react";
+import React, { useState } from "react";
 import {
   failedNotification,
   infoNotification,
@@ -17,7 +17,7 @@ import {
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios, { AxiosError } from "axios";
-import { AnyAction } from "@reduxjs/toolkit";
+import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 
 interface IUserData {
   username: string;
@@ -86,7 +86,6 @@ export const StudentRegister: React.FC = () => {
       setConfirmPasswordError("");
     }
   };
-
   const submitDataHandler: (e: React.FormEvent<HTMLFormElement>) => void =
     async function (e: React.FormEvent<HTMLFormElement>) {
       try {
@@ -105,22 +104,22 @@ export const StudentRegister: React.FC = () => {
         };
 
         if (
-          usernameError.trim() ||
-          emailError.trim() ||
-          passwordError.trim() ||
-          confirmPasswordError.trim()
+          !username.trim() ||
+          !email.trim() ||
+          !password.trim() ||
+          !confirmPassword.trim()
         ) {
           // Handle validation errors
           failedNotification("Please fix the validation errors.");
         } else {
-          const res = (await axios.post("/api/register-account", userData))
+          const res = (await axios.post("/api/student/register-account", userData))
             .data;
 
           console.log(res);
           // if account exist we want to redirect the user to login form
           if (res.hasAccount) {
             infoNotification(res.message);
-            window.location.href = "/student/login-account";
+            navigate("/student/login-account", {replace: true});
             // if account doesn't exist then we welcome the user to the dash board
           } else if (!res.hasAccount) {
             const studentID: string = res.studentID;
@@ -135,7 +134,7 @@ export const StudentRegister: React.FC = () => {
             dispatch(SetStudentUsername(studentUsername));
             dispatch(SetStudentEmail(studentEmail));
 
-            navigate("/student/verify/email");
+            navigate("/student/verify/email", {replace: true});
           } else {
             failedNotification(res.errorMessage);
           }

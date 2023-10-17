@@ -1,4 +1,4 @@
-import React, { Dispatch } from "react";
+import React, { Dispatch, useState } from "react";
 import { RootState } from "../../../redux/store/student.store";
 import { useDispatch, useSelector } from "react-redux";
 import { NavigateFunction, useNavigate } from "react-router-dom";
@@ -6,8 +6,12 @@ import { hideEmailHandler } from "./VerifyEmail.function";
 import { AnyAction } from "@reduxjs/toolkit";
 import { SetStudentPin } from "../../../redux/slice/student.slice";
 import { SetLecturerPin } from "../../../redux/slice/lecturer.slice";
-import {failedNotification,successNotification} from "../../../global/ToastNotification.function"
-import axios, { AxiosResponse } from "axios";
+import {
+  failedNotification,
+  successNotification,
+} from "../../../global/ToastNotification.function";
+import { Loader } from "../../UI/Loader";
+import axios from "axios";
 
 interface IDataToSend {
   username: string;
@@ -15,32 +19,23 @@ interface IDataToSend {
 }
 
 export const VerifyEmail: React.FC = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const studentData = useSelector((state: RootState) => state.student);
   const lecturerData = useSelector((state: RootState) => state.lecturer);
   const { studentID, studentUsername, studentEmail } = studentData;
-  const { lecturerID, lecturerUsername, lecturerEmail } =
-    lecturerData;
+  const { lecturerID, lecturerUsername, lecturerEmail } = lecturerData;
   const renderUsername: string = studentID
     ? studentUsername
     : lecturerID
     ? lecturerUsername
-    : "Unknown";
+    : null;
   const renderEmail: string = studentID
     ? studentEmail
     : lecturerID
     ? lecturerEmail
-    : "Unknown";
+    : null;
   const navigate: NavigateFunction = useNavigate();
   const dispatch: Dispatch<AnyAction> = useDispatch();
-
-  const HttpPostEmail: (data: object) => Promise<AxiosResponse> =
-    async function (data: object) {
-      const res: AxiosResponse = await axios.post(
-        "/api/verify-email-pin",
-        data
-      );
-      return res;
-    };
 
   const navigateReplaceHandler: (route: string) => void = function (
     route: string
@@ -55,21 +50,37 @@ export const VerifyEmail: React.FC = () => {
 
   const goToVerify: () => void = async () => {
     try {
+      // set loading state before data is being sent
+      setIsLoading(true);
+      const res = await axios.post("/api/verify-email-pin", sendData);
+      const data = res.data;
+      // console.log(data);
 
-      const res: Promise<AxiosResponse> = HttpPostEmail(sendData);
-      const data = (await res).data;
+      const option: "student" | "lecturer" | null = studentID
+        ? "student"
+        : lecturerID
+        ? "lecturer"
+        : null;
 
-      if (studentID) {
-        dispatch(SetStudentPin(data.pin));
-        successNotification(data.message)
-        navigateReplaceHandler("/student/verify/email-pin");
-      } else if (lecturerID) {
-        dispatch(SetLecturerPin(data.pin))
-        successNotification(data.message)
-        navigateReplaceHandler("/lecturer/verify/email-pin");
+      switch (option) {
+        case "student":
+          dispatch(SetStudentPin(data.pin));
+          successNotification(data.message);
+          navigateReplaceHandler("/student/verify/email-pin");
+          break;
+        case "lecturer":
+          dispatch(SetLecturerPin(data.pin));
+          successNotification(data.message);
+          navigateReplaceHandler("/lecturer/verify/email-pin");
+          break;
+        default:
+          failedNotification("Internal server error!!");
+          break;
       }
+      // setting off loading state after data is being received
+      setIsLoading(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       failedNotification("Internal server error!!");
     }
   };
@@ -98,10 +109,16 @@ export const VerifyEmail: React.FC = () => {
         <section className="mt-5">
           <button
             type="submit"
-            className="bg-blue-950 text-white p-2 rounded text-sm"
+            className="bg-blue-950 flex gap-2 items-center text-white p-2 rounded text-sm"
             onClick={goToVerify}
           >
-            Verify email
+            {!isLoading ? (
+              <span>Verify email</span>
+            ) : (
+              <span className="flex items-center gap-2">
+                Loading <Loader size="h-4 w-4 border-4" />
+              </span>
+            )}
           </button>
         </section>
       </section>

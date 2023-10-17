@@ -1,10 +1,10 @@
 import express, { Router } from "express";
 const pinRouter: Router = express.Router();
 
-import { HttpEmailPinGeneratorController } from "./pinGenerator.controller";
-import { HttpValidatePin } from "./pinValidator.controller";
+import { HttpEmailPinGeneratorController, HttpValidatePinController } from "./pinGenerator.controller";
+
 
 pinRouter.post("/api/verify-email-pin", HttpEmailPinGeneratorController);
-pinRouter.post("/api/verify-code", HttpValidatePin);
+pinRouter.post("/api/verify-code", HttpValidatePinController);
 
 export { pinRouter };

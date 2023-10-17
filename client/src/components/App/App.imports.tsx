@@ -19,6 +19,8 @@ import { DashboardService } from "../account/service/Dashboard.service";
 import { DashBoardStudent } from "../dashboard/Dashboard.student";
 import { DashBoardLecturer } from "../dashboard/Dashboard.lecturer";
 
+import { DashBoardHandler } from "../dashboard/Dashboard.handler";
+
 
 export { React };
 
@@ -43,5 +45,6 @@ export {
 export {
   DashBoardStudent,
   DashBoardLecturer,
-  DashboardService
+  DashboardService,
+  DashBoardHandler
 }

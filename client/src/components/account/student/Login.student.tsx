@@ -92,12 +92,12 @@ export const StudentLogin: React.FC = () => {
 
             successNotification(message);
             // saving token to local storage
-            // localStorage.setItem("student-token", res.studentID);
+            localStorage.setItem("student-token", res.studentID);
             // dispatching data to redux store
             dispatch(SetStudentID(studentID));
             dispatch(SetStudentUsername(studentUsername));
             dispatch(SetStudentEmail(studentEmail));
-            navigate("./verify/email");
+            navigate("/student/dashboard", {replace: true});
           } else {
             failedNotification(res.errorMessage);
           }

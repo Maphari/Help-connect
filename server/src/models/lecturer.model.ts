@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcrypt";
 
-interface IStudent extends Document {
-  studentID: string;
+interface ILecturer extends Document {
+  lecturerID: string;
   username: string;
   firstName: string;
   lastName: string;
@@ -13,15 +13,17 @@ interface IStudent extends Document {
   address: string;
   bio: string;
   idNumber: string;
-  nameOfSchool: string;
-  fieldOfStudy: string;
+  yearsOfWorkingExperience: string;
+  whatYouTeach: string;
+  levelOfEducation: string;
   imageProperties: object;
+  fileProperties: object;
   password: string;
 }
 
-const studentSchema: Schema<IStudent> = new Schema(
+const lecturerSchema: Schema<ILecturer> = new Schema(
   {
-    studentID: {
+    lecturerID: {
       type: String,
       default: "",
     },
@@ -70,14 +72,17 @@ const studentSchema: Schema<IStudent> = new Schema(
     bio: {
       type: String,
     },
-    nameOfSchool: {
+    levelOfEducation: {
       type: String,
     },
-    fieldOfStudy: {
+    whatYouTeach: {
       type: String,
     },
     imageProperties: {
       type: Object,
+    },
+    fileProperties: {
+      type:Object,
     },
     password: {
       type: String,
@@ -96,7 +101,7 @@ const studentSchema: Schema<IStudent> = new Schema(
   { timestamps: true }
 );
 
-studentSchema.pre("save", function (next) {
+lecturerSchema.pre("save", function (next) {
   const student = this;
 
   // only hash the password if it has been modified or is new
@@ -117,4 +122,4 @@ studentSchema.pre("save", function (next) {
   });
 });
 
-mongoose.model<Schema<IStudent>>("Student", studentSchema);
+mongoose.model<Schema<ILecturer>>("Lecturer", lecturerSchema);
