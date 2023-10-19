@@ -18,9 +18,9 @@ export const Landing: React.FC = () => {
 
   useEffect(() => {
     if (studentToken) {
-      navigate("/student/dashboard", { replace: true });
+      navigate("/dashboard", { replace: true });
     } else if (lecturerToken) {
-      navigate("/lecturer/dashboard", { replace: true });
+      navigate("/dashboard", { replace: true });
     } else {
       localStorage.clear();
     }

@@ -1,66 +1,59 @@
-import React, { useState, useEffect, createContext, ReactNode } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import {
+  IContext,
+  IDataObject,
+  IGetUserData,
+  ContextDataStructure,
+} from "./Context.config";
 import axios, { AxiosResponse } from "axios";
 
-interface IContext {
-  children: ReactNode;
-}
-
-interface IGetUserData {
-  token: string | null;
-}
-
-export const FetchUserDataContext = createContext<object>({});
+export const FetchUserDataContext: React.Context<IDataObject> =
+  createContext<IDataObject>(ContextDataStructure);
 export const FetchUserDataProvider: React.FC<IContext> = ({ children }) => {
-  const [studentData, setStudentData] = useState<Array<string>>([]);
-  const [lecturerData, setLecturerData] = useState<Array<string>>([]);
+  const [studentData, setStudentData] = useState<object>({});
+  const [lecturerData, setLecturerData] = useState<object>({});
   const studentToken: string | null = localStorage.getItem("student-token");
   const lecturerToken: string | null = localStorage.getItem("lecturer-token");
   const navigate: NavigateFunction = useNavigate();
 
-  useEffect(() => {
-    const option: "student" | "lecturer" | null = studentToken
-      ? "student"
-      : lecturerToken
-      ? "lecturer"
-      : null;
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  useEffect(() => {
     const sendUserData: IGetUserData = {
       token: studentToken || lecturerToken,
     };
 
-    function navigateUser(path: string): void {
-      navigate(path, { replace: true });
-    }
+    // function navigateUser(path: string): void {
+    //   navigate(path, { replace: true });
+    // }
 
     async function HttpGetUsersData() {
+      setIsLoading(true);
       if (studentToken || lecturerToken) {
         const response: AxiosResponse = await axios.post(
           "/api/fetch-data",
           sendUserData
         );
-        switch (option) {
-          case "student":
-            setStudentData(response.data);
-            navigateUser("/student/dashboard");
-            break;
-          case "lecturer":
-            setLecturerData(response.data);
-            navigateUser("/lecturer/dashboard");
-            break;
-          default:
-            localStorage.clear();
-            navigateUser("/account/login-choice");
-            break;
+        if (studentToken) {
+          setStudentData(response.data);
+          // navigateUser("/dashboard");
+        } else if (lecturerToken) {
+          setLecturerData(response.data);
+          // navigateUser("/dashboard");
+        } else {
+          localStorage.clear();
         }
       }
     }
-
     HttpGetUsersData();
+    setIsLoading(false);
   }, [navigate, studentToken, lecturerToken]);
 
   return (
-    <FetchUserDataContext.Provider value={{ studentData, lecturerData }}>
+    <FetchUserDataContext.Provider
+      value={{ student: studentData, lecturer: lecturerData, isLoading }}
+    >
       {children}
     </FetchUserDataContext.Provider>
   );

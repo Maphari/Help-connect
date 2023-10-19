@@ -18,7 +18,8 @@ import {
   MoreInfoLecturer,
   MoreInfoStudent,
   VerifyEmailPin,
-  DashBoardHandler
+  DashBoardHandler,
+  Learning
 } from "./App.imports";
 
 const studentToken = localStorage.getItem("student-token");
@@ -37,8 +38,13 @@ const AppRouter: React.FC = () => {
       />
       {/* DASHBOARD ROUTES */}
       <Route
-        path="/:id/dashboard"
+        path="/dashboard"
         element={studentToken || helperToken || lecturerToken ? <DashBoardHandler /> : <Landing />}
+      />
+      {/* DASHBOARD STUDENT ROUTES */}
+      <Route
+        path="/learning"
+        element={studentToken ? <Learning /> : <Landing />}
       />
       {/* VERIFY EMAIL ROUTE  */}
       <Route path="/:id/verify/email" element={<VerifyEmail />} />

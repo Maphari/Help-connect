@@ -18,9 +18,8 @@ import { VerifyEmailPin } from "../account/email/VerifyEmail.pin";
 import { DashboardService } from "../account/service/Dashboard.service";
 import { DashBoardStudent } from "../dashboard/Dashboard.student";
 import { DashBoardLecturer } from "../dashboard/Dashboard.lecturer";
-
+import { Learning } from "../learning/Learning";
 import { DashBoardHandler } from "../dashboard/Dashboard.handler";
-
 
 export { React };
 
@@ -39,12 +38,13 @@ export {
   LoginService,
   MoreInfoLecturer,
   MoreInfoStudent,
-  VerifyEmailPin
+  VerifyEmailPin,
 };
 
 export {
   DashBoardStudent,
   DashBoardLecturer,
   DashboardService,
-  DashBoardHandler
-}
+  DashBoardHandler,
+  Learning,
+};

@@ -97,7 +97,7 @@ export const StudentLogin: React.FC = () => {
             dispatch(SetStudentID(studentID));
             dispatch(SetStudentUsername(studentUsername));
             dispatch(SetStudentEmail(studentEmail));
-            navigate("/student/dashboard", {replace: true});
+            navigate("/dashboard", {replace: true});
           } else {
             failedNotification(res.errorMessage);
           }

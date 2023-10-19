@@ -9,7 +9,7 @@ interface IStudent extends Document {
   email: string;
   gander: string;
   dateOfBirth: string;
-  mobileNumber: string;
+  phone: string;
   address: string;
   bio: string;
   idNumber: string;
@@ -61,7 +61,7 @@ const studentSchema: Schema<IStudent> = new Schema(
     idNumber: {
       type: String,
     },
-    mobileNumber: {
+    phone: {
       type: String,
     },
     address: {

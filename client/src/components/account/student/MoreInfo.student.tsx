@@ -14,11 +14,11 @@ import { ChangeEventHTMLType } from "../../UI/Input.moreInfo";
 
 import axios from "axios";
 
-interface IFileData {
-  filename: string;
-  fileSize: number;
-  fileType: string;
-}
+// interface IFileData {
+//   filename: string;
+//   fileSize: number;
+//   fileType: string;
+// }
 interface IData {
   email: string;
   firstName: string;
@@ -30,7 +30,7 @@ interface IData {
   idNumber: string;
   bio: string;
   fieldOfStudy: string;
-  imageProperties: File | object;
+  imageProperties: string;
   nameOfSchool: string;
 }
 
@@ -259,17 +259,18 @@ export const MoreInfoStudent: React.FC = () => {
         !bio ||
         !fieldOfStudy ||
         !selectedFile ||
+        !previewUrl ||
         !nameOfSchool ||
         !idNumber
       ) {
         return failedNotification("You cannot submit a form with empty fields");
       }
 
-      const imageData: IFileData = {
-        filename: selectedFile?.name,
-        fileSize: selectedFile?.size,
-        fileType: selectedFile?.type,
-      };
+      // const imageData: IFileData = {
+      //   filename: selectedFile?.name,
+      //   fileSize: selectedFile?.size,
+      //   fileType: selectedFile?.type,
+      // };
 
       const sendData: IData = {
         email: studentEmail,
@@ -282,7 +283,7 @@ export const MoreInfoStudent: React.FC = () => {
         idNumber,
         bio,
         fieldOfStudy,
-        imageProperties: imageData,
+        imageProperties: previewUrl,
         nameOfSchool,
       };
 
@@ -295,7 +296,7 @@ export const MoreInfoStudent: React.FC = () => {
       if (student.studentID) {
         localStorage.setItem("student-token", student.studentID);
         successNotification(res.message);
-        navigate("/student/dashboard", { replace: true });
+        navigate("/dashboard", { replace: true });
       } else {
         failedNotification(res.errorMessage);
       }

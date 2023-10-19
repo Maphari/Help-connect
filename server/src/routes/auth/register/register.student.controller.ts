@@ -95,6 +95,7 @@ async function HttpRegisterStudentMoreInfo(req: Request, res: Response) {
       fieldOfStudy,
       nameOfSchool,
       imageProperties,
+      idNumber
     } = req.body;
     const isEveryInputField: boolean =
       !firstName ||
@@ -103,6 +104,7 @@ async function HttpRegisterStudentMoreInfo(req: Request, res: Response) {
       !dob ||
       !phone ||
       !address ||
+      !idNumber ||
       !bio ||
       !fieldOfStudy ||
       !nameOfSchool ||
@@ -127,6 +129,7 @@ async function HttpRegisterStudentMoreInfo(req: Request, res: Response) {
     student.lastName = lastName;
     student.gender = gender;
     student.dob = dob;
+    student.idNumber = idNumber
     student.phone = phone;
     student.address = address;
     student.bio = bio;
