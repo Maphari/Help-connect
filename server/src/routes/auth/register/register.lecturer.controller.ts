@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-import { keys } from "../../key/key";
+import { keys } from "../../../key/key";
 import { ILecturer } from "./register.config";
 const Lecturer = mongoose.model("Lecturer");
 
@@ -108,6 +108,7 @@ async function HttpRegisterLecturerMoreInfo(req: Request, res: Response) {
       !whatYouTeach ||
       !fileProperties ||
       !imageProperties;
+
     const lecturer = await Lecturer.findOne({ email });
 
     if (isEveryInputField) {
@@ -117,11 +118,9 @@ async function HttpRegisterLecturerMoreInfo(req: Request, res: Response) {
     }
 
     if (!lecturer) {
-      return res
-        .status(404)
-        .json({
-          errorMessage: "User not found please Register an account first",
-        });
+      return res.status(404).json({
+        errorMessage: "User not found please Register an account first",
+      });
     }
 
     lecturer.firstName = firstName;

@@ -1,10 +1,6 @@
 import http from "http";
-import os from "os";
-import cluster from "cluster";
-import mongoose from "mongoose";
 
 import app from "./app";
-
 import { keys } from "./key/key";
 
 const DEFAULT_PORT: Number = keys.PORT_NUMBER;

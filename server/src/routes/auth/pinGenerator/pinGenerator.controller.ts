@@ -4,7 +4,7 @@ import {
   nodeMailerOptions,
   NodeMailerSendEmail,
 } from "./pin.functions";
-import { keys } from "../../key/key";
+import { keys } from "../../../key/key";
 
 async function HttpEmailPinGeneratorController(req: Request, res: Response) {
   try {
@@ -15,13 +15,11 @@ async function HttpEmailPinGeneratorController(req: Request, res: Response) {
 
     response
       .then((data) => {
-        return res
-          .status(200)
-          .json({
-            message: "Email has been sent for verification code",
-            messageID: data?.messageId,
-            pin,
-          });
+        return res.status(200).json({
+          message: "Email has been sent for verification code",
+          messageID: data?.messageId,
+          pin,
+        });
       })
       .catch((err) => {
         return res.json({
@@ -39,8 +37,8 @@ function HttpValidatePinController(req: Request, res: Response) {
   const generatedPinInNumber: number = parseInt(generatedPin);
   const isValid: boolean = pinInNumber === generatedPinInNumber;
 
-  if(pin.trim().length !== 4) {
-    return res.json({errorMessage: 'Verification code must be 4 digits'})
+  if (pin.trim().length !== 4) {
+    return res.json({ errorMessage: "Verification code must be 4 digits" });
   }
 
   if (!isValid) {
@@ -54,7 +52,5 @@ function HttpValidatePinController(req: Request, res: Response) {
       .json({ message: "Verification successful", validated: true });
   }
 }
-
-
 
 export { HttpEmailPinGeneratorController, HttpValidatePinController };

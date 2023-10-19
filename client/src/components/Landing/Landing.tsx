@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import {
   React,
   Hero,
@@ -10,6 +12,20 @@ import {
 } from "./Landing.imports";
 
 export const Landing: React.FC = () => {
+  const studentToken: string | null = localStorage.getItem("student-token");
+  const lecturerToken: string | null = localStorage.getItem("lecturer-token");
+  const navigate: NavigateFunction = useNavigate();
+
+  useEffect(() => {
+    if (studentToken) {
+      navigate("/student/dashboard", { replace: true });
+    } else if (lecturerToken) {
+      navigate("/lecturer/dashboard", { replace: true });
+    } else {
+      localStorage.clear();
+    }
+  }, [navigate, studentToken,  lecturerToken]);
+  
   return (
     <>
       <Hero />

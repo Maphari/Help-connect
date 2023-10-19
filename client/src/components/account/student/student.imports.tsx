@@ -10,9 +10,13 @@ import {FaUser as Profile} from "react-icons/fa6"
 // REDUX IMPORTS
 import { SetStudentEmail, SetStudentUsername, SetStudentID } from "../../../redux/slice/student.slice";
 
+import { InputMoreInformation } from "../lecturer/Lecturer.imports";
+
 
 export { SetStudentEmail, SetStudentUsername, SetStudentID };
 
 export { Link };
+
+export {InputMoreInformation}
 
 export { Mail, LockIcon, StudentIcon , Profile};

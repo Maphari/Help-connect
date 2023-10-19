@@ -6,9 +6,12 @@ import {
   successNotification,
   failedNotification,
 } from "../../../global/ToastNotification.function";
+
+import { InputMoreInformation } from "./Lecturer.imports";
+import { ChangeEventHTMLType } from "../../UI/Input.moreInfo";
+
 import { HiUser as UserIcon } from "react-icons/hi2";
 import { BsFillCameraFill as CameraIcon } from "react-icons/bs";
-import { AiFillFileAdd as FileIcon } from "react-icons/ai";
 import axios from "axios";
 
 interface IFileDataImage {
@@ -16,11 +19,7 @@ interface IFileDataImage {
   fileSize: number;
   fileType: string;
 }
-interface IFileDataQualification {
-  filename: string;
-  fileSize: number;
-  fileType: string;
-}
+
 interface IData {
   email: string;
   firstName: string;
@@ -33,15 +32,12 @@ interface IData {
   bio: string;
   yearsOfWorkingExperience: string;
   imageProperties: File | object;
-  fileProperties: File | object;
   whatYouTeach: string;
   levelOfEducation: string;
 }
 
 export const MoreInfoLecturer: React.FC = () => {
   const [selectedFileImage, setSelectedFileImage] = useState<File | null>(null);
-  const [selectedFileQualification, setSelectedFileQualification] =
-    useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -55,6 +51,9 @@ export const MoreInfoLecturer: React.FC = () => {
   const [whatYouTeach, setWhatYouTeach] = useState<string>("");
   const [levelOfEducation, setLevelOfEducation] = useState<string>("");
   const [idNumber, setIdNumber] = useState<string>("");
+
+  const [selectedFileImageError, setSelectedFileImageError] =
+    useState<string>("");
   const [firstNameError, setFirstNameError] = useState<string>("");
   const [lastNameError, setLastNameError] = useState<string>("");
   const [genderError, setGenderError] = useState<string>("");
@@ -191,10 +190,11 @@ export const MoreInfoLecturer: React.FC = () => {
           const maxSizeImage: number = 2 * 1024 * 1024;
           if (file && imageURL) {
             if (file.size > maxSizeImage) {
-              failedNotification("Image cannot be more than 2MB");
+              setSelectedFileImageError("Image cannot be more than 2MB");
             } else {
               setSelectedFileImage(file);
               setPreviewUrl(imageURL);
+              setSelectedFileImageError("");
             }
           }
         };
@@ -206,72 +206,56 @@ export const MoreInfoLecturer: React.FC = () => {
     }
   };
 
-  const handleFileQualificationChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = e.target.files && e.target.files[0];
-
-    if (file) {
-      setSelectedFileQualification(file);
-    } else {
-      failedNotification("Please choose a valid image");
-    }
-  };
-
-  function handleFirstNameOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleFirstNameOnChange(e: ChangeEventHTMLType) {
     setFirstName(e.target.value);
     handleFirstNameValidation();
   }
 
-  function handleLastNameOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleLastNameOnChange(e: ChangeEventHTMLType) {
     setLastName(e.target.value);
     handleLastNameValidation();
   }
 
-  function handleGenderOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleGenderOnChange(e: ChangeEventHTMLType) {
     setGender(e.target.value);
     handleGenderValidation();
   }
-  function handlePhoneNumberOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handlePhoneNumberOnChange(e: ChangeEventHTMLType) {
     setPhone(e.target.value);
     handlePhoneValidation();
   }
 
-  function handleAddressOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleAddressOnChange(e: ChangeEventHTMLType) {
     setAddress(e.target.value);
     handleAddressValidation();
   }
 
-  function handleDBOOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleDBOOnChange(e: ChangeEventHTMLType) {
     setDob(e.target.value);
     handleDobValidation();
   }
 
-  function handleBioOnChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+  function handleBioOnChange(e: ChangeEventHTMLType) {
     setBio(e.target.value);
     handleBioValidation();
   }
 
-  function handleYearsOfWorkingExperienceOnChange(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
+  function handleYearsOfWorkingExperienceOnChange(e: ChangeEventHTMLType) {
     setYearsOfWorkingExperience(e.target.value);
     handleYearsOfWorkingExperienceValidation();
   }
 
-  function handleWhatYouTeachOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleWhatYouTeachOnChange(e: ChangeEventHTMLType) {
     setWhatYouTeach(e.target.value);
     handleWhatYouTeachValidation();
   }
 
-  function handleIdNumberOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleIdNumberOnChange(e: ChangeEventHTMLType) {
     setIdNumber(e.target.value);
     handleIdNumberValidation();
   }
 
-  function handleLevelOfEducationOnChange(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
+  function handleLevelOfEducationOnChange(e: ChangeEventHTMLType) {
     setLevelOfEducation(e.target.value);
     handleLevelOfEducationValidation();
   }
@@ -300,7 +284,6 @@ export const MoreInfoLecturer: React.FC = () => {
         !bio ||
         !yearsOfWorkingExperience ||
         !selectedFileImage ||
-        !selectedFileQualification ||
         !whatYouTeach ||
         !idNumber ||
         !levelOfEducation
@@ -312,12 +295,6 @@ export const MoreInfoLecturer: React.FC = () => {
         filename: selectedFileImage?.name,
         fileSize: selectedFileImage?.size,
         fileType: selectedFileImage?.type,
-      };
-
-      const qualificationData: IFileDataQualification = {
-        filename: selectedFileQualification?.name,
-        fileSize: selectedFileQualification?.size,
-        fileType: selectedFileQualification?.type,
       };
 
       const sendData: IData = {
@@ -332,7 +309,6 @@ export const MoreInfoLecturer: React.FC = () => {
         bio,
         yearsOfWorkingExperience,
         imageProperties: imageData,
-        fileProperties: qualificationData,
         whatYouTeach,
         levelOfEducation,
       };
@@ -382,7 +358,11 @@ export const MoreInfoLecturer: React.FC = () => {
                     className="rounded-full border-2 h-20 w-20"
                   />
                 ) : (
-                  <div className="flex relative items-center justify-center rounded-full h-20 w-20 text-white bg-blue-950 text-xl font-bold">
+                  <div
+                    className={`flex border-4 ${
+                      selectedFileImageError && "border-red-500"
+                    } relative items-center justify-center rounded-full h-20 w-20 text-white bg-blue-950 text-xl font-bold`}
+                  >
                     <span className="text-5xl">
                       <UserIcon />
                     </span>
@@ -413,86 +393,72 @@ export const MoreInfoLecturer: React.FC = () => {
               <section className="mt-4">
                 <h3 className="text-sm opacity-80">Basic information</h3>
                 <div className="flex items-center flex-wrap gap-2 mt-2">
-                  <input
+                  <InputMoreInformation
                     type="text"
-                    placeholder="First name"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter first name"
+                    value={firstName}
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleFirstNameOnChange(e)
                     }
-                    value={firstName}
-                    className={`p-[0.4rem] flex-1 outline-none ${
-                      firstNameError && "border border-red-500"
-                    } bg-slate-200 rounded text-sm`}
+                    errorMessage={firstNameError}
                   />
-                  <input
+
+                  <InputMoreInformation
                     type="text"
-                    placeholder="Last name"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter last name"
+                    value={lastName}
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleLastNameOnChange(e)
                     }
-                    value={lastName}
-                    className={`p-[0.4rem] flex-1 outline-none ${
-                      lastNameError && "border border-red-500"
-                    } bg-slate-200 rounded text-sm`}
+                    errorMessage={lastNameError}
                   />
-                  <input
+
+                  <InputMoreInformation
                     type="text"
-                    placeholder="Identification number"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter ID number"
+                    value={idNumber}
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleIdNumberOnChange(e)
                     }
-                    value={idNumber}
-                    className={`p-[0.4rem] flex-1 ${
-                      idNumberError && "border border-red-500"
-                    } outline-none bg-slate-200 rounded text-sm`}
+                    errorMessage={idNumberError}
                   />
                 </div>
                 <div className="flex items-center flex-wrap gap-2 mt-3">
-                  <input
+                  <InputMoreInformation
                     type="date"
-                    placeholder="MM-DD-YYYY"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleDBOOnChange(e)
-                    }
+                    placeholder="Enter date of birth"
                     value={dob}
-                    className={`p-[0.4rem] flex-1 text-slate-500  outline-none ${
-                      dobError && "border border-red-500"
-                    } bg-slate-200 rounded text-sm`}
+                    onChange={(e: ChangeEventHTMLType) => handleDBOOnChange(e)}
+                    errorMessage={dobError}
                   />
-                  <input
+                  <InputMoreInformation
                     type="text"
-                    placeholder="Gander"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter gender"
+                    value={gender}
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleGenderOnChange(e)
                     }
-                    value={gender}
-                    className={`p-[0.4rem] flex-1 text-slate-500 ${
-                      genderError && "border border-red-500"
-                    } outline-none bg-slate-200 rounded text-sm`}
+                    errorMessage={genderError}
                   />
                 </div>
                 <div className="flex items-center flex-wrap gap-2 mt-3">
-                  <input
+                  <InputMoreInformation
                     type="tel"
-                    placeholder="Phone number"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter phone number"
+                    value={phone}
+                    onChange={(e: ChangeEventHTMLType) =>
                       handlePhoneNumberOnChange(e)
                     }
-                    value={phone}
-                    className={`p-[0.4rem] flex-1 text-slate-500 ${
-                      phoneError && "border border-red-500"
-                    } outline-none bg-slate-200 rounded text-sm`}
+                    errorMessage={phoneError}
                   />
-                  <input
+                  <InputMoreInformation
                     type="address"
-                    placeholder="Address"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter your address"
+                    value={address}
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleAddressOnChange(e)
                     }
-                    value={address}
-                    className={`p-[0.4rem] flex-1 text-slate-500 ${
-                      addressError && "border border-red-500"
-                    } outline-none bg-slate-200 rounded text-sm`}
+                    errorMessage={addressError}
                   />
                 </div>
               </section>
@@ -500,67 +466,41 @@ export const MoreInfoLecturer: React.FC = () => {
               <section className="mt-4">
                 <h3 className="text-sm opacity-80">Education information</h3>
                 <div className="flex items-center flex-wrap gap-2 mt-3">
-                  <input
+                  <InputMoreInformation
                     type="text"
                     placeholder="Years of work experience"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    value={yearsOfWorkingExperience}
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleYearsOfWorkingExperienceOnChange(e)
                     }
-                    value={yearsOfWorkingExperience}
-                    className={`p-[0.4rem] flex-1  outline-none ${
-                      yearsOfWorkingExperienceError && "border border-red-500"
-                    } bg-slate-200 rounded text-sm`}
+                    errorMessage={yearsOfWorkingExperienceError}
                   />
                 </div>
               </section>
 
               <section className="mt-4">
                 <div className="flex items-center flex-wrap gap-2 mt-3">
-                  <input
+                  <InputMoreInformation
                     type="text"
                     placeholder="Level of teaching"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    value={levelOfEducation}
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleLevelOfEducationOnChange(e)
                     }
-                    value={levelOfEducation}
-                    className={`p-[0.4rem] flex-1  outline-none ${
-                      levelOfEducationError && "border border-red-500"
-                    } bg-slate-200 rounded text-sm`}
+                    errorMessage={levelOfEducationError}
                   />
-                  <input
+                  <InputMoreInformation
                     type="text"
                     placeholder="What do you teach?"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    value={whatYouTeach}
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleWhatYouTeachOnChange(e)
                     }
-                    value={whatYouTeach}
-                    className={`p-[0.4rem] flex-1  outline-none ${
-                      whatYouTeachError && "border border-red-500"
-                    } bg-slate-200 rounded text-sm`}
+                    errorMessage={whatYouTeachError}
                   />
                 </div>
               </section>
 
-              <section className="mt-4">
-                <h3 className="text-sm opacity-80 mb-1">Upload certificate</h3>
-                <div className="bg-slate-200 w-full h-10 rounded flex items-center justify-center">
-                  <label htmlFor="qualification w-full h-full">
-                    <span className="text-2xl text-slate-500">
-                      <FileIcon />
-                    </span>
-                  </label>
-                  <input
-                    type="file"
-                    placeholder="qualification"
-                    id="qualification"
-                    accept=".pdf"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleFileQualificationChange(e)
-                    }
-                    className="hidden"
-                  />
-                </div>
-              </section>
               <section className="mt-4">
                 <h3 className="text-sm opacity-80">Profile information</h3>
                 <div className="flex items-center flex-wrap gap-2 mt-3">

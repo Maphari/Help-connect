@@ -1,36 +1,34 @@
-require("./models/students.model");
-require("./models/lecturer.model")
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
-import cookieSession from "cookie-session";
-import { keys } from "./key/key";
+require("./models/student/students.model");
+require("./models/student/student.passport.model");
+require("./models/lecturer/lecturer.model");
+require("./api/passport.student.api");
 
-import { registerRouter } from "./routes/register/register.route";
-import { loginRouter } from "./routes/login/login.route";
-import { pinRouter } from "./routes/pinGenerator/pinGenerator.route";
+import express from "express";
+import cors from "cors";
+import passport from "passport";
+
+import { registerRouter } from "./routes/auth/register/register.route";
+import { loginRouter } from "./routes/auth/login/login.route";
+import { pinRouter } from "./routes/auth/pinGenerator/pinGenerator.route";
+import { passportAuthRouter } from "./routes/auth/passportAuth/passportAuth.route";
+import { fetchUserRoute } from "./routes/fetchData/userData.route";
+
+import { cookie } from "./cookie/cookie.session";
+import { HttpMongoDBConnection } from "./database/database.connection";
 
 const app = express();
 
-mongoose.connect(keys.MONGO_URI);
-mongoose.connection.on("connected", () => {
-  console.log("Connected to MongoDB");
-});
-mongoose.connection.on("error", (error) => {
-  console.log(error);
-});
+HttpMongoDBConnection();
 
 app.use(cors());
 app.use(express.json());
-app.use(
-  cookieSession({
-    name: "session",
-    maxAge: 24 * 60 * 60 * 1000,
-    keys: [keys.COOKIE_SESSION_KEY],
-  })
-);
+app.use(cookie);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(registerRouter);
 app.use(loginRouter);
 app.use(pinRouter);
+app.use(passportAuthRouter);
+app.use(fetchUserRoute)
 
 export default app;

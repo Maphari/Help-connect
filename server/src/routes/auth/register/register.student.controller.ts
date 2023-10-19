@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
-import { keys } from "../../key/key";
+import { keys } from "../../../key/key";
 import { IStudent } from "./register.config";
 
 const Student = mongoose.model("Student");
@@ -44,6 +44,7 @@ async function HttpRegisterStudentController(
       // setting students session
       if (req.session) {
         req.session.user = { ...newStudent };
+        req.session.user.session = newStudent.studentID
         await new Promise<void>((resolve) => setTimeout(() => resolve(), 5)); // wait for the session to be saved before sending response back
       }
 
@@ -82,39 +83,64 @@ async function HttpRegisterStudentController(
 
 async function HttpRegisterStudentMoreInfo(req: Request, res: Response) {
   try {
-    const { email, firstName, lastName, gender, dob, phone, address, bio, fieldOfStudy, nameOfSchool, imageProperties } = req.body;
-    const isEveryInputField: boolean = !firstName || !lastName || !gender || !dob || !phone || !address || !bio || !fieldOfStudy || !nameOfSchool || !imageProperties 
-    const student = await Student.findOne({email})
+    const {
+      email,
+      firstName,
+      lastName,
+      gender,
+      dob,
+      phone,
+      address,
+      bio,
+      fieldOfStudy,
+      nameOfSchool,
+      imageProperties,
+    } = req.body;
+    const isEveryInputField: boolean =
+      !firstName ||
+      !lastName ||
+      !gender ||
+      !dob ||
+      !phone ||
+      !address ||
+      !bio ||
+      !fieldOfStudy ||
+      !nameOfSchool ||
+      !imageProperties;
+    const student = await Student.findOne({ email });
 
-
-    if(isEveryInputField) {
-      return res.status(400).json({errorMessage: "Please provide all the required information"})
+    if (isEveryInputField) {
+      return res
+        .status(400)
+        .json({ errorMessage: "Please provide all the required information" });
     }
 
-    if(!student) {
-      return res.status(404).json({errorMessage: "User not found please Register an account first"})
+    if (!student) {
+      return res
+        .status(404)
+        .json({
+          errorMessage: "User not found please Register an account first",
+        });
     }
 
+    student.firstName = firstName;
+    student.lastName = lastName;
+    student.gender = gender;
+    student.dob = dob;
+    student.phone = phone;
+    student.address = address;
+    student.bio = bio;
+    student.fieldOfStudy = fieldOfStudy;
+    student.nameOfSchool = nameOfSchool;
+    student.imageProperties = imageProperties;
 
-    student.firstName = firstName
-    student.lastName = lastName
-    student.gender = gender
-    student.dob = dob
-    student.phone = phone
-    student.address = address
-    student.bio = bio
-    student.fieldOfStudy = fieldOfStudy
-    student.nameOfSchool = nameOfSchool
-    student.imageProperties = imageProperties
-
-    await student.save()
+    await student.save();
 
     return res.status(201).json({
       message: "Student successfully Created an account",
       hasAccount: false,
       student,
-    })
-
+    });
   } catch (error: any) {
     return res.status(500).json({ errorMessage: error.message });
   }

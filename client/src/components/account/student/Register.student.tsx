@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import axios, { AxiosError } from "axios";
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 
+
 interface IUserData {
   username: string;
   email: string;
@@ -112,14 +113,15 @@ export const StudentRegister: React.FC = () => {
           // Handle validation errors
           failedNotification("Please fix the validation errors.");
         } else {
-          const res = (await axios.post("/api/student/register-account", userData))
-            .data;
+          const res = (
+            await axios.post("/api/student/register-account", userData)
+          ).data;
 
           console.log(res);
           // if account exist we want to redirect the user to login form
           if (res.hasAccount) {
             infoNotification(res.message);
-            navigate("/student/login-account", {replace: true});
+            navigate("/student/login-account", { replace: true });
             // if account doesn't exist then we welcome the user to the dash board
           } else if (!res.hasAccount) {
             const studentID: string = res.studentID;
@@ -134,7 +136,7 @@ export const StudentRegister: React.FC = () => {
             dispatch(SetStudentUsername(studentUsername));
             dispatch(SetStudentEmail(studentEmail));
 
-            navigate("/student/verify/email", {replace: true});
+            navigate("/student/verify/email", { replace: true });
           } else {
             failedNotification(res.errorMessage);
           }
@@ -154,6 +156,20 @@ export const StudentRegister: React.FC = () => {
         }
       }
     };
+
+  async function HttpGoogleAuthenticationHandler(): Promise<void> {
+    window.open("/api/auth/google", "_self");
+    const response = (await axios.get("/api/auth/success")).data;
+
+    console.log(response);
+  }
+
+  async function HttpFacebookAuthenticationHandler(): Promise<void> {
+    window.open("/api/auth/facebook", "_self");
+    const response = (await axios.get("/api/auth/success")).data;
+
+    console.log(response)
+  }
 
   return (
     <>
@@ -303,6 +319,7 @@ export const StudentRegister: React.FC = () => {
             <Link
               className="transition-all duration-700 ease-linear hover:bg-slate-100 px-[0.4rem] py-[0.5rem] google-login-button text-sm border flex items-center justify-center text-[#333]"
               to="#"
+              onClick={HttpGoogleAuthenticationHandler}
             >
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
@@ -313,6 +330,7 @@ export const StudentRegister: React.FC = () => {
             </Link>
             <Link
               to="#"
+              onClick={HttpFacebookAuthenticationHandler}
               className="transition-all duration-700 ease-linear hover:bg-slate-100 px-[0.4rem] py-[0.5rem] google-login-button text-sm border flex items-center justify-center text-[#333]"
             >
               <img

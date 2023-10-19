@@ -1,13 +1,13 @@
-import { keys } from "../../key/key";
+import { keys } from "../../../key/key";
 import { INodeMailerOptions } from "./pin.config";
-import nodeMailer from "nodemailer"
+import nodeMailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 let messageSuccess: string;
 let messageError: string;
 
 async function NodeMailerSendEmail(
-  options: object,
+  options: object
 ): Promise<SMTPTransport.SentMessageInfo | undefined> {
   const transporter: nodeMailer.Transporter<SMTPTransport.SentMessageInfo> =
     nodeMailer.createTransport({
@@ -72,13 +72,7 @@ function nodeMailerOptions(
   email: string,
   username: string,
   pin: string
-): (
-  fromEmail: string,
-  email: string,
-  username: string,
-  pin: string
-) => any {
-
+): (fromEmail: string, email: string, username: string, pin: string) => any {
   const mailOptions: INodeMailerOptions = {
     from: fromEmail, // sender address
     to: email, // list of receivers

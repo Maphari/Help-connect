@@ -8,6 +8,10 @@ import { BsFillCameraFill as CameraIcon } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store/student.store";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+
+import { InputMoreInformation } from "./student.imports";
+import { ChangeEventHTMLType } from "../../UI/Input.moreInfo";
+
 import axios from "axios";
 
 interface IFileData {
@@ -182,51 +186,51 @@ export const MoreInfoStudent: React.FC = () => {
     }
   };
 
-  function handleFirstNameOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleFirstNameOnChange(e: ChangeEventHTMLType) {
     setFirstName(e.target.value);
     handleFirstNameValidation();
   }
 
-  function handleLastNameOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleLastNameOnChange(e: ChangeEventHTMLType) {
     setLastName(e.target.value);
     handleLastNameValidation();
   }
 
-  function handleGenderOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleGenderOnChange(e: ChangeEventHTMLType) {
     setGender(e.target.value);
     handleGenderValidation();
   }
-  function handlePhoneNumberOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handlePhoneNumberOnChange(e: ChangeEventHTMLType) {
     setPhone(e.target.value);
     handlePhoneValidation();
   }
 
-  function handleAddressOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleAddressOnChange(e: ChangeEventHTMLType) {
     setAddress(e.target.value);
     handleAddressValidation();
   }
 
-  function handleDBOOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleDBOOnChange(e: ChangeEventHTMLType) {
     setDob(e.target.value);
     handleDobValidation();
   }
 
-  function handleBioOnChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+  function handleBioOnChange(e: ChangeEventHTMLType) {
     setBio(e.target.value);
     handleBioValidation();
   }
 
-  function handleFieldOfStudyOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleFieldOfStudyOnChange(e: ChangeEventHTMLType) {
     setFieldOfStudy(e.target.value);
     handleFieldOfStudyValidation();
   }
 
-  function handleNameOfSchoolOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleNameOfSchoolOnChange(e: ChangeEventHTMLType) {
     setNameOfSchool(e.target.value);
     handleNameOfSchoolValidation();
   }
 
-  function handleIdNumberOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleIdNumberOnChange(e: ChangeEventHTMLType) {
     setIdNumber(e.target.value);
     handleIdNumberValidation();
   }
@@ -244,21 +248,7 @@ export const MoreInfoStudent: React.FC = () => {
       handleFieldOfStudyValidation();
       handleNameOfSchoolValidation();
       handleIdNumberValidation();
-      // if (
-      //   firstNameError ||
-      //   lastNameError ||
-      //   genderError ||
-      //   dobError ||
-      //   phoneError ||
-      //   addressError ||
-      //   bioError ||
-      //   fieldOfStudyError ||
-      //   selectedFile ||
-      //   nameOfSchoolError ||
-      //   idNumberError
-      // ) {
-      //   return failedNotification("Please fix all the validations");
-      // }
+
       if (
         !firstName ||
         !lastName ||
@@ -372,86 +362,73 @@ export const MoreInfoStudent: React.FC = () => {
               <section className="mt-4">
                 <h3 className="text-sm opacity-80">Basic information</h3>
                 <div className="flex items-center flex-wrap gap-2 mt-2">
-                  <input
+                  <InputMoreInformation
                     type="text"
-                    placeholder="First name"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter first name"
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleFirstNameOnChange(e)
                     }
                     value={firstName}
-                    className={`p-[0.4rem] flex-1 outline-none ${
-                      firstNameError && "border border-red-500"
-                    } bg-slate-200 rounded text-sm`}
+                    errorMessage={firstNameError}
                   />
-                  <input
+                  <InputMoreInformation
                     type="text"
-                    placeholder="Last name"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter last name"
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleLastNameOnChange(e)
                     }
                     value={lastName}
-                    className={`p-[0.4rem] flex-1 outline-none ${
-                      lastNameError && "border border-red-500"
-                    } bg-slate-200 rounded text-sm`}
+                    errorMessage={lastNameError}
                   />
-                  <input
+                 <InputMoreInformation
                     type="text"
-                    placeholder="Identification number"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter ID number"
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleIdNumberOnChange(e)
                     }
                     value={idNumber}
-                    className={`p-[0.4rem] flex-1 ${
-                      idNumberError && "border border-red-500"
-                    } outline-none bg-slate-200 rounded text-sm`}
+                    errorMessage={idNumberError}
                   />
                 </div>
                 <div className="flex items-center flex-wrap gap-2 mt-3">
-                  <input
+                <InputMoreInformation
                     type="date"
                     placeholder="MM-DD-YYYY"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleDBOOnChange(e)
                     }
                     value={dob}
-                    className={`p-[0.4rem] flex-1 text-slate-500  outline-none ${
-                      dobError && "border border-red-500"
-                    } bg-slate-200 rounded text-sm`}
+                    errorMessage={dobError}
                   />
-                  <input
+                 <InputMoreInformation
                     type="text"
-                    placeholder="Gander"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Gender"
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleGenderOnChange(e)
                     }
                     value={gender}
-                    className={`p-[0.4rem] flex-1 text-slate-500 ${
-                      genderError && "border border-red-500"
-                    } outline-none bg-slate-200 rounded text-sm`}
+                    errorMessage={genderError}
                   />
+                 
                 </div>
                 <div className="flex items-center flex-wrap gap-2 mt-3">
-                  <input
+                <InputMoreInformation
                     type="tel"
-                    placeholder="Phone number"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter phone number"
+                    onChange={(e: ChangeEventHTMLType) =>
                       handlePhoneNumberOnChange(e)
                     }
                     value={phone}
-                    className={`p-[0.4rem] flex-1 text-slate-500 ${
-                      phoneError && "border border-red-500"
-                    } outline-none bg-slate-200 rounded text-sm`}
+                    errorMessage={phoneError}
                   />
-                  <input
+                  <InputMoreInformation
                     type="address"
-                    placeholder="Address"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter your address"
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleAddressOnChange(e)
                     }
                     value={address}
-                    className={`p-[0.4rem] flex-1 text-slate-500 ${
-                      addressError && "border border-red-500"
-                    } outline-none bg-slate-200 rounded text-sm`}
+                    errorMessage={addressError}
                   />
                 </div>
               </section>
@@ -459,27 +436,23 @@ export const MoreInfoStudent: React.FC = () => {
               <section className="mt-4">
                 <h3 className="text-sm opacity-80">Education information</h3>
                 <div className="flex items-center flex-wrap gap-2 mt-3">
-                  <input
+                <InputMoreInformation
                     type="text"
-                    placeholder="School name"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter school name"
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleNameOfSchoolOnChange(e)
                     }
                     value={nameOfSchool}
-                    className={`p-[0.4rem] flex-1  outline-none ${
-                      nameOfSchoolError && "border border-red-500"
-                    } bg-slate-200 rounded text-sm`}
+                    errorMessage={nameOfSchoolError}
                   />
-                  <input
+                  <InputMoreInformation
                     type="text"
-                    placeholder="Education level"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    placeholder="Enter field of study"
+                    onChange={(e: ChangeEventHTMLType) =>
                       handleFieldOfStudyOnChange(e)
                     }
                     value={fieldOfStudy}
-                    className={`p-[0.4rem] flex-1  outline-none ${
-                      fieldOfStudyError && "border border-red-500"
-                    } bg-slate-200 rounded text-sm`}
+                    errorMessage={fieldOfStudyError}
                   />
                 </div>
               </section>

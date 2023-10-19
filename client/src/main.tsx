@@ -10,6 +10,7 @@ import { store } from "./redux/store/student.store.ts";
 import { Provider } from "react-redux";
 
 import { BrowserRouter } from "react-router-dom";
+import { FetchUserDataProvider } from "./context/FetchUserData.context.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -27,7 +28,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     />
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <FetchUserDataProvider>
+          <App />
+        </FetchUserDataProvider>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

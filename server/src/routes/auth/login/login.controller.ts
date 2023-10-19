@@ -28,7 +28,7 @@ export async function HttpLoginUserController(
 
     if (req.session) {
       req.session.user = { ...student };
-      await new Promise<void>((resolve) => setTimeout(() => resolve(), 5)); // wait for the session to be saved before sending response back
+      await new Promise<void>((resolve) => setTimeout(() => resolve(), 3)); // wait for the session to be saved before sending response back
     }
 
     return res.status(200).json({

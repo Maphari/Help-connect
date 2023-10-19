@@ -7,7 +7,7 @@ import {
   LecturerIcon,
   SetLecturerEmail,
   SetLecturerID,
-  SetLecturerUsername
+  SetLecturerUsername,
 } from "./Lecturer.imports";
 import {
   successNotification,
@@ -16,9 +16,8 @@ import {
 } from "../../../global/ToastNotification.function";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import axios, {AxiosError} from "axios";
+import axios, { AxiosError } from "axios";
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
-
 
 interface IUserData {
   username: string;
@@ -40,11 +39,13 @@ export const LecturerRegister: React.FC = () => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
-  const navigate = useNavigate()
-  const dispatch: Dispatch<AnyAction> = useDispatch()
+  const navigate = useNavigate();
+  const dispatch: Dispatch<AnyAction> = useDispatch();
 
   const usernameValidationHandler: () => void = function () {
-    if (username.trim().length < 5) {
+    const usernameTrim: string = username.trim();
+
+    if (usernameTrim.length < 5) {
       setUsernameError("Please enter a valid username");
     } else {
       setUsernameError("");
@@ -55,9 +56,11 @@ export const LecturerRegister: React.FC = () => {
     const emailRegex: RegExp =
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    if (emailRegex.test(email.trim()) === false) {
+    const emailTrim: string = email.trim();
+
+    if (!emailRegex.test(emailTrim)) {
       setEmailError("Please enter valid email");
-    } else if (!email.trim()) {
+    } else if (!emailTrim) {
       setEmailError("Please enter email");
     } else {
       setEmailError("");
@@ -65,11 +68,11 @@ export const LecturerRegister: React.FC = () => {
   };
 
   const passwordValidatorHandler: () => void = function () {
-    const passwordRegex: RegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordTrim: string = password.trim();
 
-    if (!passwordRegex.test(password.trim())) {
+    if (passwordTrim.length < 8) {
       setPasswordError("Password must be more than 8 characters");
-    } else if (!password.trim()) {
+    } else if (!passwordTrim) {
       setPasswordError("Please Enter password");
     } else {
       setPasswordError("");
@@ -112,17 +115,18 @@ export const LecturerRegister: React.FC = () => {
           // Handle validation errors
           failedNotification("Please fix the validation errors.");
         } else {
-          const res = (await axios.post("/api/lecturer/register-account", userData))
-            .data;
+          const res = (
+            await axios.post("/api/lecturer/register-account", userData)
+          ).data;
 
-          console.log(res);
+          // console.log(res);
           // if account exist we want to redirect the user to login form
           if (res.hasAccount) {
             infoNotification(res.message);
             navigate("/lecturer/login-account", { replace: true });
             // if account doesn't exist then we welcome the user to the dash board
           } else if (!res.hasAccount) {
-            const lecturerID: string = res.lecturer.ID;
+            const lecturerID: string = res.lecturerID;
             const lecturerUsername: string = res.lecturerUsername;
             const lecturerEmail: string = res.lecturerEmail;
             const message: string = res.message;
@@ -299,7 +303,7 @@ export const LecturerRegister: React.FC = () => {
               <span> Continue as Lecturer</span>
             </button>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center justify-center gap-1">
             <Link
               className="transition-all duration-700 ease-linear hover:bg-slate-100 px-[0.4rem] py-[0.5rem] google-login-button text-sm border flex items-center justify-center text-[#333]"
               to="#"
@@ -309,7 +313,18 @@ export const LecturerRegister: React.FC = () => {
                 alt="Google Logo"
                 className="google-logo"
               />
-              Google
+              <span className="text-sm">Google</span>
+            </Link>
+            <Link
+              to="#"
+              className="transition-all duration-700 ease-linear hover:bg-slate-100 px-[0.4rem] py-[0.5rem] google-login-button text-sm border flex items-center justify-center text-[#333]"
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/c/c2/F_icon.svg"
+                alt="Facebook Logo"
+                className="google-logo"
+              />
+              <span className="text-sm">Facebook</span>
             </Link>
           </div>
           <div className="flex items-center justify-center gap-2 flex-wrap mt-5 opacity-60 text-sm">
