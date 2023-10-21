@@ -322,7 +322,7 @@ export const MoreInfoLecturer: React.FC = () => {
       if (lecturer.lecturerID) {
         localStorage.setItem("lecturer-token", lecturer.lecturerID);
         successNotification(res.message);
-        navigate("/lecturer/dashboard", { replace: true });
+        navigate("/dashboard", { replace: true });
       } else {
         failedNotification(res.errorMessage);
       }

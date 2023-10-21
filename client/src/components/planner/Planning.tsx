@@ -1,16 +1,16 @@
 import { FC } from "react";
-import { LecturerVideo } from "./LecturerVideo";
-import { StudentLearning } from "./StudentLearning";
+import { StudentPlanning } from "./StudentPlanner";
+import { LecturerPlanning } from "./LecturerPlanner";
 import { PageNotFound } from "../UI/PageNotFound";
 
-export const Learning: FC = () => {
+export const Planning: FC = () => {
   const studentToken = localStorage.getItem("student-token");
   const lecturerToken = localStorage.getItem("lecturer-token");
 
   return studentToken ? (
-    <StudentLearning />
+    <StudentPlanning />
   ) : lecturerToken ? (
-    <LecturerVideo />
+    <LecturerPlanning />
   ) : (
     <PageNotFound />
   );

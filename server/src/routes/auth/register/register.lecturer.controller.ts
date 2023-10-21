@@ -106,10 +106,10 @@ async function HttpRegisterLecturerMoreInfo(req: Request, res: Response) {
       !yearsOfWorkingExperience ||
       !levelOfEducation ||
       !whatYouTeach ||
-      !fileProperties ||
       !imageProperties;
 
     const lecturer = await Lecturer.findOne({ email });
+
 
     if (isEveryInputField) {
       return res

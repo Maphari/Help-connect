@@ -19,9 +19,24 @@ import { DashboardService } from "../account/service/Dashboard.service";
 import { DashBoardStudent } from "../dashboard/Dashboard.student";
 import { DashBoardLecturer } from "../dashboard/Dashboard.lecturer";
 import { Learning } from "../learning/Learning";
+import { Planning } from "../planner/Planning";
+import { Community } from "../community/Community";
+import { Notification } from "../notification/Notification";
+import { Setting } from "../setting/Setting";
+import { Support } from "../support/Support";
 import { DashBoardHandler } from "../dashboard/Dashboard.handler";
 
 export { React };
+
+export {
+  DashBoardHandler,
+  Learning,
+  Planning,
+  Notification,
+  Community,
+  Setting,
+  Support,
+};
 
 export {
   Landing,
@@ -41,10 +56,4 @@ export {
   VerifyEmailPin,
 };
 
-export {
-  DashBoardStudent,
-  DashBoardLecturer,
-  DashboardService,
-  DashBoardHandler,
-  Learning,
-};
+export { DashBoardStudent, DashBoardLecturer, DashboardService };

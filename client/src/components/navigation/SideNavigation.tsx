@@ -5,23 +5,24 @@ import LOGO from "../../assets/favicon.ico";
 import { BiSolidDashboard as DashboardIcon } from "react-icons/bi";
 import { BsCameraVideoFill as LearningIcon } from "react-icons/bs";
 import {
-  IoMail as MessageIcon,
   IoNotifications as NotificationIcon,
   IoSettings as SettingsIcon,
   IoLogOut as LogoutIcon,
 } from "react-icons/io5";
+import { BsFillCalendarCheckFill as PlannerIcon } from "react-icons/bs";
 import { MdContactSupport as SupportIcon } from "react-icons/md";
 import { HiUserGroup as CommunityIcon } from "react-icons/hi2";
 import HELP_CONNECT_VERSION from "../../../package.json";
 
 export const SideNavigation: FC = () => {
+  const studentToken = localStorage.getItem("student-token");
+  const lecturerToken = localStorage.getItem("lecturer-token");
   const navigate: NavigateFunction = useNavigate();
-  
+
   function logoutUser() {
     localStorage.clear();
-    navigate("/account/login-choice", {replace: true})
+    navigate("/account/login-choice", { replace: true });
   }
-
 
   return (
     <>
@@ -40,17 +41,24 @@ export const SideNavigation: FC = () => {
               </LinkNav>
             </li>
             <li className="mt-2">
-              <LinkNav path="/learning" name="Learning">
+              <LinkNav
+                path="/learning"
+                name={
+                  studentToken ? "Learning" : lecturerToken ? "My videos" : ""
+                }
+              >
                 <LearningIcon />
               </LinkNav>
             </li>
             <li className="mt-2">
-              <LinkNav path="/messages" name="Messages">
-                <MessageIcon />
+              <LinkNav path="/planning" name="Planner">
+                <span className="text-[0.9rem]">
+                  <PlannerIcon />
+                </span>
               </LinkNav>
             </li>
             <li className="mt-2">
-              <LinkNav path="/notifications" name="Notifications">
+              <LinkNav path="/notification" name="Notifications">
                 <NotificationIcon />
               </LinkNav>
             </li>
@@ -60,7 +68,7 @@ export const SideNavigation: FC = () => {
               </LinkNav>
             </li>
             <li className="mt-2">
-              <LinkNav path="/settings" name="Settings">
+              <LinkNav path="/setting" name="Settings">
                 <SettingsIcon />
               </LinkNav>
             </li>
@@ -76,7 +84,7 @@ export const SideNavigation: FC = () => {
               </LinkNav>
             </li>
             <li className="mt-2">
-              <LinkNav path="#" name="Logout" onClick={logoutUser.bind(this)}>
+              <LinkNav path="" name="Logout" onClick={logoutUser.bind(this)}>
                 <LogoutIcon />
               </LinkNav>
             </li>
