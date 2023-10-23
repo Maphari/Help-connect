@@ -76,28 +76,28 @@ export const StudentLogin: React.FC = () => {
           // Handle validation errors
           failedNotification("Please fix the validation errors.");
         } else {
-          const res = (await axios.post("/api/login-account", userData)).data;
-
-          console.log(res);
+          const res = (await axios.post("/api/student/login-account", userData)).data;
           // if account exist we want to redirect the user to login form
+          console.log(res)
           if (!res.hasAccount) {
             infoNotification(res.message);
             navigate("/student/register-account");
             // if account doesn't exist then we welcome the user to the dash board
-          } else if (res.hasAccount) {
-            const studentID: string = res.studentID;
-            const studentUsername: string = res.username;
-            const studentEmail: string = res.email;
+          } else if (res.hasAccount && res.student.studentID) {
+            const studentID: string = res.student.studentID;
+            const studentUsername: string = res.student.username;
+            const studentEmail: string = res.student.email;
             const message: string = res.message;
 
             successNotification(message);
             // saving token to local storage
-            localStorage.setItem("student-token", res.studentID);
+            localStorage.setItem("student-token", studentID);
             // dispatching data to redux store
             dispatch(SetStudentID(studentID));
             dispatch(SetStudentUsername(studentUsername));
             dispatch(SetStudentEmail(studentEmail));
-            navigate("/dashboard", {replace: true});
+            navigate("/dashboard", { replace: true });
+            window.location.reload();
           } else {
             failedNotification(res.errorMessage);
           }

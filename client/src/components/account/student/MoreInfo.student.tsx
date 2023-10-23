@@ -14,11 +14,12 @@ import { ChangeEventHTMLType } from "../../UI/Input.moreInfo";
 
 import axios from "axios";
 
-// interface IFileData {
-//   filename: string;
-//   fileSize: number;
-//   fileType: string;
-// }
+interface IFileData {
+  filename: string;
+  fileSize: number;
+  fileType: string;
+  fileData: string;
+}
 interface IData {
   email: string;
   firstName: string;
@@ -30,7 +31,7 @@ interface IData {
   idNumber: string;
   bio: string;
   fieldOfStudy: string;
-  imageProperties: string;
+  imageProperties: object;
   nameOfSchool: string;
 }
 
@@ -66,7 +67,7 @@ export const MoreInfoStudent: React.FC = () => {
     const firstNameTrim: string = firstName.trim();
     if (!firstNameTrim) {
       setFirstNameError("First name is required");
-    } else if (firstNameTrim.length < 5) {
+    } else if (firstNameTrim.length < 3) {
       setFirstNameError("First name must be more than 5 characters");
     } else {
       setFirstNameError("");
@@ -77,7 +78,7 @@ export const MoreInfoStudent: React.FC = () => {
     const lastNameTrim: string = lastName.trim();
     if (!lastNameTrim) {
       setLastNameError("Last name is required");
-    } else if (lastNameTrim.length < 5) {
+    } else if (lastNameTrim.length < 3) {
       setLastNameError("Last name must be more than 5 characters");
     } else {
       setLastNameError("");
@@ -266,11 +267,12 @@ export const MoreInfoStudent: React.FC = () => {
         return failedNotification("You cannot submit a form with empty fields");
       }
 
-      // const imageData: IFileData = {
-      //   filename: selectedFile?.name,
-      //   fileSize: selectedFile?.size,
-      //   fileType: selectedFile?.type,
-      // };
+      const imageData: IFileData = {
+        filename: selectedFile?.name,
+        fileSize: selectedFile?.size,
+        fileType: selectedFile?.type,
+        fileData: previewUrl,
+      };
 
       const sendData: IData = {
         email: studentEmail,
@@ -283,7 +285,7 @@ export const MoreInfoStudent: React.FC = () => {
         idNumber,
         bio,
         fieldOfStudy,
-        imageProperties: previewUrl,
+        imageProperties: imageData,
         nameOfSchool,
       };
 
@@ -297,6 +299,7 @@ export const MoreInfoStudent: React.FC = () => {
         localStorage.setItem("student-token", student.studentID);
         successNotification(res.message);
         navigate("/dashboard", { replace: true });
+        window.location.reload();
       } else {
         failedNotification(res.errorMessage);
       }
@@ -381,7 +384,7 @@ export const MoreInfoStudent: React.FC = () => {
                     value={lastName}
                     errorMessage={lastNameError}
                   />
-                 <InputMoreInformation
+                  <InputMoreInformation
                     type="text"
                     placeholder="Enter ID number"
                     onChange={(e: ChangeEventHTMLType) =>
@@ -392,16 +395,14 @@ export const MoreInfoStudent: React.FC = () => {
                   />
                 </div>
                 <div className="flex items-center flex-wrap gap-2 mt-3">
-                <InputMoreInformation
+                  <InputMoreInformation
                     type="date"
                     placeholder="MM-DD-YYYY"
-                    onChange={(e: ChangeEventHTMLType) =>
-                      handleDBOOnChange(e)
-                    }
+                    onChange={(e: ChangeEventHTMLType) => handleDBOOnChange(e)}
                     value={dob}
                     errorMessage={dobError}
                   />
-                 <InputMoreInformation
+                  <InputMoreInformation
                     type="text"
                     placeholder="Gender"
                     onChange={(e: ChangeEventHTMLType) =>
@@ -410,10 +411,9 @@ export const MoreInfoStudent: React.FC = () => {
                     value={gender}
                     errorMessage={genderError}
                   />
-                 
                 </div>
                 <div className="flex items-center flex-wrap gap-2 mt-3">
-                <InputMoreInformation
+                  <InputMoreInformation
                     type="tel"
                     placeholder="Enter phone number"
                     onChange={(e: ChangeEventHTMLType) =>
@@ -437,7 +437,7 @@ export const MoreInfoStudent: React.FC = () => {
               <section className="mt-4">
                 <h3 className="text-sm opacity-80">Education information</h3>
                 <div className="flex items-center flex-wrap gap-2 mt-3">
-                <InputMoreInformation
+                  <InputMoreInformation
                     type="text"
                     placeholder="Enter school name"
                     onChange={(e: ChangeEventHTMLType) =>

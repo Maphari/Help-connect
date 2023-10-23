@@ -24,8 +24,7 @@ async function HttpGetQuotesController(req: Request, res: Response) {
     ];
 
     // RANDOMLY PICKING INSPIRATION
-    const success: string = quotes[Math.floor(Math.random() * quotes.length)];
-
+    let success: string = quotes[Math.floor(Math.random() * quotes.length)];
     const quoteApiResponse: IQuotes = await fetchQuoteFromAPI(success);
 
     if (!quoteApiResponse) {

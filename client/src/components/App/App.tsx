@@ -60,23 +60,23 @@ const AppRouter: React.FC = () => {
         path="/learning"
         element={studentToken || lecturerToken ? <Learning /> : <Landing />}
       />
-       <Route
+      <Route
         path="/planning"
         element={studentToken || lecturerToken ? <Planning /> : <Landing />}
       />
-       <Route
+      <Route
         path="/notification"
         element={studentToken || lecturerToken ? <Notification /> : <Landing />}
       />
-       <Route
+      <Route
         path="/community"
         element={studentToken || lecturerToken ? <Community /> : <Landing />}
       />
-       <Route
+      <Route
         path="/setting"
         element={studentToken || lecturerToken ? <Setting /> : <Landing />}
       />
-       <Route
+      <Route
         path="/support"
         element={studentToken || lecturerToken ? <Support /> : <Landing />}
       />
@@ -85,58 +85,25 @@ const AppRouter: React.FC = () => {
       <Route path="/:id/verify/email-pin" element={<VerifyEmailPin />} />
 
       {/* CHOICES ROUTES */}
-      <Route
-        path="/account/login-choice"
-        element={
-          studentToken || helperToken || lecturerToken ? (
-            <DashBoardHandler />
-          ) : (
-            <AccountOptionsLogin />
-          )
-        }
-      />
+      <Route path="/account/login-choice" element={!studentToken || !lecturerToken || !helperToken ? <AccountOptionsLogin />: <DashBoardHandler />} />
       <Route
         path="/account/register-choice"
-        element={
-          studentToken || helperToken || lecturerToken ? (
-            <DashBoardHandler />
-          ) : (
-            <AccountOptionsRegister />
-          )
-        }
+        element={!studentToken || !lecturerToken || !helperToken ? <AccountOptionsRegister /> : <DashBoardHandler />}
       />
 
       {/* STUDENT ROUTES */}
-      <Route
-        path="/student/register-account"
-        element={studentToken ? <DashBoardHandler /> : <StudentRegister />}
-      />
-      <Route
-        path="/student/login-account"
-        element={studentToken ? <DashBoardHandler /> : <StudentLogin />}
-      />
+      <Route path="/student/register-account" element={<StudentRegister />} />
+      <Route path="/student/login-account" element={<StudentLogin />} />
       <Route path="/student/more-information" element={<MoreInfoStudent />} />
 
       {/* LECTURER ROUTES */}
-      <Route
-        path="/lecturer/register-account"
-        element={lecturerToken ? <DashBoardHandler /> : <LecturerRegister />}
-      />
-      <Route
-        path="/lecturer/login-account"
-        element={lecturerToken ? <DashBoardHandler /> : <LecturerLogin />}
-      />
+      <Route path="/lecturer/register-account" element={<LecturerRegister />} />
+      <Route path="/lecturer/login-account" element={<LecturerLogin />} />
       <Route path="/lecturer/more-information" element={<MoreInfoLecturer />} />
 
       {/* HELPER ROUTES */}
-      <Route
-        path="/helper/register-account"
-        element={helperToken ? <DashBoardHandler /> : <RegisterService />}
-      />
-      <Route
-        path="/helper/login-account"
-        element={helperToken ? <DashBoardHandler /> : <LoginService />}
-      />
+      <Route path="/helper/register-account" element={<RegisterService />} />
+      <Route path="/helper/login-account" element={<LoginService />} />
     </Routes>
   );
 };

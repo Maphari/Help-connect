@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import { FetchUserDataContext } from "../../context/FetchUserData.context";
 import { IDataObject } from "../../context/Context.config";
 import { greetUserBasedOnTime } from "../../global/Functions.global";
-import { FiSearch as SearchIcon } from "react-icons/fi";
 import { IoNotifications as NotificationIcon } from "react-icons/io5";
 import { HiUser as ProfileIcon } from "react-icons/hi2";
 import { IoIosAddCircle as AddIcon } from "react-icons/io";
@@ -27,6 +26,7 @@ export const DashBoardStudent: React.FC = () => {
     HttpGetQuote();
   }, []);
 
+
   if (isLoading && student) {
     return <p>Loading....</p>;
   } else {
@@ -43,35 +43,24 @@ export const DashBoardStudent: React.FC = () => {
               />
             </div>
             <div className="flex items-center gap-3">
-              <form className="bg-slate-200 px-4 rounded-full">
-                <div className="flex w-full items-center gap-1">
-                  <span className="text-slate-500">
-                    <SearchIcon />
-                  </span>
-                  <input
-                    type="search"
-                    placeholder="Search for courses, lessons, etc.."
-                    className="bg-slate-200 flex-1 outline-none rounded-full p-[0.6rem] text-sm w-[15rem]"
-                  />
-                </div>
-              </form>
               <div className="h-10 w-10 flex items-center justify-center text-xl rounded-full bg-slate-200">
                 <span className="text-slate-500">
                   <NotificationIcon />
                 </span>
               </div>
-              <div className="h-10 w-10 flex items-center justify-center text-xl rounded-full bg-slate-200">
-                {/* {data.imageProperties ? (
-                  <img
-                    src={data.imageProperties?.filename}
-                    alt="profile picture"
-                  />
-                ) : ( */}
-                <span className="text-slate-500">
-                  <ProfileIcon />
-                </span>
-                {/* )} */}
-              </div>
+              {student.imageProperties?.fileData ? (
+                <img
+                  src={student.imageProperties.fileData}
+                  alt={student.imageProperties.filename}
+                  className="h-10 w-10 border rounded-full"
+                />
+              ) : (
+                <div className="h-10 w-10 flex items-center justify-center text-xl rounded-full bg-slate-200">
+                  <span className="text-slate-500">
+                    <ProfileIcon />
+                  </span>
+                </div>
+              )}
             </div>
           </header>
 
@@ -85,8 +74,8 @@ export const DashBoardStudent: React.FC = () => {
                       will be studying."
                   />
                   <section className="mt-7 flex gap-3 items-center">
-                    <div className="h-48 w-52 flex flex-col items-center justify-center bg-blue-100 p-4 rounded transition-all duration-700 ease-linear hover:cursor-pointer hover:bg-blue-200">
-                      <span className="text-4xl text-blue-500">
+                    <div className="h-48 w-52 flex flex-col items-center justify-center bg-green-50 p-4 rounded transition-all duration-700 ease-linear hover:cursor-pointer hover:bg-green-100">
+                      <span className="text-4xl text-green-500">
                         <AddIcon />
                       </span>
                       <h6 className="text-base mt-2">Add course</h6>
@@ -98,15 +87,15 @@ export const DashBoardStudent: React.FC = () => {
                     <CourseDashboard />
                   </section>
                 </section>
-                <section className="bg-white w-1/4 p-5 rounded border">
+              </section>
+              <section className="flex flex-wrap gap-3">
+                <section className="bg-white p-5 rounded border">
                   <Header
                     header="Upcoming events"
                     subHeader=" Here you will find listing of all upcoming events so that you don't miss any."
                   />
                   <section className="mt-7"></section>
                 </section>
-              </section>
-              <section className="flex flex-wrap gap-3">
                 <section className="bg-white p-5 flex-1 rounded border">
                   <Header
                     header="Latest announcements"
@@ -119,9 +108,9 @@ export const DashBoardStudent: React.FC = () => {
                   <Header header="Daily motivations" subHeader="" />
                   <section className="mt-3">
                     <DailyQuotes
-                      author={dailyQuote.author}
+                      author={dailyQuote.author && dailyQuote.author}
                       category={dailyQuote.category}
-                      quote={dailyQuote.quote}
+                      quote={dailyQuote.quote && dailyQuote.quote}
                     />
                   </section>
                 </section>

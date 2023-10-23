@@ -4,7 +4,7 @@ import passport from "passport";
 const passportAuthRouter: Router = express.Router();
 
 import { HttpPassportGoogleAuthController } from "./passportAuth.controller";
-import { authSessionMiddleware } from "../../../middleware/authSession.middleware";
+// import { authSessionMiddleware } from "../../../middleware/authSession.middleware";
 
 passportAuthRouter.get(
   "/api/auth/google",
@@ -33,7 +33,7 @@ passportAuthRouter.get(
 
 passportAuthRouter.get(
   "/api/auth/success",
-  authSessionMiddleware,
+  // authSessionMiddleware,
   HttpPassportGoogleAuthController
 );
 

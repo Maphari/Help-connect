@@ -1,0 +1,8 @@
+@media screen and (width <= 1326px) {
+  .hide-small-screen {
+    display: none;
+  }
+  .dashboard-container__main {
+    width: 100% !important;
+  }
+}

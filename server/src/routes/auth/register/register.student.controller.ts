@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
+import fs from "fs";
 
 import { keys } from "../../../key/key";
 import { IStudent } from "./register.config";
@@ -44,7 +45,7 @@ async function HttpRegisterStudentController(
       // setting students session
       if (req.session) {
         req.session.user = { ...newStudent };
-        req.session.user.session = newStudent.studentID
+        req.session.user.session = newStudent.studentID;
         await new Promise<void>((resolve) => setTimeout(() => resolve(), 5)); // wait for the session to be saved before sending response back
       }
 
@@ -95,7 +96,7 @@ async function HttpRegisterStudentMoreInfo(req: Request, res: Response) {
       fieldOfStudy,
       nameOfSchool,
       imageProperties,
-      idNumber
+      idNumber,
     } = req.body;
     const isEveryInputField: boolean =
       !firstName ||
@@ -118,24 +119,22 @@ async function HttpRegisterStudentMoreInfo(req: Request, res: Response) {
     }
 
     if (!student) {
-      return res
-        .status(404)
-        .json({
-          errorMessage: "User not found please Register an account first",
-        });
+      return res.status(404).json({
+        errorMessage: "User not found please Register an account first",
+      });
     }
 
     student.firstName = firstName;
     student.lastName = lastName;
     student.gender = gender;
     student.dob = dob;
-    student.idNumber = idNumber
+    student.idNumber = idNumber;
     student.phone = phone;
     student.address = address;
     student.bio = bio;
     student.fieldOfStudy = fieldOfStudy;
     student.nameOfSchool = nameOfSchool;
-    student.imageProperties = imageProperties;
+    student.imageProperties = imageProperties
 
     await student.save();
 

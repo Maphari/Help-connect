@@ -35,6 +35,7 @@ export const FetchUserDataProvider: React.FC<IContext> = ({ children }) => {
           "/api/fetch-data",
           sendUserData
         );
+
         if (studentToken) {
           setStudentData(response.data);
           // navigateUser("/dashboard");

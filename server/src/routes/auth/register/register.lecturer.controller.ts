@@ -86,6 +86,7 @@ async function HttpRegisterLecturerMoreInfo(req: Request, res: Response) {
       lastName,
       gender,
       dob,
+      idNumber,
       phone,
       address,
       bio,
@@ -100,6 +101,7 @@ async function HttpRegisterLecturerMoreInfo(req: Request, res: Response) {
       !lastName ||
       !gender ||
       !dob ||
+      !idNumber ||
       !phone ||
       !address ||
       !bio ||
@@ -126,7 +128,8 @@ async function HttpRegisterLecturerMoreInfo(req: Request, res: Response) {
     lecturer.firstName = firstName;
     lecturer.lastName = lastName;
     lecturer.gender = gender;
-    lecturer.dob = dob;
+    lecturer.dateOfBirth = dob;
+    lecturer.idNumber = idNumber;
     lecturer.phone = phone;
     lecturer.address = address;
     lecturer.bio = bio;

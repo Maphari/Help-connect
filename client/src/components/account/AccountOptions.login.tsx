@@ -38,12 +38,12 @@ export const AccountOptionsLogin: React.FC = () => {
           </section>
 
           <div className="flex items-center justify-center gap-2 flex-wrap mt-5 opacity-60 text-sm">
-            <p>Already have an account?</p>
+            <p>Don't have an account?</p>
             <Link
               className="font-bold text-blue-900"
               to="/account/register-choice"
             >
-              Log in
+              Register
             </Link>
           </div>
         </div>

@@ -14,10 +14,11 @@ import { HiUser as UserIcon } from "react-icons/hi2";
 import { BsFillCameraFill as CameraIcon } from "react-icons/bs";
 import axios from "axios";
 
-interface IFileDataImage {
+interface IFileData {
   filename: string;
   fileSize: number;
   fileType: string;
+  fileData: string | null;
 }
 
 interface IData {
@@ -31,7 +32,7 @@ interface IData {
   idNumber: string;
   bio: string;
   yearsOfWorkingExperience: string;
-  imageProperties: File | object;
+  imageProperties: object;
   whatYouTeach: string;
   levelOfEducation: string;
 }
@@ -76,7 +77,7 @@ export const MoreInfoLecturer: React.FC = () => {
     const firstNameTrim: string = firstName.trim();
     if (!firstNameTrim) {
       setFirstNameError("First name is required");
-    } else if (firstNameTrim.length < 5) {
+    } else if (firstNameTrim.length < 3) {
       setFirstNameError("First name must be more than 5 characters");
     } else {
       setFirstNameError("");
@@ -87,7 +88,7 @@ export const MoreInfoLecturer: React.FC = () => {
     const lastNameTrim: string = lastName.trim();
     if (!lastNameTrim) {
       setLastNameError("Last name is required");
-    } else if (lastNameTrim.length < 5) {
+    } else if (lastNameTrim.length < 3) {
       setLastNameError("Last name must be more than 5 characters");
     } else {
       setLastNameError("");
@@ -291,10 +292,11 @@ export const MoreInfoLecturer: React.FC = () => {
         return failedNotification("You cannot submit a form with empty fields");
       }
 
-      const imageData: IFileDataImage = {
+      const imageData: IFileData = {
         filename: selectedFileImage?.name,
         fileSize: selectedFileImage?.size,
         fileType: selectedFileImage?.type,
+        fileData: previewUrl,
       };
 
       const sendData: IData = {
@@ -323,6 +325,7 @@ export const MoreInfoLecturer: React.FC = () => {
         localStorage.setItem("lecturer-token", lecturer.lecturerID);
         successNotification(res.message);
         navigate("/dashboard", { replace: true });
+        window.location.reload();
       } else {
         failedNotification(res.errorMessage);
       }

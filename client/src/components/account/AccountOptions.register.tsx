@@ -43,7 +43,7 @@ export const AccountOptionsRegister: React.FC = () => {
             </AccountLink>
           </section>
           <div className="flex items-center justify-center gap-2 flex-wrap mt-5 opacity-60 text-sm">
-            <p>Don't have an account?</p>
+            <p>Already have an account?</p>
             <Link
               className="font-bold text-blue-900"
               to="/account/login-choice"

@@ -21,7 +21,12 @@ export const ContextDataStructure = {
     fieldOfStudy: "",
     levelOfEducation: "",
     nameOfSchool: "",
-    imageProperties: null,
+    imageProperties: {
+      filename: "",
+      fileSize: "",
+      fileType: "",
+      fileData: "",
+    },
   },
   lecturer: {
     username: "",
@@ -33,7 +38,12 @@ export const ContextDataStructure = {
     idNumber: "",
     bio: "",
     yearsOfWorkingExperience: "",
-    imageProperties: null,
+    imageProperties: {
+      filename: "",
+      fileSize: "",
+      fileType: "",
+      fileData: "",
+    },
     whatYouTeach: "",
     levelOfEducation: "",
   },
@@ -53,7 +63,12 @@ export interface IDataObject {
     fieldOfStudy?: string;
     levelOfEducation?: string;
     nameOfSchool?: string;
-    imageProperties?: File | null;
+    imageProperties?: {
+      filename: string;
+      fileSize: string;
+      fileType: string;
+      fileData: string;
+    };
   };
   lecturer: {
     username?: string;
@@ -65,7 +80,12 @@ export interface IDataObject {
     idNumber?: string;
     bio?: string;
     yearsOfWorkingExperience?: string;
-    imageProperties?: File | null;
+    imageProperties?: {
+      filename: string;
+      fileSize: string;
+      fileType: string;
+      fileData: string;
+    };
     whatYouTeach?: string;
     levelOfEducation?: string;
   };

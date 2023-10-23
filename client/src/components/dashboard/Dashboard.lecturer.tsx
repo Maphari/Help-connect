@@ -1,32 +1,29 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { FetchUserDataContext } from "../../context/FetchUserData.context";
 import { IDataObject } from "../../context/Context.config";
-import { greetUserBasedOnTime } from "../../global/Functions.global";
-import { FiSearch as SearchIcon } from "react-icons/fi";
+import {
+  greetUserBasedOnTime,
+  isStudentOrLecturer,
+} from "../../global/Functions.global";
 import { IoNotifications as NotificationIcon } from "react-icons/io5";
-import { HiUser as ProfileIcon } from "react-icons/hi2";
-import { IoIosAddCircle as AddIcon } from "react-icons/io";
-import { IQuote, quoteStructure } from "./Dashboard.config";
-import axios from "axios";
+import {
+  HiUser as ProfileIcon,
+  HiUserGroup as CommunityIcon,
+} from "react-icons/hi2";
+import {
+  BsCameraVideoFill as LearningIcon,
+  BsStarFill as RatingIcon,
+  BsFillCalendarEventFill as EventIcon,
+} from "react-icons/bs";
+import { BiSolidReport as ReportIcon } from "react-icons/bi";
 import { Header } from "./Header";
-import { CourseDashboard } from "./CourseDashBoard";
 import { DashboardUI } from "../UI/DashboardUI";
+import { LecturerTracker } from "./LecturerTracker";
 
 export const DashBoardLecturer: React.FC = () => {
   const { lecturer, isLoading } = useContext<IDataObject>(FetchUserDataContext);
-  const [dailyQuote, setDailyQuote] = useState<IQuote>(quoteStructure);
-
-  useEffect(() => {
-    async function HttpGetQuote() {
-      const quoteRes = await axios.get("/api/get-quotes");
-      const data = quoteRes.data;
-      setDailyQuote(data.quote);
-    }
-
-    HttpGetQuote();
-  }, []);
-
-  console.log(dailyQuote);
+  const colorToRenderBG = isStudentOrLecturer("300", "bg");
+  const colorToRenderText = isStudentOrLecturer("500", "text");
 
   if (isLoading && lecturer) {
     return <p>Loading....</p>;
@@ -44,28 +41,26 @@ export const DashBoardLecturer: React.FC = () => {
               />
             </div>
             <div className="flex items-center gap-3">
-              <form className="bg-slate-200 px-4 rounded-full">
-                <div className="flex w-full items-center gap-1">
-                  <span className="text-slate-500">
-                    <SearchIcon />
-                  </span>
-                  <input
-                    type="search"
-                    placeholder="Search for courses, lessons, etc.."
-                    className="bg-slate-200 flex-1 outline-none rounded-full p-[0.6rem] text-sm w-[15rem]"
-                  />
-                </div>
-              </form>
-              <div className="h-10 w-10 flex items-center justify-center text-xl rounded-full bg-slate-200">
-                <span className="text-slate-500">
+              <div
+                className={`h-10 w-10 flex items-center justify-center text-xl rounded-full ${colorToRenderBG} hover:cursor-pointer`}
+              >
+                <span className={`${colorToRenderText}`}>
                   <NotificationIcon />
                 </span>
               </div>
-              <div className="h-10 w-10 flex items-center justify-center text-xl rounded-full bg-slate-200">
-                <span className="text-slate-500">
-                  <ProfileIcon />
-                </span>
-              </div>
+              {lecturer.imageProperties?.fileData ? (
+                <img
+                  src={lecturer.imageProperties.fileData}
+                  alt={lecturer.imageProperties.filename}
+                  className="h-10 w-10 border rounded-full"
+                />
+              ) : (
+                <div className="h-10 w-10 flex items-center justify-center text-xl rounded-full bg-slate-200">
+                  <span className="text-slate-500">
+                    <ProfileIcon />
+                  </span>
+                </div>
+              )}
             </div>
           </header>
 
@@ -78,28 +73,63 @@ export const DashBoardLecturer: React.FC = () => {
                     subHeader="Here you will find statistics based on your content"
                   />
                   <section className="mt-7 flex gap-3 items-center">
-                    <div className="h-48 w-52 flex flex-col items-center justify-center bg-blue-100 p-4 rounded transition-all duration-700 ease-linear hover:cursor-pointer hover:bg-blue-200">
-                      <span className="text-4xl text-blue-500">
-                        <AddIcon />
-                      </span>
-                      <h6 className="text-base mt-2">Add course</h6>
-                      <p className="text-[0.6rem] opacity-50 mt-1 text-center">
-                        You can add as many courses as you like. giving you
-                        extra lessons you wished for. best of luck
-                      </p>
-                    </div>
-                    <CourseDashboard />
+                    <section className="flex flex-wrap gap-2">
+                      <LecturerTracker
+                        header="0 students"
+                        bgStyle="bg-violet-50"
+                        iconStyle="text-violet-500"
+                        explanation="Track how many students are enrolled in your course. You'll get some motivation"
+                      >
+                        <CommunityIcon />
+                      </LecturerTracker>
+                      <LecturerTracker
+                        header="0 Videos"
+                        bgStyle="bg-blue-50"
+                        iconStyle="text-blue-500"
+                        explanation="Track how many videos you have already posted so far. You'll get some motivation"
+                        styles="text-3xl"
+                      >
+                        <LearningIcon />
+                      </LecturerTracker>
+                      <LecturerTracker
+                        header="0.0 Ratings"
+                        bgStyle="bg-yellow-50"
+                        iconStyle="text-yellow-500"
+                        explanation="Track how many ratings you already have so far. You'll get some motivation"
+                        styles="text-3xl"
+                      >
+                        <RatingIcon />
+                      </LecturerTracker>
+                      <LecturerTracker
+                        header="0 Events"
+                        bgStyle="bg-indigo-50"
+                        iconStyle="text-indigo-500"
+                        explanation="Track how many events you already have so far. You'll get some motivation"
+                        styles="text-2xl"
+                      >
+                        <EventIcon />
+                      </LecturerTracker>
+                      <LecturerTracker
+                        header="0 Reports"
+                        bgStyle="bg-red-50"
+                        iconStyle="text-red-500"
+                        explanation="Track how many reports you already have so far. So that you can improve based on that report"
+                        styles="text-3xl"
+                      >
+                        <ReportIcon />
+                      </LecturerTracker>
+                    </section>
                   </section>
                 </section>
-                <section className="bg-white w-1/4 p-5 rounded border">
+              </section>
+              <section className="flex flex-wrap gap-3">
+                <section className="bg-white p-5 rounded border">
                   <Header
                     header="Lecturer events"
                     subHeader="Here you will find listing of all events so that you created"
                   />
                   <section className="mt-7"></section>
                 </section>
-              </section>
-              <section className="flex flex-wrap gap-3">
                 <section className="bg-white p-5 flex-1 rounded border">
                   <Header
                     header="Latest announcements"

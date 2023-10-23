@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 const Student = mongoose.model("Student");
 
-export async function HttpLoginUserController(
+export async function HttpLoginStudentController(
   req: Request,
   res: Response,
   next: NextFunction
@@ -13,9 +13,7 @@ export async function HttpLoginUserController(
     const student = await Student.findOne({ email });
 
     if (!student) {
-      return res
-        .status(401)
-        .json({ message: "User is not found!😥", hasAccount: false });
+      return res.json({ message: "User is not found!😥", hasAccount: false });
     }
 
     const passwordMatch = bcrypt.compare(password, student.password);
@@ -26,10 +24,6 @@ export async function HttpLoginUserController(
       });
     }
 
-    if (req.session) {
-      req.session.user = { ...student };
-      await new Promise<void>((resolve) => setTimeout(() => resolve(), 3)); // wait for the session to be saved before sending response back
-    }
 
     return res.status(200).json({
       message: "You have successfully logged in 😁",

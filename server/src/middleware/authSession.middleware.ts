@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 function authSessionMiddleware(req:Request, res:Response, next:NextFunction) {
-    if(req.session && req.session.user || req.isAuthenticated()) {
+    if(req.session || req.isAuthenticated()) {
         next()
     } else {
         res.status(401).json({message: "You are not authenticated"})
