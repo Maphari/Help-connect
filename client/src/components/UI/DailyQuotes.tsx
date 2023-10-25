@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { IDailyQuotes } from "./Dashboard.config";
+import { IDailyQuotes } from "../dashboard/Dashboard.config";
 
 export const DailyQuotes: FC<IDailyQuotes> = ({ quote, author, category }) => {
   if (!quote && !author && !category) {

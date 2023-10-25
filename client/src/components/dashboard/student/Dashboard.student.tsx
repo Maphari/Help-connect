@@ -1,20 +1,26 @@
 import React, { useContext, useState, useEffect } from "react";
-import { FetchUserDataContext } from "../../context/FetchUserData.context";
-import { IDataObject } from "../../context/Context.config";
-import { greetUserBasedOnTime } from "../../global/Functions.global";
+import { useNavigate, NavigateFunction } from "react-router-dom";
+import { FetchUserDataContext } from "../../../context/FetchUserData.context";
+import { IDataObject } from "../../../context/Context.config";
+import { greetUserBasedOnTime } from "../../../global/Functions.global";
 import { IoNotifications as NotificationIcon } from "react-icons/io5";
 import { HiUser as ProfileIcon } from "react-icons/hi2";
 import { IoIosAddCircle as AddIcon } from "react-icons/io";
-import { IQuote, quoteStructure } from "./Dashboard.config";
-import { DailyQuotes } from "./Dashboard.imports";
+import { IQuote, quoteStructure } from "../Dashboard.config";
+import { DailyQuotes } from "../Dashboard.imports";
+import { DashboardHeader } from "../../UI/DashboardHeader";
+import { DashboardUI } from "../../UI/DashboardUI";
+import { Course } from "../../UI/Course";
 import axios from "axios";
-import { Header } from "./Header";
-import { CourseDashboard } from "./CourseDashBoard";
-import { DashboardUI } from "../UI/DashboardUI";
 
 export const DashBoardStudent: React.FC = () => {
   const { student, isLoading } = useContext<IDataObject>(FetchUserDataContext);
   const [dailyQuote, setDailyQuote] = useState<IQuote>(quoteStructure);
+  const navigate: NavigateFunction = useNavigate();
+
+  function navigateToNotification(): void {
+    navigate("/notification");
+  }
 
   useEffect(() => {
     async function HttpGetQuote() {
@@ -26,7 +32,6 @@ export const DashBoardStudent: React.FC = () => {
     HttpGetQuote();
   }, []);
 
-
   if (isLoading && student) {
     return <p>Loading....</p>;
   } else {
@@ -35,15 +40,18 @@ export const DashBoardStudent: React.FC = () => {
         <DashboardUI>
           <header className="flex items-center justify-between">
             <div>
-              <Header
+              <DashboardHeader
                 header="Dashboard"
                 stylesHeader="text-2xl mb-1 font-bold"
                 stylesSubHeader="text-xs opacity-50"
                 subHeader={greetUserBasedOnTime(student.firstName)}
               />
             </div>
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 flex items-center justify-center text-xl rounded-full bg-slate-200">
+            <div className="flex items-center gap-3 hover:cursor-pointer">
+              <div
+                onClick={navigateToNotification}
+                className="h-10 w-10 flex items-center justify-center text-xl rounded-full bg-slate-200"
+              >
                 <span className="text-slate-500">
                   <NotificationIcon />
                 </span>
@@ -68,9 +76,9 @@ export const DashBoardStudent: React.FC = () => {
             <section className="flex-1 flex flex-col gap-3">
               <section className="flex flex-wrap gap-3">
                 <section className="bg-white p-5 rounded border flex flex-col flex-wrap flex-1">
-                  <Header
+                  <DashboardHeader
                     header="Courses overview"
-                    subHeader=" Here you will find the overview for the courses that you
+                    subHeader="Here you will find the overview for the courses that you
                       will be studying."
                   />
                   <section className="mt-7 flex gap-3 items-center">
@@ -80,24 +88,34 @@ export const DashBoardStudent: React.FC = () => {
                       </span>
                       <h6 className="text-base mt-2">Add course</h6>
                       <p className="text-[0.6rem] opacity-50 mt-1 text-center">
-                        You can add as many courses as you like. giving you
-                        extra lessons you wished for. best of luck
+                        You need to finish the current course in order to add a
+                        new course. giving you extra lessons you wished for.
                       </p>
                     </div>
-                    <CourseDashboard />
+                    <section>
+                      <Course
+                        header={"Primary course"}
+                        hoverStyle={"hover:bg-cyan-100 hover:cursor-pointer"}
+                        explanation={
+                          "You are currently enrolled in a primary course. And help connect wishes you all the best."
+                        }
+                        bgStyle={"bg-cyan-50"}
+                        iconStyle={"text-cyan-500"}
+                      />
+                    </section>
                   </section>
                 </section>
               </section>
               <section className="flex flex-wrap gap-3">
                 <section className="bg-white p-5 rounded border">
-                  <Header
+                  <DashboardHeader
                     header="Upcoming events"
                     subHeader=" Here you will find listing of all upcoming events so that you don't miss any."
                   />
                   <section className="mt-7"></section>
                 </section>
                 <section className="bg-white p-5 flex-1 rounded border">
-                  <Header
+                  <DashboardHeader
                     header="Latest announcements"
                     subHeader="Here you will find listing of all latest announcement so
                       that you don't miss any."
@@ -105,7 +123,7 @@ export const DashBoardStudent: React.FC = () => {
                   <section className="mt-7"></section>
                 </section>
                 <section className="bg-white p-5 w-1/4 rounded border">
-                  <Header header="Daily motivations" subHeader="" />
+                  <DashboardHeader header="Daily motivations" subHeader="" />
                   <section className="mt-3">
                     <DailyQuotes
                       author={dailyQuote.author && dailyQuote.author}
@@ -117,7 +135,7 @@ export const DashBoardStudent: React.FC = () => {
               </section>
               <section className="flex gap-3 flex-wrap">
                 <section className="bg-white p-5 rounded border flex-1">
-                  <Header
+                  <DashboardHeader
                     header="Track history"
                     subHeader=" Here you will find all your history so that you can keep
                       track."

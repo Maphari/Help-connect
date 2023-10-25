@@ -68,19 +68,16 @@ export const LecturerLogin: React.FC = () => {
           failedNotification("Please fix the validation errors.");
         } else {
           const res = (await axios.post("/api/lecturer/login-account", userData)).data;
-          console.log(res)
           // if account exist we want to redirect the user to login form
           if (!res.hasAccount) {
             infoNotification(res.message);
             navigate("/lecturer/register-account");
             // if account doesn't exist then we welcome the user to the dash board
-          } else if (res.hasAccount && res.lecturer.studentID) {
+          } else if (res.hasAccount && res.lecturer.lecturerID) {
             const lecturerID: string = res.lecturer.lecturerID;
             const lecturerUsername: string = res.lecturer.username;
             const lecturerEmail: string = res.lecturer.email;
             const message: string = res.message;
-
-            console.log(res)
 
             successNotification(message);
             // saving token to local storage

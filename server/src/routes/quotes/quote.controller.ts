@@ -16,8 +16,6 @@ async function HttpGetQuotesController(req: Request, res: Response) {
   try {
     const quotes: string[] = [
       "success",
-      "future",
-      "dreams",
       "education",
       "inspirational",
       "courage",

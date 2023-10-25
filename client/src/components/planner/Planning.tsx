@@ -4,14 +4,8 @@ import { LecturerPlanning } from "./LecturerPlanner";
 import { PageNotFound } from "../UI/PageNotFound";
 
 export const Planning: FC = () => {
-  const studentToken = localStorage.getItem("student-token");
   const lecturerToken = localStorage.getItem("lecturer-token");
+  const studentToken = localStorage.getItem("student-token")
 
-  return studentToken ? (
-    <StudentPlanning />
-  ) : lecturerToken ? (
-    <LecturerPlanning />
-  ) : (
-    <PageNotFound />
-  );
+  return lecturerToken ? <LecturerPlanning /> : studentToken ? <StudentPlanning /> : <PageNotFound />;
 };

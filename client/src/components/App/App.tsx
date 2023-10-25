@@ -1,5 +1,5 @@
 // import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import {
   Landing,
   StudentRegister,
@@ -38,7 +38,7 @@ const AppRouter: React.FC = () => {
         path="/"
         element={
           studentToken || helperToken || lecturerToken ? (
-            <DashBoardHandler />
+            <Navigate to="/dashboard" />
           ) : (
             <Landing />
           )
@@ -85,7 +85,8 @@ const AppRouter: React.FC = () => {
       <Route path="/:id/verify/email-pin" element={<VerifyEmailPin />} />
 
       {/* CHOICES ROUTES */}
-      <Route path="/account/login-choice" element={!studentToken || !lecturerToken || !helperToken ? <AccountOptionsLogin />: <DashBoardHandler />} />
+      <Route path="/account/login-choice" 
+        element={!studentToken || !lecturerToken || !helperToken ? <AccountOptionsLogin />: <DashBoardHandler />} />
       <Route
         path="/account/register-choice"
         element={!studentToken || !lecturerToken || !helperToken ? <AccountOptionsRegister /> : <DashBoardHandler />}

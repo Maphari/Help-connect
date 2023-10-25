@@ -45,14 +45,14 @@ export const SideNavigation: FC = () => {
               <LinkNav
                 path="/learning"
                 name={
-                  studentToken ? "Learning" : lecturerToken ? "My videos" : ""
+                  studentToken ? "Learning" : lecturerToken ? "Creator" : ""
                 }
               >
                 <LearningIcon />
               </LinkNav>
             </li>
             <li className="mt-2">
-              <LinkNav path="/planning" name="Planner">
+              <LinkNav path="/planning" name="My Planning">
                 <span className="text-[0.9rem]">
                   <PlannerIcon />
                 </span>

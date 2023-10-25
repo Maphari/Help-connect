@@ -16,8 +16,8 @@ import { MoreInfoStudent } from "../account/student/MoreInfo.student";
 import { VerifyEmailPin } from "../account/email/VerifyEmail.pin";
 
 import { DashboardService } from "../account/service/Dashboard.service";
-import { DashBoardStudent } from "../dashboard/Dashboard.student";
-import { DashBoardLecturer } from "../dashboard/Dashboard.lecturer";
+import { DashBoardStudent } from "../dashboard/student/Dashboard.student";
+import { DashBoardLecturer } from "../dashboard/lecturer/Dashboard.lecturer";
 import { Learning } from "../learning/Learning";
 import { Planning } from "../planner/Planning";
 import { Community } from "../community/Community";

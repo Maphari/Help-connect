@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { FetchUserDataContext } from "../../context/FetchUserData.context";
-import { IDataObject } from "../../context/Context.config";
+import { FetchUserDataContext } from "../../../context/FetchUserData.context";
+import { IDataObject } from "../../../context/Context.config";
 import {
   greetUserBasedOnTime,
   isStudentOrLecturer,
-} from "../../global/Functions.global";
+} from "../../../global/Functions.global";
 import { IoNotifications as NotificationIcon } from "react-icons/io5";
 import {
   HiUser as ProfileIcon,
@@ -16,9 +16,9 @@ import {
   BsFillCalendarEventFill as EventIcon,
 } from "react-icons/bs";
 import { BiSolidReport as ReportIcon } from "react-icons/bi";
-import { Header } from "./Header";
-import { DashboardUI } from "../UI/DashboardUI";
-import { LecturerTracker } from "./LecturerTracker";
+import { DashboardHeader } from "../../UI/DashboardHeader";
+import { DashboardUI } from "../../UI/DashboardUI";
+import { LecturerTracker } from "../../UI/LecturerTracker";
 
 export const DashBoardLecturer: React.FC = () => {
   const { lecturer, isLoading } = useContext<IDataObject>(FetchUserDataContext);
@@ -33,7 +33,7 @@ export const DashBoardLecturer: React.FC = () => {
         <DashboardUI>
           <header className="flex items-center justify-between">
             <div>
-              <Header
+              <DashboardHeader
                 header="Dashboard"
                 stylesHeader="text-2xl mb-1 font-bold"
                 stylesSubHeader="text-xs opacity-50"
@@ -68,7 +68,7 @@ export const DashBoardLecturer: React.FC = () => {
             <section className="flex-1 flex flex-col gap-3">
               <section className="flex flex-wrap gap-3">
                 <section className="bg-white p-5 rounded border flex flex-col flex-wrap flex-1">
-                  <Header
+                  <DashboardHeader
                     header="Lecturer Statistics"
                     subHeader="Here you will find statistics based on your content"
                   />
@@ -124,14 +124,14 @@ export const DashBoardLecturer: React.FC = () => {
               </section>
               <section className="flex flex-wrap gap-3">
                 <section className="bg-white p-5 rounded border">
-                  <Header
+                  <DashboardHeader
                     header="Lecturer events"
                     subHeader="Here you will find listing of all events so that you created"
                   />
                   <section className="mt-7"></section>
                 </section>
                 <section className="bg-white p-5 flex-1 rounded border">
-                  <Header
+                  <DashboardHeader
                     header="Latest announcements"
                     subHeader="Here you will find listing of all latest announcement that you created"
                   />
@@ -140,7 +140,7 @@ export const DashBoardLecturer: React.FC = () => {
               </section>
               <section className="flex gap-3 flex-wrap">
                 <section className="bg-white p-5 rounded border flex-1">
-                  <Header
+                  <DashboardHeader
                     header="Track history"
                     subHeader=" Here you will find all your history so that you can keep
                       track."
