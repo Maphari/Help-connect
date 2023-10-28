@@ -25,18 +25,10 @@ const StudentAuthSchema: mongoose.Schema<IStudentAuth> = new Schema(
     },
     email: {
       type: String,
-      required: true,
       unique: true,
-      validate: {
-        validator: (email: string) => {
-          return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(email);
-        },
-        message: "Please enter a valid email address",
-      },
     },
   },
   { timestamps: true }
 );
 
-
-mongoose.model("StudentGoogle", StudentAuthSchema)
+mongoose.model("StudentGoogle", StudentAuthSchema);

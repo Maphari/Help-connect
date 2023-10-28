@@ -157,19 +157,20 @@ export const StudentRegister: React.FC = () => {
       }
     };
 
-  async function HttpGoogleAuthenticationHandler(): Promise<void> {
-    window.open("/api/auth/google", "_self");
-    const response = (await axios.get("/api/auth/success")).data;
+  // async function HttpGoogleAuthenticationHandler(): Promise<void> {
+  //   window.open("/api/auth/google", "_self");
+  //   const response = (await axios.get("/api/auth/success")).data;
+  //  localStorage.setItem("student-google", response.student.studentID)
+  // //  navigate("/dashboard", { replace: true });
+  // console.log(response)
+  // }
 
-    console.log(response);
-  }
+  // async function HttpFacebookAuthenticationHandler(): Promise<void> {
+  //   window.open("/api/auth/facebook", "_self");
+  //   const response = (await axios.get("/api/auth/success")).data;
 
-  async function HttpFacebookAuthenticationHandler(): Promise<void> {
-    window.open("/api/auth/facebook", "_self");
-    const response = (await axios.get("/api/auth/success")).data;
-
-    console.log(response)
-  }
+  //   console.log(response)
+  // }
 
   return (
     <>
@@ -316,7 +317,7 @@ export const StudentRegister: React.FC = () => {
             </button>
           </div>
           <div className="flex items-center justify-center gap-1">
-            <Link
+            {/* <Link
               className="transition-all duration-700 ease-linear hover:bg-slate-100 px-[0.4rem] py-[0.5rem] google-login-button text-sm border flex items-center justify-center text-[#333]"
               to="#"
               onClick={HttpGoogleAuthenticationHandler}
@@ -327,8 +328,8 @@ export const StudentRegister: React.FC = () => {
                 className="google-logo"
               />
               <span className="text-sm">Google</span>
-            </Link>
-            <Link
+            </Link> */}
+            {/* <Link
               to="#"
               onClick={HttpFacebookAuthenticationHandler}
               className="transition-all duration-700 ease-linear hover:bg-slate-100 px-[0.4rem] py-[0.5rem] google-login-button text-sm border flex items-center justify-center text-[#333]"
@@ -339,7 +340,7 @@ export const StudentRegister: React.FC = () => {
                 className="google-logo"
               />
               <span className="text-sm">Facebook</span>
-            </Link>
+            </Link> */}
           </div>
           <div className="flex items-center justify-center gap-2 flex-wrap mt-5 opacity-60 text-sm">
             <p>Already have an account?</p>

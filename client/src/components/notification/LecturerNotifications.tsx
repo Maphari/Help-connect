@@ -6,7 +6,10 @@ import { DashboardHeader } from "../UI/DashboardHeader";
 import { DashboardUI } from "../UI/DashboardUI";
 
 export const LecturerNotification: FC = () => {
-  const { lecturer } = useContext<IDataObject>(FetchUserDataContext);
+  const { lecturer, google } =
+    useContext<IDataObject>(FetchUserDataContext);
+  const tokenLecturer = localStorage.getItem("lecturer-token");
+  const googleTokenLecturer = localStorage.getItem("lecturer-google");
 
   return (
     <>
@@ -17,7 +20,13 @@ export const LecturerNotification: FC = () => {
               header="Notification"
               stylesHeader="text-2xl mb-1 font-bold"
               stylesSubHeader="text-xs opacity-50"
-              subHeader={greetUserBasedOnTime(lecturer.firstName)}
+              subHeader={greetUserBasedOnTime(
+                tokenLecturer
+                  ? lecturer.firstName
+                  : googleTokenLecturer
+                  ? google.names
+                  : ""
+              )}
             />
           </div>
         </header>

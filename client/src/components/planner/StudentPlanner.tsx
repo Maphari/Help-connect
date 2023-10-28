@@ -7,7 +7,10 @@ import { DisplayPlanner } from "./DisplayPlanner";
 import { DashboardUI } from "../UI/DashboardUI";
 
 export const StudentPlanning: FC = () => {
-  const { student } = useContext<IDataObject>(FetchUserDataContext);
+  const { student, google } = useContext<IDataObject>(FetchUserDataContext);
+  const tokenStudent = localStorage.getItem("student-token");
+  const googleTokenStudent = localStorage.getItem("student-google");
+  
 
   return (
     <>
@@ -18,7 +21,13 @@ export const StudentPlanning: FC = () => {
               header="Planning"
               stylesHeader="text-2xl mb-1 font-bold"
               stylesSubHeader="text-xs opacity-50"
-              subHeader={greetUserBasedOnTime(student.firstName)}
+              subHeader={greetUserBasedOnTime(
+                tokenStudent
+                  ? student.firstName
+                  : googleTokenStudent
+                  ? google.names
+                  : ""
+              )}
             />
           </div>
         </header>

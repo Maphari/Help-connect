@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { LecturerVideo } from "./LecturerVideo";
-import { StudentLearning } from "./StudentLearning";
+import { StudentLive } from "./StudentLive";
 import { PageNotFound } from "../UI/PageNotFound";
 
 export const Learning: FC = () => {
@@ -8,7 +8,7 @@ export const Learning: FC = () => {
   const lecturerToken = localStorage.getItem("lecturer-token");
 
   return studentToken ? (
-    <StudentLearning />
+    <StudentLive />
   ) : lecturerToken ? (
     <LecturerVideo />
   ) : (

@@ -11,7 +11,7 @@ async function HttpGoogleDataController(
   done: Google.VerifyCallback
 ) {
   try {
-    const student = await Student.findOne({ _id: profile.id });
+    const student = await Student.findOne({studentID: profile.id});
 
     if (student) {
       done(null, student);

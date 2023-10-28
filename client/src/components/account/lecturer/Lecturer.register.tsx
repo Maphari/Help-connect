@@ -159,6 +159,14 @@ export const LecturerRegister: React.FC = () => {
       }
     };
 
+  // async function HttpGoogleAuthenticationHandler(): Promise<void> {
+  //   window.open("/api/auth/google", "_self");
+  //   const response = (await axios.get("/api/auth/success")).data;
+
+  //   localStorage.setItem("lecturer-google", response.student.studentID);
+  //   // navigate("/dashboard", { replace: true });
+  // }
+
   return (
     <>
       <section className="register-container rounded bg-opacity-80 bg-blur-lg bg-slate-300 backdrop-blur-lg">
@@ -303,10 +311,11 @@ export const LecturerRegister: React.FC = () => {
               <span> Continue as Lecturer</span>
             </button>
           </div>
-          <div className="flex items-center justify-center gap-1">
+          {/* <div className="flex items-center justify-center gap-1">
             <Link
               className="transition-all duration-700 ease-linear hover:bg-slate-100 px-[0.4rem] py-[0.5rem] google-login-button text-sm border flex items-center justify-center text-[#333]"
               to="#"
+              onClick={HttpGoogleAuthenticationHandler}
             >
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
@@ -326,7 +335,7 @@ export const LecturerRegister: React.FC = () => {
               />
               <span className="text-sm">Facebook</span>
             </Link>
-          </div>
+          </div> */}
           <div className="flex items-center justify-center gap-2 flex-wrap mt-5 opacity-60 text-sm">
             <p>Already have an account?</p>
             <Link

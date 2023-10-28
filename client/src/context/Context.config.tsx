@@ -10,6 +10,7 @@ export interface IGetUserData {
 
 export const ContextDataStructure = {
   student: {
+    id: "",
     username: "",
     email: "",
     firstName: "",
@@ -48,10 +49,16 @@ export const ContextDataStructure = {
     levelOfEducation: "",
   },
   isLoading: false,
+  google: {
+    profile: "",
+    names: "",
+    email: "",
+  },
 };
 
 export interface IDataObject {
   student: {
+    id?: string;
     username?: string;
     firstName?: string;
     lastName?: string;
@@ -90,4 +97,9 @@ export interface IDataObject {
     levelOfEducation?: string;
   };
   isLoading: boolean;
+  google: {
+    profile?: string;
+    names?: string;
+    email?: string;
+  };
 }

@@ -134,14 +134,14 @@ export const UploadContainer: React.FC = () => {
     setEventEndDate(e.target.value);
   }
 
-  function startDateEventError(e: HTMLEventInput) {
+  function startDateEventError() {
     if (!eventStartDate) {
       setEventStartDateError("Please select a start date");
     } else {
       setEventStartDateError("");
     }
   }
-  function endDateEventError(e: HTMLEventInput) {
+  function endDateEventError() {
     if (!eventEndDate) {
       setEventEndDateError("Please select an end date");
     } else {
@@ -410,17 +410,41 @@ export const UploadContainer: React.FC = () => {
   function onSubmitAnnouncementHandler(
     e: React.FormEvent<HTMLFormElement>
   ): void {
-    e.preventDefault();
+    try {
+      e.preventDefault();
+
+      const formData: FormData = new FormData();
+      formData.append("announcement-topic", announcementTopic);
+      formData.append("announcement-teaching-level", announcementTeachingLevel);
+      formData.append("announcement-description", announcementDescription);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function onSubmitEventHandler(e: React.FormEvent<HTMLFormElement>): void {
-    e.preventDefault();
+    try {
+      e.preventDefault();
+
+      startDateEventError()
+      endDateEventError()
+
+      const formData: FormData = new FormData()
+      formData.append("event-topic", eventTopic)
+      formData.append("event-teaching-level", eventTeachingLevel)
+      formData.append("event-description", eventDescription)
+      formData.append("startDate", eventStartDate)
+      formData.append("endDate", eventEndDate)
+
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
     <>
       <section className="flex flex-col flex-wrap gap-3 mb-7 relative">
-        <section className="mt-7 flex items-center gap-3">
+        <section className="mt-7 flex items-center gap-3 flex-wrap">
           <button
             onClick={OpenUploadVideoModalHandler}
             type="submit"

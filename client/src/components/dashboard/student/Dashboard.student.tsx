@@ -14,8 +14,11 @@ import { Course } from "../../UI/Course";
 import axios from "axios";
 
 export const DashBoardStudent: React.FC = () => {
-  const { student, isLoading } = useContext<IDataObject>(FetchUserDataContext);
+  const { student, isLoading, google } =
+    useContext<IDataObject>(FetchUserDataContext);
   const [dailyQuote, setDailyQuote] = useState<IQuote>(quoteStructure);
+  const tokenStudent = localStorage.getItem("student-token");
+  const googleTokenStudent = localStorage.getItem("student-google");
   const navigate: NavigateFunction = useNavigate();
 
   function navigateToNotification(): void {
@@ -44,7 +47,13 @@ export const DashBoardStudent: React.FC = () => {
                 header="Dashboard"
                 stylesHeader="text-2xl mb-1 font-bold"
                 stylesSubHeader="text-xs opacity-50"
-                subHeader={greetUserBasedOnTime(student.firstName)}
+                subHeader={greetUserBasedOnTime(
+                  tokenStudent
+                    ? student.firstName
+                    : googleTokenStudent
+                    ? google.names
+                    : ""
+                )}
               />
             </div>
             <div className="flex items-center gap-3 hover:cursor-pointer">
@@ -62,7 +71,11 @@ export const DashBoardStudent: React.FC = () => {
                   alt={student.imageProperties.filename}
                   className="h-10 w-10 border rounded-full"
                 />
-              ) : (
+              ) : googleTokenStudent ? (<img
+                src={google.profile}
+                alt={google.names}
+                className="h-10 w-10 border rounded-full"
+              />) : (
                 <div className="h-10 w-10 flex items-center justify-center text-xl rounded-full bg-slate-200">
                   <span className="text-slate-500">
                     <ProfileIcon />

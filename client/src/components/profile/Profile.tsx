@@ -1,16 +1,16 @@
 import { FC } from "react";
-import { StudentSetting } from "./StudentSetting";
-import { LecturerSetting } from "./LecturerSetting";
+import { StudentProfile } from "./StudentProfile";
+import { LecturerProfile } from "./LecturerProfile";
 import { PageNotFound } from "../UI/PageNotFound";
 
-export const Setting: FC = () => {
+export const Profile: FC = () => {
   const studentToken = localStorage.getItem("student-token");
   const lecturerToken = localStorage.getItem("lecturer-token");
 
   return studentToken ? (
-    <StudentSetting />
+    <StudentProfile />
   ) : lecturerToken ? (
-    <LecturerSetting />
+    <LecturerProfile />
   ) : (
     <PageNotFound />
   );

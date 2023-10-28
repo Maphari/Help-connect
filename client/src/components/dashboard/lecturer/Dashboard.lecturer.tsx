@@ -12,7 +12,6 @@ import {
 } from "react-icons/hi2";
 import {
   BsCameraVideoFill as LearningIcon,
-  BsStarFill as RatingIcon,
   BsFillCalendarEventFill as EventIcon,
 } from "react-icons/bs";
 import { BiSolidReport as ReportIcon } from "react-icons/bi";
@@ -21,9 +20,12 @@ import { DashboardUI } from "../../UI/DashboardUI";
 import { LecturerTracker } from "../../UI/LecturerTracker";
 
 export const DashBoardLecturer: React.FC = () => {
-  const { lecturer, isLoading } = useContext<IDataObject>(FetchUserDataContext);
+  const { lecturer, isLoading, google } =
+    useContext<IDataObject>(FetchUserDataContext);
   const colorToRenderBG = isStudentOrLecturer("300", "bg");
   const colorToRenderText = isStudentOrLecturer("500", "text");
+  const tokenLecturer = localStorage.getItem("lecturer-token");
+  const googleTokenLecturer = localStorage.getItem("lecturer-google");
 
   if (isLoading && lecturer) {
     return <p>Loading....</p>;
@@ -37,7 +39,13 @@ export const DashBoardLecturer: React.FC = () => {
                 header="Dashboard"
                 stylesHeader="text-2xl mb-1 font-bold"
                 stylesSubHeader="text-xs opacity-50"
-                subHeader={greetUserBasedOnTime(lecturer.firstName)}
+                subHeader={greetUserBasedOnTime(
+                  tokenLecturer
+                    ? lecturer.firstName
+                    : googleTokenLecturer
+                    ? google.names
+                    : ""
+                )}
               />
             </div>
             <div className="flex items-center gap-3">
@@ -52,6 +60,12 @@ export const DashBoardLecturer: React.FC = () => {
                 <img
                   src={lecturer.imageProperties.fileData}
                   alt={lecturer.imageProperties.filename}
+                  className="h-10 w-10 border rounded-full"
+                />
+              ) : googleTokenLecturer ? (
+                <img
+                  src={google.profile}
+                  alt={google.names}
                   className="h-10 w-10 border rounded-full"
                 />
               ) : (
@@ -90,15 +104,6 @@ export const DashBoardLecturer: React.FC = () => {
                         styles="text-3xl"
                       >
                         <LearningIcon />
-                      </LecturerTracker>
-                      <LecturerTracker
-                        header="0.0 Ratings"
-                        bgStyle="bg-yellow-50"
-                        iconStyle="text-yellow-500"
-                        explanation="Track how many ratings you already have so far. You'll get some motivation"
-                        styles="text-3xl"
-                      >
-                        <RatingIcon />
                       </LecturerTracker>
                       <LecturerTracker
                         header="0 Events"

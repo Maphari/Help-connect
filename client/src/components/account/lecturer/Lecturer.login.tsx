@@ -1,12 +1,19 @@
 import React, { useState } from "react";
-import {Link, Mail, LockIcon, LecturerIcon} from "./Lecturer.imports"
-import { SetLecturerEmail, SetLecturerID, SetLecturerUsername } from "./Lecturer.imports";
+import { Link, Mail, LockIcon, LecturerIcon } from "./Lecturer.imports";
+import {
+  SetLecturerEmail,
+  SetLecturerID,
+  SetLecturerUsername,
+} from "./Lecturer.imports";
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import axios, { AxiosError } from "axios";
-import { failedNotification, infoNotification, successNotification } from "../../../global/ToastNotification.function";
+import {
+  failedNotification,
+  infoNotification,
+  successNotification,
+} from "../../../global/ToastNotification.function";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-
 
 interface IUserData {
   email: string;
@@ -24,8 +31,6 @@ export const LecturerLogin: React.FC = () => {
   const [passwordError, setPasswordError] = useState<string>("");
   const dispatch: Dispatch<AnyAction> = useDispatch();
   const navigate: NavigateFunction = useNavigate();
-
-
 
   const emailValidatorHandler: () => void = function () {
     const emailRegex: RegExp =
@@ -67,7 +72,9 @@ export const LecturerLogin: React.FC = () => {
           // Handle validation errors
           failedNotification("Please fix the validation errors.");
         } else {
-          const res = (await axios.post("/api/lecturer/login-account", userData)).data;
+          const res = (
+            await axios.post("/api/lecturer/login-account", userData)
+          ).data;
           // if account exist we want to redirect the user to login form
           if (!res.hasAccount) {
             infoNotification(res.message);
@@ -107,6 +114,12 @@ export const LecturerLogin: React.FC = () => {
         }
       }
     };
+
+  // async function HttpGoogleAuthenticationHandler(): Promise<void> {
+  //   window.open("/api/auth/google", "_self");
+  //   const response = (await axios.get("/api/auth/success")).data;
+  //   localStorage.setItem("lecturer-google", response.student.studentID);
+  // }
   return (
     <>
       <section className="register-container rounded bg-opacity-80 bg-blur-lg bg-slate-300 backdrop-blur-lg">
@@ -193,10 +206,11 @@ export const LecturerLogin: React.FC = () => {
               <span>Continue as Lecturer</span>
             </button>
           </div>
-          <div className="flex items-center gap-1">
+          {/* <div className="flex items-center gap-1">
             <Link
               className="transition-all duration-700 ease-linear hover:bg-slate-100 px-[0.4rem] py-[0.5rem] google-login-button text-sm border flex items-center justify-center text-[#333]"
               to="#"
+              onClick={HttpGoogleAuthenticationHandler}
             >
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
@@ -205,7 +219,7 @@ export const LecturerLogin: React.FC = () => {
               />
               Google
             </Link>
-          </div>
+          </div> */}
           <div className="flex items-center justify-center gap-2 flex-wrap mt-5 opacity-60 text-sm">
             <p>Already have an account?</p>
             <Link

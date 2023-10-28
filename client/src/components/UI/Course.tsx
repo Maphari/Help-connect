@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { GiTeacher as CourseIcon } from "react-icons/gi";
+import { RiGraduationCapFill as CourseIcon } from "react-icons/ri";
 
 interface ILecturerTracker {
   header: string;

@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import express, { Router, Request, Response } from "express";
 import passport from "passport";
 
 const passportAuthRouter: Router = express.Router();
@@ -14,21 +14,12 @@ passportAuthRouter.get(
 passportAuthRouter.get(
   "/api/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: "",
-    failureRedirect: "",
-  })
-);
-
-passportAuthRouter.get(
-  "/api/auth/facebook",
-  passport.authenticate("facebook", { scope: ["profile"] })
-);
-passportAuthRouter.get(
-  "/api/auth/facebook/callback",
-  passport.authenticate("facebook", {
-    successRedirect: "",
-    failureRedirect: "",
-  })
+    failureRedirect: "http://localhost:5173/account/login-choice",
+  }),
+  function (req: Request, res: Response) {
+    const { user } = req;
+    if (user) return res.redirect("http://localhost:5173/dashboard");
+  }
 );
 
 passportAuthRouter.get(
@@ -36,5 +27,16 @@ passportAuthRouter.get(
   // authSessionMiddleware,
   HttpPassportGoogleAuthController
 );
+
+// passportAuthRouter.get(
+//   "/api/auth/facebook",
+//   passport.authenticate("facebook", { scope: ["profile"] })
+// );
+// passportAuthRouter.get(
+//   "/api/auth/facebook/callback",
+//   passport.authenticate("facebook", {
+//     failureRedirect: "http://localhost:5173/account/login-choice",
+//   })
+// );
 
 export { passportAuthRouter };

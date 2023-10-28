@@ -3,7 +3,7 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
 import {
   React,
   Hero,
-  Course,
+  // Course,
   Features,
   Learn,
   // Pricing,
@@ -30,7 +30,7 @@ export const Landing: React.FC = () => {
     <>
       <Hero />
       <Features />
-      <Course />
+      {/* <Course /> */}
       <Learn />
       {/* <Pricing /> */}
       <StudentReview />

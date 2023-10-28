@@ -3,6 +3,7 @@ require("./models/student/student.passport.model");
 require("./models/lecturer/lecturer.model");
 require("./api/passport.student.api");
 require("./models/quotes/quotes.model");
+require("./models/video/videoData.model")
 
 import express, { urlencoded } from "express";
 import cors from "cors";
@@ -15,6 +16,7 @@ import { passportAuthRouter } from "./routes/auth/passportAuth/passportAuth.rout
 import { fetchUserRoute } from "./routes/fetchData/userData.route";
 import { quoteRoute } from "./routes/quotes/quotes.route";
 import { cookie } from "./cookie/cookie.session";
+import { videoRouter } from "./routes/video/video.route";
 import { HttpMongoDBConnection } from "./database/database.connection";
 
 const app = express();
@@ -33,5 +35,6 @@ app.use(pinRouter);
 app.use(passportAuthRouter);
 app.use(fetchUserRoute);
 app.use(quoteRoute);
+app.use(videoRouter);
 
 export default app;

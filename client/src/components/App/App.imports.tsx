@@ -1,6 +1,5 @@
 import React from "react";
 import { Landing } from "../Landing/Landing";
-import { RegisterInformation } from "../account/RegisterInformation";
 import { StudentLogin } from "../account/student/Login.student";
 import { StudentRegister } from "../account/student/Register.student";
 import { LecturerLogin } from "../account/lecturer/Lecturer.login";
@@ -22,9 +21,10 @@ import { Learning } from "../learning/Learning";
 import { Planning } from "../planner/Planning";
 import { Community } from "../community/Community";
 import { Notification } from "../notification/Notification";
-import { Setting } from "../setting/Setting";
+import { Profile } from "../profile/Profile";
 import { Support } from "../support/Support";
 import { DashBoardHandler } from "../dashboard/Dashboard.handler";
+import { LecturerLive } from "../learning/LecturerLive";
 
 export { React };
 
@@ -34,13 +34,13 @@ export {
   Planning,
   Notification,
   Community,
-  Setting,
+  Profile,
   Support,
+  LecturerLive,
 };
 
 export {
   Landing,
-  RegisterInformation,
   StudentLogin,
   StudentRegister,
   LecturerRegister,

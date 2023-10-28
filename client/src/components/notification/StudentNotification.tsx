@@ -6,7 +6,9 @@ import { DashboardHeader } from "../UI/DashboardHeader";
 import { DashboardUI } from "../UI/DashboardUI";
 
 export const StudentNotification: FC = () => {
-  const { student } = useContext<IDataObject>(FetchUserDataContext);
+  const { student, google } = useContext<IDataObject>(FetchUserDataContext);
+  const tokenStudent = localStorage.getItem("student-token");
+  const googleTokenStudent = localStorage.getItem("student-google");
 
   return (
     <>
@@ -17,7 +19,13 @@ export const StudentNotification: FC = () => {
               header="Notification"
               stylesHeader="text-2xl mb-1 font-bold"
               stylesSubHeader="text-xs opacity-50"
-              subHeader={greetUserBasedOnTime(student.firstName)}
+              subHeader={greetUserBasedOnTime(
+                tokenStudent
+                  ? student.firstName
+                  : googleTokenStudent
+                  ? google.names
+                  : ""
+              )}
             />
           </div>
         </header>

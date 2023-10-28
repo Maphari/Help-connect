@@ -6,12 +6,12 @@ import { BiSolidDashboard as DashboardIcon } from "react-icons/bi";
 import { BsCameraVideoFill as LearningIcon } from "react-icons/bs";
 import {
   IoNotifications as NotificationIcon,
-  IoSettings as SettingsIcon,
   IoLogOut as LogoutIcon,
 } from "react-icons/io5";
 import { BsFillCalendarCheckFill as PlannerIcon } from "react-icons/bs";
 import { MdContactSupport as SupportIcon } from "react-icons/md";
-import { HiUserGroup as CommunityIcon } from "react-icons/hi2";
+import { HiUserGroup as CommunityIcon, HiUser as StudentIcon } from "react-icons/hi2";
+import {FaUserTie as LecturerIcon} from "react-icons/fa6"
 import HELP_CONNECT_VERSION from "../../../package.json";
 
 export const SideNavigation: FC = () => {
@@ -69,8 +69,8 @@ export const SideNavigation: FC = () => {
               </LinkNav>
             </li>
             <li className="mt-2">
-              <LinkNav path="/setting" name="Settings">
-                <SettingsIcon />
+              <LinkNav path="/profile" name="Profile">
+                {studentToken ? <StudentIcon /> : lecturerToken ? <LecturerIcon /> : null}
               </LinkNav>
             </li>
           </ul>

@@ -19,9 +19,10 @@ import {
   Learning,
   Planning,
   Community,
-  Setting,
+  Profile,
   Support,
   Notification,
+  LecturerLive,
 } from "./App.imports";
 
 const studentToken = localStorage.getItem("student-token");
@@ -73,23 +74,49 @@ const AppRouter: React.FC = () => {
         element={studentToken || lecturerToken ? <Community /> : <Landing />}
       />
       <Route
-        path="/setting"
-        element={studentToken || lecturerToken ? <Setting /> : <Landing />}
+        path="/profile"
+        element={studentToken || lecturerToken ? <Profile /> : <Landing />}
       />
       <Route
         path="/support"
         element={studentToken || lecturerToken ? <Support /> : <Landing />}
       />
+
+      <Route
+        path="/:id/video"
+        element={
+          studentToken || lecturerToken ? (
+            <LecturerLive />
+          ) : (
+            <Navigate to="/account/login-choice" replace={true} />
+          )
+        }
+      />
+
       {/* VERIFY EMAIL ROUTE  */}
       <Route path="/:id/verify/email" element={<VerifyEmail />} />
       <Route path="/:id/verify/email-pin" element={<VerifyEmailPin />} />
 
       {/* CHOICES ROUTES */}
-      <Route path="/account/login-choice" 
-        element={!studentToken || !lecturerToken || !helperToken ? <AccountOptionsLogin />: <DashBoardHandler />} />
+      <Route
+        path="/account/login-choice"
+        element={
+          !studentToken || !lecturerToken || !helperToken ? (
+            <AccountOptionsLogin />
+          ) : (
+            <DashBoardHandler />
+          )
+        }
+      />
       <Route
         path="/account/register-choice"
-        element={!studentToken || !lecturerToken || !helperToken ? <AccountOptionsRegister /> : <DashBoardHandler />}
+        element={
+          !studentToken || !lecturerToken || !helperToken ? (
+            <AccountOptionsRegister />
+          ) : (
+            <DashBoardHandler />
+          )
+        }
       />
 
       {/* STUDENT ROUTES */}
