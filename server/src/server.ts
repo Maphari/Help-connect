@@ -1,33 +1,44 @@
 import { keys } from "./key/key";
 import app from "./app";
 import http from "http";
-import { Server, Socket } from "socket.io";
+import { request } from "websocket";
+
+const WebSocketServer = require("websocket").server;
 const DEFAULT_PORT: number = keys.PORT_NUMBER;
 const PORT: number | string = process.env.PORT || DEFAULT_PORT;
-
 const SERVER = http.createServer(app);
-const io = new Server(SERVER, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
+
+const wsServer = new WebSocketServer({
+  httpServer: SERVER,
 });
 
+const connections: any[] = []; // Array to store all active connections
 
-io.on("connection", (socket) => {
-	socket.emit("me", socket.id);
+wsServer.on("request", function (request: request) {
+  console.log("WebSocket connection requested");
 
-	socket.on("disconnect", () => {
-		socket.broadcast.emit("callEnded")
-	});
+  const connection = request.accept(null, request.origin);
+  console.log("WebSocket connection accepted");
 
-	socket.on("callUser", ({ userToCall, signalData, from, name }) => {
-		io.to(userToCall).emit("callUser", { signal: signalData, from, name });
-	});
+  connections.push(connection); // Add the new connection to the array
 
-	socket.on("answerCall", (data) => {
-		io.to(data.to).emit("callAccepted", data.signal)
-	});
+  connection.on("message", (message: any) => {
+    if (message.utf8Data) {
+      connections.forEach(function (client) {
+        client.sendUTF(message.utf8Data); // Broadcast the message to all connected clients
+      });
+    } else {
+      console.log(false);
+    }
+  });
+
+  connection.on("close", function (reasonCode, description) {
+    console.log("WebSocket connection closed");
+    const index = connections.indexOf(connection);
+    if (index !== -1) {
+      connections.splice(index, 1); // Remove the closed connection from the array
+    }
+  });
 });
 
 SERVER.listen(PORT, function () {
