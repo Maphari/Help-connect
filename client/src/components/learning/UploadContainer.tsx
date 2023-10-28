@@ -426,79 +426,78 @@ export const UploadContainer: React.FC = () => {
     try {
       e.preventDefault();
 
-      startDateEventError()
-      endDateEventError()
+      startDateEventError();
+      endDateEventError();
 
-      const formData: FormData = new FormData()
-      formData.append("event-topic", eventTopic)
-      formData.append("event-teaching-level", eventTeachingLevel)
-      formData.append("event-description", eventDescription)
-      formData.append("startDate", eventStartDate)
-      formData.append("endDate", eventEndDate)
-
+      const formData: FormData = new FormData();
+      formData.append("event-topic", eventTopic);
+      formData.append("event-teaching-level", eventTeachingLevel);
+      formData.append("event-description", eventDescription);
+      formData.append("startDate", eventStartDate);
+      formData.append("endDate", eventEndDate);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
   return (
     <>
-      <section className="flex flex-col flex-wrap gap-3 mb-7 relative">
-        <section className="mt-7 flex items-center gap-3 flex-wrap">
-          <button
-            onClick={OpenUploadVideoModalHandler}
-            type="submit"
-            className="flex text-sm items-center gap-2 bg-blue-950 text-white p-2 rounded transition-all duration-700 ease-linear hover:bg-blue-900"
-          >
-            <span>
-              <LearningIcon />
-            </span>
-            <span>Upload video</span>
-          </button>
-          <button
-            type="submit"
-            onClick={OpenUploadFileModalHandler}
-            className="flex text-sm items-center gap-2 bg-cyan-950 text-white p-2 rounded transition-all duration-700 ease-linear hover:bg-cyan-900"
-          >
-            <span>
-              <ReportIcon />
-            </span>
-            <span>Upload Document</span>
-          </button>
-          <button
-            type="submit"
-            onClick={OpenUploadAnnouncementModalHandler}
-            className="flex text-sm items-center gap-2 bg-green-950 text-white p-2 rounded transition-all duration-700 ease-linear hover:bg-green-900"
-          >
-            <span>
-              <WriteIcon />
-            </span>
-            <span>Write announcement</span>
-          </button>
-          <button
-            type="submit"
-            onClick={OpenUploadEventModalHandler}
-            className="flex text-sm items-center gap-2 bg-sky-950 text-white p-2 rounded transition-all duration-700 ease-linear hover:bg-sky-900"
-          >
-            <span>
-              <EventIcon />
-            </span>
-            <span>Create Event</span>
-          </button>
-        </section>
-      </section>
-
-      <section className="flex flex-col bg-white p-5 w-full border">
-        <header className="mb-7">
+      <section className="flex flex-col bg-white p-5 pt-10 w-full border">
+        <header className="mb-7 px-10">
           <DashboardHeader
-            header={"Content tracker"}
+            header={"Lecturer Creator"}
             subHeader={
               "Here you keep track of all the actions happening on the video you posted."
             }
           />
         </header>
 
-        <section className="flex flex-wrap gap-3">
+        <section className="flex flex-col flex-wrap gap-3 mb-7 px-10 relative">
+          <section className="mt-7 flex items-center gap-3 flex-wrap">
+            <button
+              onClick={OpenUploadVideoModalHandler}
+              type="submit"
+              className="flex text-sm items-center gap-2 bg-blue-950 text-white p-2 rounded transition-all duration-700 ease-linear hover:bg-blue-900"
+            >
+              <span>
+                <LearningIcon />
+              </span>
+              <span>Upload video</span>
+            </button>
+            <button
+              type="submit"
+              onClick={OpenUploadFileModalHandler}
+              className="flex text-sm items-center gap-2 bg-cyan-950 text-white p-2 rounded transition-all duration-700 ease-linear hover:bg-cyan-900"
+            >
+              <span>
+                <ReportIcon />
+              </span>
+              <span>Upload Document</span>
+            </button>
+            <button
+              type="submit"
+              onClick={OpenUploadAnnouncementModalHandler}
+              className="flex text-sm items-center gap-2 bg-green-950 text-white p-2 rounded transition-all duration-700 ease-linear hover:bg-green-900"
+            >
+              <span>
+                <WriteIcon />
+              </span>
+              <span>Write announcement</span>
+            </button>
+            <button
+              type="submit"
+              onClick={OpenUploadEventModalHandler}
+              className="flex text-sm items-center gap-2 bg-sky-950 text-white p-2 rounded transition-all duration-700 ease-linear hover:bg-sky-900"
+            >
+              <span>
+                <EventIcon />
+              </span>
+              <span>Create Event</span>
+            </button>
+          </section>
+        </section>
+
+        <section className="flex flex-wrap px-10 mb-5 gap-3">
           <LecturerTracker
             header="0 Uploaded docs"
             bgStyle="bg-violet-50 hover:cursor-pointer"

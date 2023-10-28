@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { LecturerVideo } from "./LecturerVideo";
-import { StudentLive } from "./StudentLive";
+import { StudentLive } from "./video/StudentLive";
 import { PageNotFound } from "../UI/PageNotFound";
 import Cookies from "js-cookie";
 

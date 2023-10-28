@@ -16,12 +16,17 @@ import {
   MoreInfoStudent,
   VerifyEmailPin,
   DashBoardHandler,
-  Learning,
+  // Learning,
   Planning,
   Community,
   Profile,
   Support,
   Notification,
+  StudentView,
+  LecturerView,
+  // LecturerLive,
+  UploadContainer,
+  Project,
 } from "./App.imports";
 import Cookies from "js-cookie";
 
@@ -57,10 +62,10 @@ const AppRouter: React.FC = () => {
         }
       />
       {/* DASHBOARD STUDENT ROUTES */}
-      <Route
+      {/* <Route
         path="/learning"
         element={studentToken || lecturerToken ? <Learning /> : <Landing />}
-      />
+      /> */}
       <Route
         path="/planning"
         element={studentToken || lecturerToken ? <Planning /> : <Landing />}
@@ -81,21 +86,62 @@ const AppRouter: React.FC = () => {
         path="/support"
         element={studentToken || lecturerToken ? <Support /> : <Landing />}
       />
-
-      {/* <Route
-        path="/room/:id"
+      <Route
+        path="/room"
         element={
-          studentToken || lecturerToken ? (
-            <Room />
+          studentToken ? (
+            <StudentView />
+          ) : lecturerToken ? (
+            <LecturerView />
           ) : (
             <Navigate to="/account/login-choice" replace={true} />
           )
         }
-      /> */}
+      />
+
+      <Route
+        path="/project"
+        element={
+          studentToken ? (
+            <Project />
+          ) : (
+            <Navigate to="/account/login-choice" replace={true} />
+          )
+        }
+      />
+
+      <Route
+        path="/creator"
+        element={
+          studentToken || lecturerToken ? (
+            <UploadContainer />
+          ) : (
+            <Navigate to="/account/login-choice" replace={true} />
+          )
+        }
+      />
 
       {/* VERIFY EMAIL ROUTE  */}
-      <Route path="/:id/verify/email" element={<VerifyEmail />} />
-      <Route path="/:id/verify/email-pin" element={<VerifyEmailPin />} />
+      <Route
+        path="/:id/verify/email"
+        element={
+          !studentToken || !lecturerToken ? (
+            <VerifyEmail />
+          ) : (
+            <Navigate to="/dashboard" replace={true} />
+          )
+        }
+      />
+      <Route
+        path="/:id/verify/email-pin"
+        element={
+          !studentToken || !lecturerToken ? (
+            <VerifyEmailPin />
+          ) : (
+            <Navigate to="/dashboard" replace={true} />
+          )
+        }
+      />
 
       {/* CHOICES ROUTES */}
       <Route
@@ -104,7 +150,7 @@ const AppRouter: React.FC = () => {
           !studentToken || !lecturerToken || !helperToken ? (
             <AccountOptionsLogin />
           ) : (
-            <DashBoardHandler />
+            <Navigate to="/dashboard" replace={true} />
           )
         }
       />
@@ -114,20 +160,74 @@ const AppRouter: React.FC = () => {
           !studentToken || !lecturerToken || !helperToken ? (
             <AccountOptionsRegister />
           ) : (
-            <DashBoardHandler />
+            <Navigate to="/dashboard" replace={true} />
           )
         }
       />
 
       {/* STUDENT ROUTES */}
-      <Route path="/student/register-account" element={<StudentRegister />} />
-      <Route path="/student/login-account" element={<StudentLogin />} />
-      <Route path="/student/more-information" element={<MoreInfoStudent />} />
+      <Route
+        path="/student/register-account"
+        element={
+          !studentToken ? (
+            <StudentRegister />
+          ) : (
+            <Navigate to="/dashboard" replace={true} />
+          )
+        }
+      />
+      <Route
+        path="/student/login-account"
+        element={
+          !studentToken ? (
+            <StudentLogin />
+          ) : (
+            <Navigate to="/dashboard" replace={true} />
+          )
+        }
+      />
+      <Route
+        path="/student/more-information"
+        element={
+          !studentToken ? (
+            <MoreInfoStudent />
+          ) : (
+            <Navigate to="/dashboard" replace={true} />
+          )
+        }
+      />
 
       {/* LECTURER ROUTES */}
-      <Route path="/lecturer/register-account" element={<LecturerRegister />} />
-      <Route path="/lecturer/login-account" element={<LecturerLogin />} />
-      <Route path="/lecturer/more-information" element={<MoreInfoLecturer />} />
+      <Route
+        path="/lecturer/register-account"
+        element={
+          !lecturerToken ? (
+            <LecturerRegister />
+          ) : (
+            <Navigate to="/dashboard" replace={true} />
+          )
+        }
+      />
+      <Route
+        path="/lecturer/login-account"
+        element={
+          !lecturerToken ? (
+            <LecturerLogin />
+          ) : (
+            <Navigate to="/dashboard" replace={true} />
+          )
+        }
+      />
+      <Route
+        path="/lecturer/more-information"
+        element={
+          !lecturerToken ? (
+            <MoreInfoLecturer />
+          ) : (
+            <Navigate to="/dashboard" replace={true} />
+          )
+        }
+      />
 
       {/* HELPER ROUTES */}
       <Route path="/helper/register-account" element={<RegisterService />} />

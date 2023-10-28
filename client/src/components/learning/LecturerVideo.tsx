@@ -9,7 +9,7 @@ import {
   BsFillFileEarmarkArrowDownFill as VideoUploadIcon,
 } from "react-icons/bs";
 import { UploadContainer } from "./UploadContainer";
-import { LecturerLive } from "./LecturerLive";
+import { LecturerLive } from "./video/LecturerLive";
 
 export const LecturerVideo: FC = () => {
   const { lecturer } = useContext<IDataObject>(FetchUserDataContext);

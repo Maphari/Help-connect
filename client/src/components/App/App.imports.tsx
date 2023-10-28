@@ -24,7 +24,11 @@ import { Notification } from "../notification/Notification";
 import { Profile } from "../profile/Profile";
 import { Support } from "../support/Support";
 import { DashBoardHandler } from "../dashboard/Dashboard.handler";
-import { LecturerLive } from "../learning/LecturerLive";
+import { LecturerLive } from "../learning/video/LecturerLive";
+import { StudentView } from "../learning/video/StudentView";
+import { LecturerView } from "../learning/video/LecturerView";
+import { UploadContainer } from "../learning/UploadContainer";
+import { Project } from "../project/Project";
 
 export { React };
 
@@ -37,6 +41,10 @@ export {
   Profile,
   Support,
   LecturerLive,
+  StudentView,
+  LecturerView,
+  UploadContainer,
+  Project,
 };
 
 export {

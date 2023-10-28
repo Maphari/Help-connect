@@ -3,7 +3,6 @@ require("./models/student/student.passport.model");
 require("./models/lecturer/lecturer.model");
 require("./api/passport.student.api");
 require("./models/quotes/quotes.model");
-require("./models/video/videoData.model")
 
 import express, { urlencoded } from "express";
 import cors from "cors";

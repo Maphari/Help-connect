@@ -13,6 +13,7 @@ import { MdContactSupport as SupportIcon } from "react-icons/md";
 import {
   HiUserGroup as CommunityIcon,
   HiUser as StudentIcon,
+  HiDocumentText as DocumentIcon,
 } from "react-icons/hi2";
 import { FaUserTie as LecturerIcon } from "react-icons/fa6";
 import HELP_CONNECT_VERSION from "../../../package.json";
@@ -52,13 +53,18 @@ export const SideNavigation: FC = () => {
               </LinkNav>
             </li>
             <li className="mt-2">
+              <LinkNav path="/room" name={"The room"}>
+                <LearningIcon />
+              </LinkNav>
+            </li>
+            <li className="mt-2">
               <LinkNav
-                path="/learning"
+                path={studentToken ? "/project" : lecturerToken  ? "/creator" : ""}
                 name={
-                  studentToken ? "Learning" : lecturerToken ? "Creator" : ""
+                  studentToken ? "Projects" : lecturerToken ? "Creator" : ""
                 }
               >
-                <LearningIcon />
+                <DocumentIcon />
               </LinkNav>
             </li>
             <li className="mt-2">
