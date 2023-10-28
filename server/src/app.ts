@@ -16,7 +16,6 @@ import { passportAuthRouter } from "./routes/auth/passportAuth/passportAuth.rout
 import { fetchUserRoute } from "./routes/fetchData/userData.route";
 import { quoteRoute } from "./routes/quotes/quotes.route";
 import { cookie } from "./cookie/cookie.session";
-import { videoRouter } from "./routes/video/video.route";
 import { HttpMongoDBConnection } from "./database/database.connection";
 
 const app = express();
@@ -35,6 +34,5 @@ app.use(pinRouter);
 app.use(passportAuthRouter);
 app.use(fetchUserRoute);
 app.use(quoteRoute);
-app.use(videoRouter);
 
 export default app;

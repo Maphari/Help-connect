@@ -5,11 +5,12 @@ import { greetUserBasedOnTime } from "../../global/Functions.global";
 import { DashboardHeader } from "../UI/DashboardHeader";
 import { DashboardUI } from "../UI/DashboardUI";
 import { HiUser as StudentIcon } from "react-icons/hi2";
+import Cookies from "js-cookie";
 
 export const StudentProfile: FC = () => {
   const { student, google } = useContext<IDataObject>(FetchUserDataContext);
-  const tokenStudent = localStorage.getItem("student-token");
-  const googleToken = localStorage.getItem("student-google");
+  const tokenStudent = Cookies.get("student-token");
+  const googleToken = Cookies.get("student-google");
   const {
     firstName,
     address,

@@ -13,6 +13,7 @@ import { ChangeEventHTMLType } from "../../UI/Input.moreInfo";
 import { HiUser as UserIcon } from "react-icons/hi2";
 import { BsFillCameraFill as CameraIcon } from "react-icons/bs";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 interface IFileData {
   filename: string;
@@ -322,7 +323,7 @@ export const MoreInfoLecturer: React.FC = () => {
       const { lecturer } = res;
 
       if (lecturer.lecturerID) {
-        localStorage.setItem("lecturer-token", lecturer.lecturerID);
+        Cookies.set("lecturer-token", lecturer.lecturerID, {expires: 1})
         successNotification(res.message);
         navigate("/dashboard", { replace: true });
         window.location.reload();

@@ -19,7 +19,6 @@ import { useDispatch } from "react-redux";
 import axios, { AxiosError } from "axios";
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 
-
 interface IUserData {
   username: string;
   email: string;
@@ -52,6 +51,8 @@ export const StudentRegister: React.FC = () => {
       setUsernameError("");
     }
   };
+
+
 
   const emailValidatorHandler: () => void = function () {
     const emailRegex: RegExp | boolean =

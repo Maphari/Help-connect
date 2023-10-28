@@ -4,12 +4,13 @@ import { IDataObject } from "../../context/Context.config";
 import { greetUserBasedOnTime } from "../../global/Functions.global";
 import { DashboardHeader } from "../UI/DashboardHeader";
 import { DashboardUI } from "../UI/DashboardUI";
+import Cookies from "js-cookie";
 
 export const LecturerNotification: FC = () => {
   const { lecturer, google } =
     useContext<IDataObject>(FetchUserDataContext);
-  const tokenLecturer = localStorage.getItem("lecturer-token");
-  const googleTokenLecturer = localStorage.getItem("lecturer-google");
+  const tokenLecturer = Cookies.get("lecturer-token");
+  const googleTokenLecturer = Cookies.get("lecturer-google");
 
   return (
     <>

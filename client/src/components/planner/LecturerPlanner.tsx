@@ -5,12 +5,13 @@ import { greetUserBasedOnTime } from "../../global/Functions.global";
 import { DashboardHeader } from "../UI/DashboardHeader";
 import { DashboardUI } from "../UI/DashboardUI";
 import { DisplayPlanner } from "./DisplayPlanner";
+import Cookies from "js-cookie";
 
 export const LecturerPlanning: FC = () => {
   const { lecturer, google } =
   useContext<IDataObject>(FetchUserDataContext);
-  const tokenLecturer = localStorage.getItem("lecturer-token");
-  const googleTokenLecturer = localStorage.getItem("lecturer-google");
+  const tokenLecturer = Cookies.get("lecturer-token");
+  const googleTokenLecturer = Cookies.get("lecturer-google");
 
   return (
     <>

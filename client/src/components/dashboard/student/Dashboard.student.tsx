@@ -12,13 +12,14 @@ import { DashboardHeader } from "../../UI/DashboardHeader";
 import { DashboardUI } from "../../UI/DashboardUI";
 import { Course } from "../../UI/Course";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 export const DashBoardStudent: React.FC = () => {
   const { student, isLoading, google } =
     useContext<IDataObject>(FetchUserDataContext);
   const [dailyQuote, setDailyQuote] = useState<IQuote>(quoteStructure);
-  const tokenStudent = localStorage.getItem("student-token");
-  const googleTokenStudent = localStorage.getItem("student-google");
+  const tokenStudent = Cookies.get("student-token");
+  const googleTokenStudent = Cookies.get("student-google");
   const navigate: NavigateFunction = useNavigate();
 
   function navigateToNotification(): void {

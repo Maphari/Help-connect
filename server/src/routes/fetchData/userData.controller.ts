@@ -11,6 +11,8 @@ async function HttpGetUserDataController(req: Request, res: Response) {
     const student = await Student.findOne({ studentID: token });
     const lecturer = await Lecturer.findOne({ lecturerID: token });
 
+    // console.log(student, lecturer)
+
     if (student) {
       return res.status(200).json(student);
     } else if (lecturer) {

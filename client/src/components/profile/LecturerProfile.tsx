@@ -5,6 +5,7 @@ import { greetUserBasedOnTime } from "../../global/Functions.global";
 import { DashboardHeader } from "../UI/DashboardHeader";
 import { DashboardUI } from "../UI/DashboardUI";
 import { HiUser as StudentIcon } from "react-icons/hi2";
+import Cookies from "js-cookie";
 
 export const LecturerProfile: FC = () => {
   const { lecturer, google } = useContext<IDataObject>(FetchUserDataContext);
@@ -19,8 +20,8 @@ export const LecturerProfile: FC = () => {
     whatYouTeach,
     imageProperties,
   } = lecturer;
-  const tokenLecturer = localStorage.getItem("lecturer-token");
-  const googleTokenLecturer = localStorage.getItem("lecturer-google");
+  const tokenLecturer = Cookies.get("lecturer-token");
+  const googleTokenLecturer = Cookies.get("lecturer-google");
 
   function displayData(header: string, data: string): string | JSX.Element {
     return (

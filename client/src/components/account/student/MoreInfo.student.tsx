@@ -13,6 +13,7 @@ import { InputMoreInformation } from "./student.imports";
 import { ChangeEventHTMLType } from "../../UI/Input.moreInfo";
 
 import axios from "axios";
+import Cookies from "js-cookie";
 
 interface IFileData {
   filename: string;
@@ -296,7 +297,7 @@ export const MoreInfoStudent: React.FC = () => {
       const { student } = res;
 
       if (student.studentID) {
-        localStorage.setItem("student-token", student.studentID);
+        Cookies.set("student-token", student.studentID, {expires: 1})
         successNotification(res.message);
         navigate("/dashboard", { replace: true });
         window.location.reload();

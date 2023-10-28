@@ -22,12 +22,12 @@ import {
   Profile,
   Support,
   Notification,
-  LecturerLive,
 } from "./App.imports";
+import Cookies from "js-cookie";
 
-const studentToken = localStorage.getItem("student-token");
-const lecturerToken = localStorage.getItem("lecturer-token");
-const helperToken = localStorage.getItem("helper-token");
+const studentToken = Cookies.get("student-token");
+const lecturerToken = Cookies.get("lecturer-token");
+const helperToken = Cookies.get("helper-token");
 
 const AppRouter: React.FC = () => {
   return (
@@ -82,16 +82,16 @@ const AppRouter: React.FC = () => {
         element={studentToken || lecturerToken ? <Support /> : <Landing />}
       />
 
-      <Route
-        path="/:id/video"
+      {/* <Route
+        path="/room/:id"
         element={
           studentToken || lecturerToken ? (
-            <LecturerLive />
+            <Room />
           ) : (
             <Navigate to="/account/login-choice" replace={true} />
           )
         }
-      />
+      /> */}
 
       {/* VERIFY EMAIL ROUTE  */}
       <Route path="/:id/verify/email" element={<VerifyEmail />} />

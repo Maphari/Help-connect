@@ -14,6 +14,7 @@ import {
   successNotification,
 } from "../../../global/ToastNotification.function";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 interface IUserData {
   email: string;
@@ -88,7 +89,7 @@ export const LecturerLogin: React.FC = () => {
 
             successNotification(message);
             // saving token to local storage
-            localStorage.setItem("lecturer-token", lecturerID);
+            Cookies.set("lecturer-token", lecturerID);
             // dispatching data to redux store
             dispatch(SetLecturerID(lecturerID));
             dispatch(SetLecturerUsername(lecturerUsername));

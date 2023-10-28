@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./components/App/App.tsx";
 import "./sass/main.scss";
@@ -13,7 +13,8 @@ import { BrowserRouter } from "react-router-dom";
 import { FetchUserDataProvider } from "./context/FetchUserData.context.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <>
     <ToastContainer
       position="bottom-left"
       autoClose={5000}
@@ -33,5 +34,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </FetchUserDataProvider>
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+  </>
+  // </React.StrictMode>
 );

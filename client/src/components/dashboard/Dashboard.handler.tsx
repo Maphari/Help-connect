@@ -1,27 +1,27 @@
 import React, {
   DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES,
 } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import {
   DashBoardHelper,
   DashBoardLecturer,
   DashBoardStudent,
 } from "./Dashboard.imports";
+import Cookies from "js-cookie";
 
 export const DashBoardHandler: React.FC = () => {
-  const studentToken = localStorage.getItem("student-token");
-  const lecturerToken = localStorage.getItem("lecturer-token");
-  const helperToken = localStorage.getItem("helper-token");
-  const navigate = useNavigate()
-
+  const studentToken = Cookies.get("student-token");
+  const lecturerToken = Cookies.get("lecturer-token");
+  const helperToken = Cookies.get("helper-token");
+  // const navigate = useNavigate();
 
   const option:
     | "student"
     | "lecturer"
     | "helper"
     | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES
-    | null = studentToken
+    | undefined = studentToken
     ? "student"
     : lecturerToken
     ? "lecturer"
@@ -33,8 +33,5 @@ export const DashBoardHandler: React.FC = () => {
     return <DashBoardHelper />;
   } else if (option === "lecturer") {
     return <DashBoardLecturer />;
-  } else {
-    localStorage.clear()
-    navigate("/account/login-choice", {replace: true})
   }
 };

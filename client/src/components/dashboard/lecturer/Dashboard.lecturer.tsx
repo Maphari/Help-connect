@@ -18,14 +18,15 @@ import { BiSolidReport as ReportIcon } from "react-icons/bi";
 import { DashboardHeader } from "../../UI/DashboardHeader";
 import { DashboardUI } from "../../UI/DashboardUI";
 import { LecturerTracker } from "../../UI/LecturerTracker";
+import Cookies from "js-cookie";
 
 export const DashBoardLecturer: React.FC = () => {
   const { lecturer, isLoading, google } =
     useContext<IDataObject>(FetchUserDataContext);
   const colorToRenderBG = isStudentOrLecturer("300", "bg");
   const colorToRenderText = isStudentOrLecturer("500", "text");
-  const tokenLecturer = localStorage.getItem("lecturer-token");
-  const googleTokenLecturer = localStorage.getItem("lecturer-google");
+  const tokenLecturer = Cookies.get("lecturer-token");
+  const googleTokenLecturer = Cookies.get("lecturer-google");
 
   if (isLoading && lecturer) {
     return <p>Loading....</p>;

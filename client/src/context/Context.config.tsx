@@ -5,7 +5,7 @@ export interface IContext {
 }
 
 export interface IGetUserData {
-  token: string | null;
+  token: string | null | undefined;
 }
 
 export const ContextDataStructure = {

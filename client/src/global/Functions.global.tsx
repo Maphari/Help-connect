@@ -1,3 +1,4 @@
+
 type ColorToRender = string | null;
 function greetUserBasedOnTime(name: string | undefined): string {
   const time: number = new Date().getHours();
@@ -19,5 +20,8 @@ function isStudentOrLecturer(
 ) {
   return `${bg_text}-slate-${colorVisibility}`;
 }
+
+
+
 
 export { greetUserBasedOnTime, isStudentOrLecturer };

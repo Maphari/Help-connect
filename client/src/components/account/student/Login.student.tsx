@@ -17,6 +17,7 @@ import {
 import { useDispatch } from "react-redux";
 import axios, { AxiosError } from "axios";
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 
 interface IUserData {
   email: string;
@@ -92,7 +93,7 @@ export const StudentLogin: React.FC = () => {
 
             successNotification(message);
             // saving token to local storage
-            localStorage.setItem("student-token", studentID);
+            Cookies.set("student-token", studentID);
             // dispatching data to redux store
             dispatch(SetStudentID(studentID));
             dispatch(SetStudentUsername(studentUsername));
