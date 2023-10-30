@@ -14,8 +14,8 @@ export const DashboardHeader: FC<IHeader> = ({
   stylesSubHeader,
 }) => {
   return (
-    <section>
-      <h3 className={`${!stylesHeader ? "text-base " : stylesHeader}`}>
+    <section className="min-w-[200px]">
+      <h3 className={`${!stylesHeader ? "text-base " : stylesHeader} flex flex-nowrap`}>
         {header}
       </h3>
       <p

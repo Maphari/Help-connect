@@ -17,7 +17,6 @@ import { VerifyEmailPin } from "../account/email/VerifyEmail.pin";
 import { DashboardService } from "../account/service/Dashboard.service";
 import { DashBoardStudent } from "../dashboard/student/Dashboard.student";
 import { DashBoardLecturer } from "../dashboard/lecturer/Dashboard.lecturer";
-import { Learning } from "../learning/Learning";
 import { Planning } from "../planner/Planning";
 import { Community } from "../community/Community";
 import { Notification } from "../notification/Notification";
@@ -34,7 +33,6 @@ export { React };
 
 export {
   DashBoardHandler,
-  Learning,
   Planning,
   Notification,
   Community,

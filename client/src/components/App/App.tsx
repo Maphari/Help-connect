@@ -16,7 +16,6 @@ import {
   MoreInfoStudent,
   VerifyEmailPin,
   DashBoardHandler,
-  // Learning,
   Planning,
   Community,
   Profile,
@@ -24,7 +23,6 @@ import {
   Notification,
   StudentView,
   LecturerView,
-  // LecturerLive,
   UploadContainer,
   Project,
 } from "./App.imports";
@@ -196,7 +194,7 @@ const AppRouter: React.FC = () => {
           )
         }
       />
-
+     
       {/* LECTURER ROUTES */}
       <Route
         path="/lecturer/register-account"

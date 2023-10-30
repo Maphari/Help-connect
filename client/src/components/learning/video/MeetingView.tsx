@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
 import { ParticipantView } from "./ParticipantView";
 import { Controls } from "./Controls";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { HiUserGroup as CommunityIcon } from "react-icons/hi2";
+
+import { RoomIdView } from "./RoomIdView";
 
 // MeetingView and Controls components to manage features such as join, leave, mute and unmute.
 export function MeetingView({
@@ -30,48 +30,31 @@ export function MeetingView({
     setJoined("JOINING");
     join();
   };
-// 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
   return (
-    <div className="container flex w-screen h-screen justify-center items-center flex-col">
+    <section className="bg-[#1f1f1f] h-screen flex items-center justify-center flex-col">
       {joined && joined == "JOINED" ? (
-        <div>
-          <Controls />
-          {[...participants.keys()].map((participantId) => (
-            <ParticipantView
-              participantId={participantId}
-              key={participantId}
-            />
-          ))}
-        </div>
-      ) : joined && joined == "JOINING" ? (
-        <p>Joining the meeting...</p>
-      ) : (
-        <>
-          <header className="mb-7">
-            <span className="text-[7rem]">
-              <CommunityIcon />
-            </span>
-          </header>
-          <h3>Meeting Id: {meetingId}</h3>
-          <section className="flex items-center gap-3 flex-wrap">
-            <button
-              type="submit"
-              className="text-sm p-2 text-white bg-blue-950 mt-8 w-[10rem] rounded"
-              onClick={joinMeeting}
-            >
-              Join
-            </button>
-            <CopyToClipboard text={meetingId}>
-              <button
-                type="submit"
-                className="text-sm p-2 text-white bg-sky-950 mt-8 w-[10rem] rounded"
-              >
-                Copy Id
-              </button>
-            </CopyToClipboard>
+        <section>
+          <section className="flex gap-3 flex-wrap">
+            {[...participants.keys()].map((participantId) => (
+              <ParticipantView
+                participantId={participantId}
+                key={participantId}
+              />
+            ))}
           </section>
-        </>
+          <section className="mb-5 mx-[1rem] absolute bottom-0 left-14 flex items-center">
+            <Controls />
+          </section>
+        </section>
+      ) : joined && joined == "JOINING" ? (
+        <JoiningView />
+      ) : (
+        <RoomIdView meetingId={meetingId} joinMeeting={joinMeeting} />
       )}
-    </div>
+    </section>
   );
+}
+
+function JoiningView() {
+  return <p className="text-white">Joining the meeting...</p>;
 }

@@ -1,10 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FetchUserDataContext } from "../../../context/FetchUserData.context";
 import { IDataObject } from "../../../context/Context.config";
-import {
-  greetUserBasedOnTime,
-  isStudentOrLecturer,
-} from "../../../global/Functions.global";
+import { greetUserBasedOnTime } from "../../../global/Functions.global";
 import { IoNotifications as NotificationIcon } from "react-icons/io5";
 import {
   HiUser as ProfileIcon,
@@ -19,14 +16,22 @@ import { DashboardHeader } from "../../UI/DashboardHeader";
 import { DashboardUI } from "../../UI/DashboardUI";
 import { LecturerTracker } from "../../UI/LecturerTracker";
 import Cookies from "js-cookie";
+import { RiMenu3Fill as MenuIcon } from "react-icons/ri";
+import { CgClose as MenuCloseIcon } from "react-icons/cg";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+import { SmallScreenNav } from "../../navigation/SmallScreenNav";
 
 export const DashBoardLecturer: React.FC = () => {
   const { lecturer, isLoading, google } =
     useContext<IDataObject>(FetchUserDataContext);
-  const colorToRenderBG = isStudentOrLecturer("300", "bg");
-  const colorToRenderText = isStudentOrLecturer("500", "text");
+  const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
   const tokenLecturer = Cookies.get("lecturer-token");
   const googleTokenLecturer = Cookies.get("lecturer-google");
+  const navigate: NavigateFunction = useNavigate();
+
+  function navigateToNotification(): void {
+    navigate("/notification");
+  }
 
   if (isLoading && lecturer) {
     return <p>Loading....</p>;
@@ -50,12 +55,10 @@ export const DashBoardLecturer: React.FC = () => {
               />
             </div>
             <div className="flex items-center gap-3">
-              <div
-                className={`h-10 w-10 flex items-center justify-center text-xl rounded-full ${colorToRenderBG} hover:cursor-pointer`}
-              >
-                <span className={`${colorToRenderText}`}>
+              <div className="h-10 hide w-10 flex items-center justify-center text-2xl rounded-full bg-slate-200">
+                <div className="px-2 py-1 text-2xl text-slate-500">
                   <NotificationIcon />
-                </span>
+                </div>
               </div>
               {lecturer.imageProperties?.fileData ? (
                 <img
@@ -76,9 +79,38 @@ export const DashBoardLecturer: React.FC = () => {
                   </span>
                 </div>
               )}
+              <section className="menu">
+                {!isOpenMenu ? (
+                  <div
+                    onClick={() => setIsOpenMenu(true)}
+                    className="h-10 w-10 flex items-center justify-center text-2xl rounded-full bg-slate-200"
+                  >
+                    <span className="text-slate-600">
+                      <MenuIcon />
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => setIsOpenMenu(false)}
+                    className="h-10 w-10 flex items-center justify-center text-2xl rounded-full bg-slate-200"
+                  >
+                    <span className="text-slate-600">
+                      <MenuCloseIcon />
+                    </span>
+                  </div>
+                )}
+              </section>
             </div>
           </header>
-
+          {isOpenMenu && <SmallScreenNav />}
+          <div
+            onClick={navigateToNotification}
+            className="menu absolute rounded-full flex items-center justify-center bottom-5 h-12 w-12 text-white z-[99999999] right-5 bg-blue-950"
+          >
+            <div className="px-2 py-1 text-2xl ">
+              <NotificationIcon />
+            </div>
+          </div>
           <section className="mt-10 flex gap-3">
             <section className="flex-1 flex flex-col gap-3">
               <section className="flex flex-wrap gap-3">
@@ -129,7 +161,7 @@ export const DashBoardLecturer: React.FC = () => {
                 </section>
               </section>
               <section className="flex flex-wrap gap-3">
-                <section className="bg-white p-5 rounded border">
+                <section className="bg-white flex-1 p-5 rounded border">
                   <DashboardHeader
                     header="Lecturer events"
                     subHeader="Here you will find listing of all events so that you created"

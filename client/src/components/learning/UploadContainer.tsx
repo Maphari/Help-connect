@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LecturerTracker } from "../UI/LecturerTracker";
 import {
   BsCameraVideoFill as LearningIcon,
@@ -9,9 +9,14 @@ import { BiSolidReport as ReportIcon } from "react-icons/bi";
 import { AiOutlineClose as CloseIcon } from "react-icons/ai";
 import { DashboardHeader } from "../UI/DashboardHeader";
 import { DashboardActionHeader } from "../UI/DashboardActionHeader";
-// import { IDataObject } from "../../context/Context.config";
-// import { FetchUserDataContext } from "../../context/FetchUserData.context";
-import { failedNotification } from "../../global/ToastNotification.function";
+import { IDataObject } from "../../context/Context.config";
+import { FetchUserDataContext } from "../../context/FetchUserData.context";
+import {
+  failedNotification,
+  successNotification,
+} from "../../global/ToastNotification.function";
+import axios from "axios";
+import { Announcement } from "./Announcement";
 
 type HTMLEventInput =
   | React.ChangeEvent<HTMLInputElement>
@@ -23,8 +28,8 @@ interface IFileData {
 }
 
 export const UploadContainer: React.FC = () => {
-  // const { lecturer } = useContext<IDataObject>(FetchUserDataContext);
-  // const { whatYouTeach } = lecturer;
+  const { lecturer } = useContext<IDataObject>(FetchUserDataContext);
+  const { whatYouTeach } = lecturer;
   const [isUploadVideoModal, setIsUploadVideoModal] = useState<boolean>(false);
   const [isUploadFileModal, setIsUploadFileModal] = useState<boolean>(false);
   const [isUploadAnnouncementModal, setIsUploadAnnouncementModal] =
@@ -38,7 +43,9 @@ export const UploadContainer: React.FC = () => {
 
   const [videoTopic, setVideoTopic] = useState<string>("");
   const [videoDescription, setVideoDescription] = useState<string>("");
-  const [videoTeachingLevel, setVideoTeachingLevel] = useState<string>("");
+  const [videoTeachingLevel, setVideoTeachingLevel] = useState<string>(
+    whatYouTeach as string
+  );
   const [videoUploadError, setVideoUploadError] = useState<string>("");
   const [videoTopicError, setVideoTopicError] = useState<string>("");
   const [videoDescriptionError, setVideoDescriptionError] =
@@ -52,7 +59,9 @@ export const UploadContainer: React.FC = () => {
   );
   const [fileTopic, setFileTopic] = useState<string>("");
   const [fileDescription, setFileDescription] = useState<string>("");
-  const [fileTeachingLevel, setFileTeachingLevel] = useState<string>("");
+  const [fileTeachingLevel, setFileTeachingLevel] = useState<string>(
+    whatYouTeach as string
+  );
   const [fileUploadError, setFileUploadError] = useState<string>("");
   const [fileTopicError, setFileTopicError] = useState<string>("");
   const [fileDescriptionError, setFileDescriptionError] = useState<string>("");
@@ -63,7 +72,7 @@ export const UploadContainer: React.FC = () => {
   const [announcementDescription, setAnnouncementDescription] =
     useState<string>("");
   const [announcementTeachingLevel, setAnnouncementTeachingLevel] =
-    useState<string>("");
+    useState<string>(whatYouTeach as string);
   const [announcementTopicError, setAnnouncementTopicError] =
     useState<string>("");
   const [announcementDescriptionError, setAnnouncementDescriptionError] =
@@ -75,7 +84,9 @@ export const UploadContainer: React.FC = () => {
   const [eventStartDate, setEventStartDate] = useState<string>("");
   const [eventEndDate, setEventEndDate] = useState<string>("");
   const [eventDescription, setEventDescription] = useState<string>("");
-  const [eventTeachingLevel, setEventTeachingLevel] = useState<string>("");
+  const [eventTeachingLevel, setEventTeachingLevel] = useState<string>(
+    whatYouTeach as string
+  );
   const [eventTopicError, setEventTopicError] = useState<string>("");
   const [eventDescriptionError, setEventDescriptionError] =
     useState<string>("");
@@ -83,8 +94,9 @@ export const UploadContainer: React.FC = () => {
     useState<string>("");
   const [eventStartDateError, setEventStartDateError] = useState<string>("");
   const [eventEndDateError, setEventEndDateError] = useState<string>("");
-
   const textAreaMaxLength: number = 2000;
+
+  const [announcementData, setAnnouncementData] = useState<string[]>([])
 
   function OpenUploadVideoModalHandler(): void {
     setIsUploadVideoModal(true);
@@ -310,10 +322,8 @@ export const UploadContainer: React.FC = () => {
   function announcementTeachingLevelHandler(e: HTMLEventInput) {
     setAnnouncementTeachingLevel(e.target.value);
 
-    if (videoTeachingLevel.length < 3) {
-      setAnnouncementTeachingLevelError(
-        "Teaching level must be at least 3 characters"
-      );
+    if (!announcementTeachingLevel) {
+      setAnnouncementTeachingLevelError("Level is required");
     } else {
       setAnnouncementTeachingLevelError("");
     }
@@ -407,16 +417,36 @@ export const UploadContainer: React.FC = () => {
     }
   }
 
-  function onSubmitAnnouncementHandler(
+  async function onSubmitAnnouncementHandler(
     e: React.FormEvent<HTMLFormElement>
-  ): void {
+  ): Promise<void> {
     try {
       e.preventDefault();
+      if (
+        !announcementDescription ||
+        !announcementTeachingLevel ||
+        !announcementTopic
+      ) {
+        failedNotification("Please fill all the field");
+      } else {
+        const data: {
+          announcementDescription: string;
+          announcementTeachingLevel: string;
+          announcementTopic: string;
+          email: string;
+        } = {
+          announcementDescription: announcementDescription,
+          announcementTeachingLevel: announcementTeachingLevel,
+          announcementTopic: announcementTopic,
+          email: lecturer.email as string,
+        };
 
-      const formData: FormData = new FormData();
-      formData.append("announcement-topic", announcementTopic);
-      formData.append("announcement-teaching-level", announcementTeachingLevel);
-      formData.append("announcement-description", announcementDescription);
+        const res = await axios.post("/api/announcement", data);
+
+        console.log(res);
+
+        successNotification("Announcement created successfully 😎");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -439,6 +469,16 @@ export const UploadContainer: React.FC = () => {
       console.error(error);
     }
   }
+
+  useEffect(() => {
+    async function getAnnouncement() {
+      const res = await axios.get("/api/fetch-announcement");
+      setAnnouncementData(res.data)
+    }
+    getAnnouncement();
+  }, [lecturer.email]);
+
+  console.log(announcementData)
 
   return (
     <>
@@ -1042,6 +1082,12 @@ export const UploadContainer: React.FC = () => {
             </section>
           </section>
         )}
+      </section>
+
+
+
+      <section className="px-14 mt-10">
+        <Announcement />
       </section>
     </>
   );

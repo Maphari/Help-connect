@@ -1,12 +1,15 @@
 import React from 'react';
-import Call from './Call.png';
+import Call from '../../assets/images/Call.png';
 
 export const ContactForm: React.FC = () => {
   return (
     <>
     <div className="contact-form">
-      <h1>Contact Help Connect</h1>
+      <h1>Help And Support</h1>
       <div className="container">
+      <p>If you are experiencing any difficulties or may have 
+        have any questions to ask,feel free to contact Help Connect and 
+      you will be provided with the help you need. </p>
         <div className="main">
           <div className="content">
             <h2>Contact Us</h2>

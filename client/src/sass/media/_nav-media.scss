@@ -8,6 +8,12 @@
     display: none;
   }
 }
+@media screen and (width < 700px) {
+  .hide {
+    display: none;
+  }
+}
+
 @media screen and (width <= 700px) {
   .inner-menu {
     display: none;

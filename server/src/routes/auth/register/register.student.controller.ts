@@ -67,10 +67,10 @@ async function HttpRegisterStudentController(
 
       student.studentID = studentToken;
 
-      if (req.session) {
-        req.session.user = { ...student };
-        await new Promise<void>((resolve) => setTimeout(() => resolve(), 5)); // wait for the session to be saved before sending response back
-      }
+      // if (req.session) {
+      //   req.session.user = { ...student };
+      //   await new Promise<void>((resolve) => setTimeout(() => resolve(), 5)); // wait for the session to be saved before sending response back
+      // }
 
       return res.json({
         message: "Student already exists",

@@ -39,7 +39,7 @@ export const Hero: React.FC = () => {
           <img
             src={Hero_Image}
             alt="alt"
-            className="absolute -left-0 top-[51%] w-[35rem] object-cover -z-20"
+            className="absolute -left-0 top-[51%] h-auto w-[35rem] object-cover -z-20"
           />
           <section className="hero-container__inner">
             <motion.h1
@@ -69,7 +69,7 @@ export const Hero: React.FC = () => {
                 Subscribe to our news letter
               </motion.h3>
               <motion.div
-                className="flex items-center justify-center w-[70%] mx-auto border border-[#042767] border-opacity-40 rounded-lg"
+                className="flex items-center justify-center email-container flex-wrap  mx-auto border border-[#042767] border-opacity-40 rounded-lg"
                 initial={{ opacity: 0, y: -23 }}
                 whileInView={{ opacity: 1, y: 0}}
                 transition={transition}
@@ -79,11 +79,11 @@ export const Hero: React.FC = () => {
                   placeholder="Enter your email to subscribe"
                   onChange={(e) => onEmailChangeHandler(e)}
                   value={email}
-                  className="flex-1 bg-slate-200 rounded-l-lg outline-none py-2 px-4"
+                  className="flex-1 email bg-slate-200 rounded-l-lg outline-none py-2 px-4"
                 />
                 <motion.button
                   type="submit"
-                  className="p-2 bg-[#042767] border border-[#042767] rounded-r-lg text-white"
+                  className="p-2 bg-[#042767] border border-[#042767] email-btn rounded-r-lg text-white"
                   initial={{ opacity: 0, y: -23 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={transition}
@@ -95,8 +95,8 @@ export const Hero: React.FC = () => {
           </section>
         </section>
       </section>
-      <div className="h-40 w-40 rounded-full bg-purple-900 absolute  left-28 top-28 -z-50"></div>
-      <div className="h-[15rem] w-[15rem] rounded-full bg-purple-900 absolute  right-0 top-0 -z-50"></div>
+      <div className="h-40 w-40 rounded-full bg-purple-900 absolute  left-28 top-28 -z-50 element"></div>
+      <div className="h-[15rem] w-[15rem] rounded-full bg-purple-900 absolute  right-0 top-0 -z-50 element"></div>
     </>
   );
 };

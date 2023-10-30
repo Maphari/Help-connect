@@ -1,11 +1,25 @@
 import { useParticipant } from "@videosdk.live/react-sdk";
 import { useEffect, useMemo, useRef } from "react";
 import ReactPlayer from "react-player";
+import {
+  BsFillMicFill as OpenMicIcon,
+  BsCameraVideoFill as OpenWebCamIcon,
+  BsFillMicMuteFill as CloseMicIcon,
+  BsFillCameraVideoOffFill as CloseWebCamIcon
+} from "react-icons/bs";
 
 export function ParticipantView({ participantId }: { participantId: string }) {
   const micRef = useRef<HTMLAudioElement>(null);
-  const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } =
+  const { webcamStream, micStream, webcamOn, micOn, isLocal } =
     useParticipant(participantId);
+
+  // function RenderProfile() {
+  //   return (
+  //     <>
+  //       <h1>Profile data</h1>
+  //     </>
+  //   );
+  // }
 
   const videoStream = useMemo(() => {
     if (webcamOn && webcamStream) {
@@ -34,31 +48,42 @@ export function ParticipantView({ participantId }: { participantId: string }) {
   }, [micStream, micOn]);
 
   return (
-    <div key={participantId}>
-      <p>
-        Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
-        {micOn ? "ON" : "OFF"}
-      </p>
+    <section
+      className="bg-[#3e3e3e] text-white drop-shadow-xl p-3 rounded"
+      key={participantId}
+    >
+      <section>
+        <section className="flex items-center gap-4">
+          <div className="mb-2 text-sm">
+            {micOn ? <OpenMicIcon /> : <CloseMicIcon />}
+          </div>
+          <div className="mb-2 text-sm">
+            {webcamOn ? <OpenWebCamIcon /> : <CloseWebCamIcon />}
+          </div>
+        </section>
+      </section>
       <audio ref={micRef} autoPlay muted={isLocal} />
       {webcamOn && (
         <ReactPlayer
-          //
           playsinline // very very imp prop
           pip={false}
           light={false}
           controls={false}
           muted={true}
           playing={true}
-          //
+          width={"100%"}
           url={videoStream}
-          //
-          height={"200px"}
-          width={"300px"}
           onError={(err) => {
             console.log(err, "participant video error");
           }}
         />
-      )}
-    </div>
+      ) }
+    </section>
   );
 }
+
+// : (
+//   <section className="rounded">
+//     <RenderProfile />
+//   </section>
+// )

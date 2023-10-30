@@ -32,7 +32,7 @@ export const LinkNav: FC<ILinkNav> = ({
     >
       <div className="flex items-center gap-2 text-gray-600">
         <span className={`text-lg text-slate-500`}>{children}</span>
-        <span className={`text-sm hide-small-screen`}>{name}</span>
+        <span className={`text-sm`}>{name}</span>
       </div>
     </Link>
   );

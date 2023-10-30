@@ -87,7 +87,7 @@ export const Navigation: React.FC = () => {
         </div>
       </motion.nav>
       {isOpen && (
-        <section className="menu-open absolute top-0 left-0 w-full bg-slate-100 h-screen p-[1.8rem]">
+        <section className="menu-open z-[9999999999] absolute top-0 left-0 w-full bg-slate-100 h-screen p-[1.8rem]">
           <div className=" flex items-center justify-between ">
             <Link to="/" className="nav-container__header">
               <h1>Help Connect</h1>
@@ -99,6 +99,33 @@ export const Navigation: React.FC = () => {
               <CgClose />
             </div>
           </div>
+
+          <section>
+            <ul className="mt-10 flex flex-wrap gap-4 flex-col">
+              <li className="p-2 bg-slate-200 rounded">
+                <LinkTag to="/" name="Home" />
+              </li>
+              <li  className="p-2 bg-slate-200 rounded">
+                <LinkTag to="#course" name="Course" />
+              </li>
+              <li className="p-2 bg-slate-200 rounded">
+                <LinkTag to="#pricing" name="Pricing" />
+              </li>
+              <li className="p-2 bg-slate-200 rounded">
+                <LinkTag to="#about" name="About" />
+              </li>
+            </ul>
+            <div className="flex items-center gap-2 mt-5">
+            <ButtonPrimary
+              name="Register"
+              onclickFunc={navigateUserToRegister.bind(this)}
+            />
+            <ButtonSecondary
+              name="Login"
+              onClickFunc={navigateUserToLogin.bind(this)}
+            />
+          </div>
+          </section>
         </section>
       )}
     </>

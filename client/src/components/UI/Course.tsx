@@ -20,7 +20,7 @@ export const Course: FC<ILecturerTracker> = ({
 }) => {
   return (
     <div
-      className={`h-48 w-52 flex flex-col items-center justify-center ${bgStyle} p-4 rounded transition-all duration-700 ease-linear ${hoverStyle}`}
+      className={`h-48 course-media w-52 flex flex-col items-center justify-center ${bgStyle} p-4 rounded transition-all duration-700 ease-linear ${hoverStyle}`}
     >
       <span className={`${!styles ? "text-3xl" : styles} ${iconStyle}`}>
         <CourseIcon />

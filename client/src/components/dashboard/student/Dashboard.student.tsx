@@ -10,14 +10,20 @@ import { IQuote, quoteStructure } from "../Dashboard.config";
 import { DailyQuotes } from "../Dashboard.imports";
 import { DashboardHeader } from "../../UI/DashboardHeader";
 import { DashboardUI } from "../../UI/DashboardUI";
-import { Course } from "../../UI/Course";
+// import { Course } from "../../UI/Course";
 import axios from "axios";
+import { RiMenu3Fill as MenuIcon } from "react-icons/ri";
+import { CgClose as MenuCloseIcon } from "react-icons/cg";
 import Cookies from "js-cookie";
+import { SmallScreenNav } from "../../navigation/SmallScreenNav";
+import { IoCloseSharp as CloseIcon } from "react-icons/io5";
 
 export const DashBoardStudent: React.FC = () => {
+  const [isAddingCourse, setIsAddingCourse] = useState<boolean>(false);
   const { student, isLoading, google } =
     useContext<IDataObject>(FetchUserDataContext);
   const [dailyQuote, setDailyQuote] = useState<IQuote>(quoteStructure);
+  const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
   const tokenStudent = Cookies.get("student-token");
   const googleTokenStudent = Cookies.get("student-google");
   const navigate: NavigateFunction = useNavigate();
@@ -42,7 +48,7 @@ export const DashBoardStudent: React.FC = () => {
     return (
       <>
         <DashboardUI>
-          <header className="flex items-center justify-between">
+          <header className="flex relative dashboard-header items-center justify-between">
             <div>
               <DashboardHeader
                 header="Dashboard"
@@ -58,13 +64,10 @@ export const DashBoardStudent: React.FC = () => {
               />
             </div>
             <div className="flex items-center gap-3 hover:cursor-pointer">
-              <div
-                onClick={navigateToNotification}
-                className="h-10 w-10 flex items-center justify-center text-xl rounded-full bg-slate-200"
-              >
-                <span className="text-slate-500">
+              <div className="h-10 hide w-10 flex items-center justify-center text-2xl rounded-full bg-slate-200">
+                <div className="px-2 py-1 text-2xl text-slate-500">
                   <NotificationIcon />
-                </span>
+                </div>
               </div>
               {student.imageProperties?.fileData ? (
                 <img
@@ -72,22 +75,57 @@ export const DashBoardStudent: React.FC = () => {
                   alt={student.imageProperties.filename}
                   className="h-10 w-10 border rounded-full"
                 />
-              ) : googleTokenStudent ? (<img
-                src={google.profile}
-                alt={google.names}
-                className="h-10 w-10 border rounded-full"
-              />) : (
+              ) : googleTokenStudent ? (
+                <img
+                  src={google.profile}
+                  alt={google.names}
+                  className="h-10 w-10 border rounded-full"
+                />
+              ) : (
                 <div className="h-10 w-10 flex items-center justify-center text-xl rounded-full bg-slate-200">
                   <span className="text-slate-500">
                     <ProfileIcon />
                   </span>
                 </div>
               )}
+              <section className="menu">
+                {!isOpenMenu ? (
+                  <div
+                    onClick={() => setIsOpenMenu(true)}
+                    className="h-10 w-10 flex items-center justify-center text-2xl rounded-full bg-slate-200"
+                  >
+                    <span className="text-slate-600">
+                      <MenuIcon />
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => setIsOpenMenu(false)}
+                    className="h-10 w-10 flex items-center justify-center text-2xl rounded-full bg-slate-200"
+                  >
+                    <span className="text-slate-600">
+                      <MenuCloseIcon />
+                    </span>
+                  </div>
+                )}
+              </section>
             </div>
           </header>
-
+          {isOpenMenu && (
+            <section className="menu">
+              <SmallScreenNav />
+            </section>
+          )}
+          <div
+            onClick={navigateToNotification}
+            className="menu absolute rounded-full flex items-center justify-center bottom-5 h-12 w-12 text-white z-[99999999] right-5 bg-blue-950"
+          >
+            <div className="px-2 py-1 text-2xl ">
+              <NotificationIcon />
+            </div>
+          </div>
           <section className="mt-10 flex gap-3">
-            <section className="flex-1 flex flex-col gap-3">
+            <section className="flex-1 flex flex-wrap flex-col gap-3">
               <section className="flex flex-wrap gap-3">
                 <section className="bg-white p-5 rounded border flex flex-col flex-wrap flex-1">
                   <DashboardHeader
@@ -95,8 +133,11 @@ export const DashBoardStudent: React.FC = () => {
                     subHeader="Here you will find the overview for the courses that you
                       will be studying."
                   />
-                  <section className="mt-7 flex gap-3 items-center">
-                    <div className="h-48 w-52 flex flex-col items-center justify-center bg-green-50 p-4 rounded transition-all duration-700 ease-linear hover:cursor-pointer hover:bg-green-100">
+                  <section className="mt-7 flex flex-wrap gap-3 items-center">
+                    <div
+                      onClick={() => setIsAddingCourse(true)}
+                      className="h-48 course-media w-52 flex flex-col items-center justify-center bg-green-50 p-4 rounded transition-all duration-700 ease-linear hover:cursor-pointer hover:bg-green-100"
+                    >
                       <span className="text-4xl text-green-500">
                         <AddIcon />
                       </span>
@@ -106,7 +147,26 @@ export const DashBoardStudent: React.FC = () => {
                         new course. giving you extra lessons you wished for.
                       </p>
                     </div>
-                    <section>
+                    {isAddingCourse && (
+                      <section className="absolute top-0 left-0 w-full h-screen bg-opacity-60 bg-black flex items-center justify-center">
+                        <section className="bg-white w-1/2 p-4 rounded">
+                          <header className="flex items-center justify-between">
+                            <h1 className="text-base">Adding Course</h1>
+                            <button
+                              className="flex items-center text-sm bg-red-300 p-2"
+                              onClick={() => setIsAddingCourse(false)}
+                              type="submit"
+                            >
+                              <span>
+                                <CloseIcon />
+                              </span>
+                              <span>Close</span>
+                            </button>
+                          </header>
+                        </section>
+                      </section>
+                    )}
+                    {/* <section>
                       <Course
                         header={"Primary course"}
                         hoverStyle={"hover:bg-cyan-100 hover:cursor-pointer"}
@@ -116,12 +176,12 @@ export const DashBoardStudent: React.FC = () => {
                         bgStyle={"bg-cyan-50"}
                         iconStyle={"text-cyan-500"}
                       />
-                    </section>
+                    </section> */}
                   </section>
                 </section>
               </section>
               <section className="flex flex-wrap gap-3">
-                <section className="bg-white p-5 rounded border">
+                <section className="bg-white flex-1 p-5 rounded border">
                   <DashboardHeader
                     header="Upcoming events"
                     subHeader=" Here you will find listing of all upcoming events so that you don't miss any."
@@ -136,7 +196,7 @@ export const DashBoardStudent: React.FC = () => {
                   />
                   <section className="mt-7"></section>
                 </section>
-                <section className="bg-white p-5 w-1/4 rounded border">
+                <section className="bg-white flex-1 p-5 rounded border">
                   <DashboardHeader header="Daily motivations" subHeader="" />
                   <section className="mt-3">
                     <DailyQuotes
