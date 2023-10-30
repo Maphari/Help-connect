@@ -17,6 +17,7 @@ import {
 } from "../../global/ToastNotification.function";
 import axios from "axios";
 import { Announcement } from "./Announcement";
+import { Event } from "./Event";
 
 type HTMLEventInput =
   | React.ChangeEvent<HTMLInputElement>
@@ -96,7 +97,8 @@ export const UploadContainer: React.FC = () => {
   const [eventEndDateError, setEventEndDateError] = useState<string>("");
   const textAreaMaxLength: number = 2000;
 
-  const [announcementData, setAnnouncementData] = useState<string[]>([])
+  const [announcementData, setAnnouncementData] = useState<string[]>([]);
+  const [eventData, setEventData] = useState<string[]>([]);
 
   function OpenUploadVideoModalHandler(): void {
     setIsUploadVideoModal(true);
@@ -333,7 +335,7 @@ export const UploadContainer: React.FC = () => {
   function eventTopicHandler(e: HTMLEventInput) {
     setEventTopic(e.target.value);
 
-    if (announcementTopic.length < 3) {
+    if (eventTopic.length < 1) {
       setEventTopicError("Topic must be at least 3 characters");
     } else {
       setEventTopicError("");
@@ -442,9 +444,7 @@ export const UploadContainer: React.FC = () => {
         };
 
         const res = await axios.post("/api/announcement", data);
-
-        console.log(res);
-
+        res.data && setIsUploadAnnouncementModal(false);
         successNotification("Announcement created successfully 😎");
       }
     } catch (error) {
@@ -452,19 +452,45 @@ export const UploadContainer: React.FC = () => {
     }
   }
 
-  function onSubmitEventHandler(e: React.FormEvent<HTMLFormElement>): void {
+  async function onSubmitEventHandler(
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> {
     try {
       e.preventDefault();
 
       startDateEventError();
       endDateEventError();
 
-      const formData: FormData = new FormData();
-      formData.append("event-topic", eventTopic);
-      formData.append("event-teaching-level", eventTeachingLevel);
-      formData.append("event-description", eventDescription);
-      formData.append("startDate", eventStartDate);
-      formData.append("endDate", eventEndDate);
+      if (
+        !eventDescription ||
+        !eventTeachingLevel ||
+        !eventTopic ||
+        !eventStartDate ||
+        !eventEndDate
+      ) {
+        failedNotification("Please fill all the field");
+      } else {
+        const data: {
+          email: string;
+          eventDescription: string;
+          eventTeachingLevel: string;
+          eventTopic: string;
+          eventStartDate: string;
+          eventEndDate: string;
+        } = {
+          email: lecturer.email as string,
+          eventDescription: eventDescription,
+          eventTeachingLevel: eventTeachingLevel,
+          eventTopic: eventTopic,
+          eventStartDate: eventStartDate,
+          eventEndDate: eventEndDate,
+        };
+
+        const res = await axios.post("/api/event", data);
+        res.data ? setIsUploadEventModal(false) : null;
+        console.log(res.data);
+        successNotification("Event created successfully");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -473,12 +499,20 @@ export const UploadContainer: React.FC = () => {
   useEffect(() => {
     async function getAnnouncement() {
       const res = await axios.get("/api/fetch-announcement");
-      setAnnouncementData(res.data)
+      setAnnouncementData(res.data);
     }
     getAnnouncement();
-  }, [lecturer.email]);
+  }, []);
 
-  console.log(announcementData)
+  useEffect(() => {
+    async function getEvent() {
+      const res = await axios.get("/api/fetch-event");
+      setEventData(res.data);
+    }
+    getEvent();
+  }, []);
+
+  console.log(eventData)
 
   return (
     <>
@@ -555,7 +589,9 @@ export const UploadContainer: React.FC = () => {
             children={<LearningIcon />}
           />
           <LecturerTracker
-            header="0 Announcements"
+            header={`${
+              announcementData ? announcementData.length : 0
+            } Announcements`}
             bgStyle="bg-violet-50 hover:cursor-pointer"
             iconStyle="text-violet-500"
             styles="text-3xl"
@@ -563,21 +599,21 @@ export const UploadContainer: React.FC = () => {
             children={<WriteIcon />}
           />
           <LecturerTracker
-            header="0 Events"
+            header={`${eventData ? eventData.length : 0} Events`}
             bgStyle="bg-yellow-50 hover:cursor-pointer"
             iconStyle="text-yellow-500"
             explanation="Track how many ratings you already have so far. You'll get some motivation"
             styles="text-3xl"
             children={<EventIcon />}
           />
-          <LecturerTracker
+          {/* <LecturerTracker
             header="0 Reports"
             bgStyle="bg-red-50 hover:cursor-pointer"
             iconStyle="text-red-500"
             explanation="Track how many reports you already have so far. So that you can improve based on that report"
             styles="text-3xl"
             children={<ReportIcon />}
-          />
+          /> */}
         </section>
 
         {isUploadVideoModal && (
@@ -869,7 +905,7 @@ export const UploadContainer: React.FC = () => {
                     htmlFor="event-topic"
                     className="text-sm text-gray-500"
                   >
-                    Announcement Topic
+                    Event Topic
                   </label>
                   <input
                     id="event-topic"
@@ -1084,10 +1120,12 @@ export const UploadContainer: React.FC = () => {
         )}
       </section>
 
-
+      <section className="px-14 mt-10">
+        <Announcement data={announcementData} />
+      </section>
 
       <section className="px-14 mt-10">
-        <Announcement />
+        <Event data={eventData} />
       </section>
     </>
   );

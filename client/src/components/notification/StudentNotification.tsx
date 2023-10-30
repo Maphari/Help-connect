@@ -30,6 +30,12 @@ export const StudentNotification: FC = () => {
             />
           </div>
         </header>
+
+        <section>
+          <div>
+            
+          </div>
+        </section>
       </DashboardUI>
     </>
   );
