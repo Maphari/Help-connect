@@ -26,7 +26,7 @@ import { DashBoardHandler } from "../dashboard/Dashboard.handler";
 import { LecturerLive } from "../learning/video/LecturerLive";
 import { StudentView } from "../learning/video/StudentView";
 import { LecturerView } from "../learning/video/LecturerView";
-import { UploadContainer } from "../learning/UploadContainer";
+import { Creator } from "../learning/Creator";
 import { Project } from "../project/Project";
 
 export { React };
@@ -41,7 +41,7 @@ export {
   LecturerLive,
   StudentView,
   LecturerView,
-  UploadContainer,
+  Creator,
   Project,
 };
 

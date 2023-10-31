@@ -17,7 +17,21 @@ const transition: IFramerTransition = {
   type: "spring",
 };
 
-export const Comment: React.FC = () => {
+interface IComments {
+  name: string;
+  comment: string;
+  course: string;
+  src: string;
+  alt: string;
+}
+
+export const Comment: React.FC<IComments> = ({
+  name,
+  comment,
+  course,
+  alt,
+  src,
+}) => {
   return (
     <motion.div
       className="bg-white p-7 w-[400px] rounded drop-shadow-xl"
@@ -26,17 +40,13 @@ export const Comment: React.FC = () => {
       transition={transition}
     >
       <div className="flex items-center gap-3">
-        <div className="h-12 w-12 rounded-full bg-violet-800"></div>
+        <img src={src} alt={alt} className="h-12 w-12 object-cover rounded-full" />
         <div>
-          <h3 className="text-[15px]">username</h3>
-          <p className="text-[11px] text-violet-950 opacity-90">course name</p>
+          <h3 className="text-[15px]">{name}</h3>
+          <p className="text-[11px] text-violet-950 opacity-90">{course}</p>
         </div>
       </div>
-      <p className="my-3 text-[12px] text-violet-950 opacity-90">
-        this accounting course from help connect is the best course that i have
-        ever took and i can say that help connect is the best online course site
-        i decently recommend you to check it out!!
-      </p>
+      <p className="my-3 text-[12px] text-violet-950 opacity-90">{comment}</p>
       <div className="flex items-center justify-start gap-2">
         <span className="text-yellow-500">
           <FillStarIcon />

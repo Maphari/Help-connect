@@ -5,12 +5,12 @@ import {
   BsFillMicFill as OpenMicIcon,
   BsCameraVideoFill as OpenWebCamIcon,
   BsFillMicMuteFill as CloseMicIcon,
-  BsFillCameraVideoOffFill as CloseWebCamIcon
+  BsFillCameraVideoOffFill as CloseWebCamIcon,
 } from "react-icons/bs";
 
 export function ParticipantView({ participantId }: { participantId: string }) {
   const micRef = useRef<HTMLAudioElement>(null);
-  const { webcamStream, micStream, webcamOn, micOn, isLocal } =
+  const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } =
     useParticipant(participantId);
 
   // function RenderProfile() {
@@ -53,11 +53,16 @@ export function ParticipantView({ participantId }: { participantId: string }) {
       key={participantId}
     >
       <section>
-        <section className="flex items-center gap-4">
-          <div className="mb-2 text-sm">
+        <section className="flex items-center gap-4 w-full mb-3">
+          <div className="text-sm">
+            <span>Participant ID: {participantId}</span>
+            {" | "}
+            <span>Names: {displayName}</span>
+          </div>
+          <div className="text-sm">
             {micOn ? <OpenMicIcon /> : <CloseMicIcon />}
           </div>
-          <div className="mb-2 text-sm">
+          <div className="text-sm">
             {webcamOn ? <OpenWebCamIcon /> : <CloseWebCamIcon />}
           </div>
         </section>
@@ -77,7 +82,7 @@ export function ParticipantView({ participantId }: { participantId: string }) {
             console.log(err, "participant video error");
           }}
         />
-      ) }
+      )}
     </section>
   );
 }

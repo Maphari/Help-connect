@@ -5,7 +5,7 @@ import LOGO from "../../assets/favicon.ico";
 import { BiSolidDashboard as DashboardIcon } from "react-icons/bi";
 import { BsCameraVideoFill as LearningIcon } from "react-icons/bs";
 import {
-  IoNotifications as NotificationIcon,
+  // IoNotifications as NotificationIcon,
   IoLogOut as LogoutIcon,
 } from "react-icons/io5";
 import { BsFillCalendarCheckFill as PlannerIcon } from "react-icons/bs";
@@ -13,7 +13,7 @@ import { MdContactSupport as SupportIcon } from "react-icons/md";
 import {
   HiUserGroup as CommunityIcon,
   HiUser as StudentIcon,
-  HiDocumentText as DocumentIcon,
+  // HiDocumentText as DocumentIcon,
 } from "react-icons/hi2";
 import { FaUserTie as LecturerIcon } from "react-icons/fa6";
 import HELP_CONNECT_VERSION from "../../../package.json";
@@ -57,7 +57,7 @@ export const SideNavigation: FC = () => {
                 <LearningIcon />
               </LinkNav>
             </li>
-            <li className="mt-2">
+            {/* <li className="mt-2">
               <LinkNav
                 path={studentToken ? "/project" : lecturerToken  ? "/creator" : ""}
                 name={
@@ -66,7 +66,7 @@ export const SideNavigation: FC = () => {
               >
                 <DocumentIcon />
               </LinkNav>
-            </li>
+            </li> */}
             <li className="mt-2">
               <LinkNav path="/planning" name="My Planning">
                 <span className="text-[0.9rem]">
@@ -74,11 +74,11 @@ export const SideNavigation: FC = () => {
                 </span>
               </LinkNav>
             </li>
-            <li className="mt-2">
+            {/* <li className="mt-2">
               <LinkNav path="/notification" name="Notifications">
                 <NotificationIcon />
               </LinkNav>
-            </li>
+            </li> */}
             <li className="mt-2">
               <LinkNav path="/community" name="Community">
                 <CommunityIcon />

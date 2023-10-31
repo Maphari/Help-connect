@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate, NavigateFunction } from "react-router-dom";
+// import { useNavigate, NavigateFunction } from "react-router-dom";
 import { FetchUserDataContext } from "../../../context/FetchUserData.context";
 import { IDataObject } from "../../../context/Context.config";
 import { greetUserBasedOnTime } from "../../../global/Functions.global";
-import { IoNotifications as NotificationIcon } from "react-icons/io5";
+// import { IoNotifications as NotificationIcon } from "react-icons/io5";
 import { HiUser as ProfileIcon } from "react-icons/hi2";
-import { IoIosAddCircle as AddIcon } from "react-icons/io";
+// import { IoIosAddCircle as AddIcon } from "react-icons/io";
 import { IQuote, quoteStructure } from "../Dashboard.config";
 import { DailyQuotes } from "../Dashboard.imports";
 import { DashboardHeader } from "../../UI/DashboardHeader";
@@ -16,20 +16,62 @@ import { RiMenu3Fill as MenuIcon } from "react-icons/ri";
 import { CgClose as MenuCloseIcon } from "react-icons/cg";
 import Cookies from "js-cookie";
 import { SmallScreenNav } from "../../navigation/SmallScreenNav";
-import { IoCloseSharp as CloseIcon } from "react-icons/io5";
+// import { IoCloseSharp as CloseIcon } from "react-icons/io5";
+import {
+  // BsCameraVideoFill as LearningIcon,
+  BsFillCalendarEventFill as EventIcon,
+} from "react-icons/bs";
+import { RiFilePaper2Fill as WriteIcon } from "react-icons/ri";
+
+interface IEventData {
+  _id: string;
+  eventTopic: string;
+  eventDescription: string;
+  updatedAt: string;
+}
+
+interface IAnnouncementData {
+  _id: string;
+  announcementTopic: string;
+  announcementDescription: string;
+  updatedAt: string;
+}
 
 export const DashBoardStudent: React.FC = () => {
-  const [isAddingCourse, setIsAddingCourse] = useState<boolean>(false);
+  // const [isAddingCourse, setIsAddingCourse] = useState<boolean>(false);
   const { student, isLoading, google } =
     useContext<IDataObject>(FetchUserDataContext);
   const [dailyQuote, setDailyQuote] = useState<IQuote>(quoteStructure);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [, setLecturerDocument] = useState<Array<any>>([]);
+  const [lecturerEvent, setLecturerEvent] = useState([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [lecturerAnnouncement, setLecturerAnnouncement] = useState<Array<any>>(
+    []
+  );
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
   const tokenStudent = Cookies.get("student-token");
   const googleTokenStudent = Cookies.get("student-google");
-  const navigate: NavigateFunction = useNavigate();
+  // const navigate: NavigateFunction = useNavigate();
 
-  function navigateToNotification(): void {
-    navigate("/notification");
+  // function navigateToNotification(): void {
+  //   navigate("/notification");
+  // }
+
+  function showCreated(date: string) {
+    const created = new Date(date);
+    const now = new Date();
+
+    const diffTime = Math.abs(now.getTime() - created.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 1) {
+      return "Today";
+    } else if (diffDays < 1) {
+      return "Yesterday";
+    } else {
+      return created.toLocaleDateString();
+    }
   }
 
   useEffect(() => {
@@ -42,7 +84,44 @@ export const DashBoardStudent: React.FC = () => {
     HttpGetQuote();
   }, []);
 
-  if (isLoading && student) {
+  useEffect(() => {
+    async function HttpGetLecturer() {
+      const lecturerDocumentsRes = await axios.get(
+        "/api/fetch-lecturer-document"
+      );
+      const data = lecturerDocumentsRes.data;
+      setLecturerDocument(data);
+      console.log(data);
+    }
+
+    HttpGetLecturer();
+  }, []);
+
+  useEffect(() => {
+    async function HttpGetLecturer() {
+      const lecturerDocumentsRes = await axios.get("/api/fetch-lecturer-event");
+      const data = lecturerDocumentsRes.data;
+      setLecturerEvent(data);
+      console.log(data);
+    }
+
+    HttpGetLecturer();
+  }, []);
+
+  useEffect(() => {
+    async function HttpGetLecturer() {
+      const lecturerDocumentsRes = await axios.get(
+        "/api/fetch-lecturer-announcement"
+      );
+      const data = lecturerDocumentsRes.data;
+      setLecturerAnnouncement(data);
+      console.log(data);
+    }
+
+    HttpGetLecturer();
+  }, []);
+
+  if (isLoading && !student) {
     return <p>Loading....</p>;
   } else {
     return (
@@ -64,11 +143,11 @@ export const DashBoardStudent: React.FC = () => {
               />
             </div>
             <div className="flex items-center gap-3 hover:cursor-pointer">
-              <div className="h-10 hide w-10 flex items-center justify-center text-2xl rounded-full bg-slate-200">
+              {/* <div className="h-10 hide w-10 flex items-center justify-center text-2xl rounded-full bg-slate-200">
                 <div className="px-2 py-1 text-2xl text-slate-500">
                   <NotificationIcon />
                 </div>
-              </div>
+              </div> */}
               {student.imageProperties?.fileData ? (
                 <img
                   src={student.imageProperties.fileData}
@@ -116,17 +195,17 @@ export const DashBoardStudent: React.FC = () => {
               <SmallScreenNav />
             </section>
           )}
-          <div
+          {/* <div
             onClick={navigateToNotification}
             className="menu absolute rounded-full flex items-center justify-center bottom-5 h-12 w-12 text-white z-[99999999] right-5 bg-blue-950"
           >
             <div className="px-2 py-1 text-2xl ">
               <NotificationIcon />
             </div>
-          </div>
+          </div> */}
           <section className="mt-10 flex gap-3">
             <section className="flex-1 flex flex-wrap flex-col gap-3">
-              <section className="flex flex-wrap gap-3">
+              {/* <section className="flex flex-wrap gap-3">
                 <section className="bg-white p-5 rounded border flex flex-col flex-wrap flex-1">
                   <DashboardHeader
                     header="Courses overview"
@@ -166,7 +245,7 @@ export const DashBoardStudent: React.FC = () => {
                         </section>
                       </section>
                     )}
-                    {/* <section>
+                    <section>
                       <Course
                         header={"Primary course"}
                         hoverStyle={"hover:bg-cyan-100 hover:cursor-pointer"}
@@ -176,17 +255,38 @@ export const DashBoardStudent: React.FC = () => {
                         bgStyle={"bg-cyan-50"}
                         iconStyle={"text-cyan-500"}
                       />
-                    </section> */}
+                    </section>
                   </section>
                 </section>
-              </section>
+              </section> */}
               <section className="flex flex-wrap gap-3">
                 <section className="bg-white flex-1 p-5 rounded border">
                   <DashboardHeader
                     header="Upcoming events"
                     subHeader=" Here you will find listing of all upcoming events so that you don't miss any."
                   />
-                  <section className="mt-7"></section>
+                  <section className="mt-7">
+                    {lecturerEvent.map((event: IEventData) => (
+                      <div
+                        key={event._id}
+                        className="bg-slate-100 p-3 rounded-xl"
+                      >
+                        <header className="flex items-center">
+                          <div className="flex-1 flex items-center gap-2">
+                            <span className="text-indigo-500">
+                              <EventIcon />
+                            </span>
+                            <h1 className="text-sm text-gray-600">
+                              {event.eventTopic}
+                            </h1>
+                          </div>
+                          <p className="text-xs">
+                            {showCreated(event.updatedAt)}
+                          </p>
+                        </header>
+                      </div>
+                    ))}
+                  </section>
                 </section>
                 <section className="bg-white p-5 flex-1 rounded border">
                   <DashboardHeader
@@ -194,7 +294,28 @@ export const DashBoardStudent: React.FC = () => {
                     subHeader="Here you will find listing of all latest announcement so
                       that you don't miss any."
                   />
-                  <section className="mt-7"></section>
+                  <section className="mt-7">
+                    {lecturerAnnouncement.map((announce: IAnnouncementData) => (
+                      <div
+                        key={announce._id}
+                        className="bg-slate-100 p-3 rounded-xl"
+                      >
+                        <header className="flex items-center">
+                          <div className="flex-1 flex items-center gap-2">
+                            <span className="text-indigo-500">
+                              <WriteIcon />
+                            </span>
+                            <h1 className="text-sm text-gray-600">
+                              {announce.announcementTopic}
+                            </h1>
+                          </div>
+                          <p className="text-xs">
+                            {showCreated(announce.updatedAt)}
+                          </p>
+                        </header>
+                      </div>
+                    ))}
+                  </section>
                 </section>
                 <section className="bg-white flex-1 p-5 rounded border">
                   <DashboardHeader header="Daily motivations" subHeader="" />
@@ -207,7 +328,7 @@ export const DashBoardStudent: React.FC = () => {
                   </section>
                 </section>
               </section>
-              <section className="flex gap-3 flex-wrap">
+              {/* <section className="flex gap-3 flex-wrap">
                 <section className="bg-white p-5 rounded border flex-1">
                   <DashboardHeader
                     header="Track history"
@@ -216,7 +337,7 @@ export const DashBoardStudent: React.FC = () => {
                   />
                   <section className="mt-7"></section>
                 </section>
-              </section>
+              </section> */}
             </section>
           </section>
         </DashboardUI>

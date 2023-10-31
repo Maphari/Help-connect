@@ -23,8 +23,8 @@ import {
   Notification,
   StudentView,
   LecturerView,
-  UploadContainer,
   Project,
+  Creator,
 } from "./App.imports";
 import Cookies from "js-cookie";
 
@@ -112,7 +112,7 @@ const AppRouter: React.FC = () => {
         path="/creator"
         element={
           studentToken || lecturerToken ? (
-            <UploadContainer />
+            <Creator />
           ) : (
             <Navigate to="/account/login-choice" replace={true} />
           )

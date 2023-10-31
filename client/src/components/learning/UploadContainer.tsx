@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { LecturerTracker } from "../UI/LecturerTracker";
+// import { LecturerTracker } from "../UI/LecturerTracker";
 import {
   BsCameraVideoFill as LearningIcon,
   BsFillCalendarEventFill as EventIcon,
@@ -18,15 +18,17 @@ import {
 import axios from "axios";
 import { Announcement } from "./Announcement";
 import { Event } from "./Event";
+import { FileUpload } from "./FileUpload";
+// import { VideoUpload } from "./VideoUpload";
 
 type HTMLEventInput =
   | React.ChangeEvent<HTMLInputElement>
   | React.ChangeEvent<HTMLTextAreaElement>;
 
-interface IFileData {
-  fileProperties: File | null;
-  fileData: string | null;
-}
+// interface IFileData {
+//   fileProperties: File | null;
+//   fileData: string | null;
+// }
 
 export const UploadContainer: React.FC = () => {
   const { lecturer } = useContext<IDataObject>(FetchUserDataContext);
@@ -99,10 +101,14 @@ export const UploadContainer: React.FC = () => {
 
   const [announcementData, setAnnouncementData] = useState<string[]>([]);
   const [eventData, setEventData] = useState<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [documentData, setDocumentData] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // const [videoData, setVideoData] = useState<any[]>([]);
 
-  function OpenUploadVideoModalHandler(): void {
-    setIsUploadVideoModal(true);
-  }
+  // function OpenUploadVideoModalHandler(): void {
+  //   setIsUploadVideoModal(true);
+  // }
 
   function CloseUploadVideoModalHandler(): void {
     setIsUploadVideoModal(false);
@@ -234,7 +240,7 @@ export const UploadContainer: React.FC = () => {
   function fileTopicHandler(e: HTMLEventInput) {
     setFileTopic(e.target.value);
 
-    if (videoTopic.length < 3) {
+    if (fileTopic.length < 3) {
       setFileTopicError("Topic must be at least 3 characters");
     } else {
       setFileTopicError("");
@@ -365,60 +371,79 @@ export const UploadContainer: React.FC = () => {
     }
   }
 
-  function onSubmitVideoHandler(e: React.FormEvent<HTMLFormElement>): void {
+  async function onSubmitVideoHandler(e: React.FormEvent<HTMLFormElement>): Promise<void> {
+    try {
+      e.preventDefault();
+  
+      if (!videoTopic || !videoDescription || !videoTeachingLevel || !lecturer.email) {
+        failedNotification("Please fill all the fields");
+      } else {
+        const videoData = {
+          videoProperties: videoUpload,  // Make sure videoUpload is correctly defined
+          videoData: previewVideoUpload ? previewVideoUpload.toString() : '',  // Convert to string if necessary
+          videoTopic: videoTopic as string,
+          videoTeachingLevel: videoTeachingLevel,
+          videoDescription: videoDescription,
+          email: lecturer.email as string,
+        };
+  
+        const videoRes = await axios.post("/api/videoUpload", videoData);
+        if (videoRes.data) {
+          console.log(videoRes.data);
+          successNotification("Video uploaded successfully");
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+}
+
+  
+  // FILE UPLOAD
+  async function onSubmitFileHandler(
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> {
     try {
       e.preventDefault();
 
-      const videoData: IFileData = {
-        fileProperties: videoUpload,
-        fileData: previewVideoUpload,
+      const fileData: {
+        fileProperties: object;
+        fileData: string;
+        fileTopic: string;
+        fileTeachingLevel: string;
+        fileDescription: string;
+        email: string;
+      } = {
+        fileProperties: {
+          name: fileUpload?.name,
+          type: fileUpload?.type,
+          size: fileUpload?.size,
+        } as object,
+        fileData: previewFileUpload as string,
+        fileTopic: fileTopic as string,
+        fileTeachingLevel: fileTeachingLevel,
+        fileDescription: fileDescription,
+        email: lecturer.email as string,
       };
-
-      const formData: FormData = new FormData();
-      formData.append("video-topic", videoTopic);
-      formData.append("video-teaching-level", videoTeachingLevel);
-
-      if (videoData.fileData && videoData.fileProperties) {
-        const videoBlob = new Blob([videoData.fileProperties], {
-          type: "video/mp4",
-        });
-        formData.append("video", videoBlob, videoData.fileData);
-      }
-      formData.append("video-description", videoDescription);
-
-      for (const [key, vale] of formData.entries()) {
-        console.log(key, vale);
+      if (
+        !fileTopic ||
+        !fileTeachingLevel ||
+        !fileData ||
+        !lecturer.email ||
+        !fileDescription
+      ) {
+        failedNotification("Please fill all the field");
+      } else {
+        const fileRes = await axios.post("/api/fileUpload", fileData);
+        fileRes.data ? setIsUploadFileModal(false) : null;
+        fileRes.data && fileRes.data;
+        successNotification("File uploaded successfully");
       }
     } catch (error) {
       console.error(error);
     }
   }
-
-  function onSubmitFileHandler(e: React.FormEvent<HTMLFormElement>): void {
-    try {
-      e.preventDefault();
-
-      const fileData: IFileData = {
-        fileProperties: fileUpload,
-        fileData: previewFileUpload,
-      };
-
-      const formData: FormData = new FormData();
-
-      formData.append("file-topic", fileTopic);
-      formData.append("file-teaching-level", fileTeachingLevel);
-      if (fileData.fileData !== null) {
-        formData.append("file", fileData.fileData);
-      }
-
-      for (const [key, vale] of formData.entries()) {
-        console.log(key, vale);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
+  // ANNOUNCEMENT UPLOAD
   async function onSubmitAnnouncementHandler(
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> {
@@ -512,12 +537,30 @@ export const UploadContainer: React.FC = () => {
     getEvent();
   }, []);
 
-  console.log(eventData)
+  useEffect(() => {
+    async function HttpGetDocument() {
+      const documentRes = await axios.get("/api/fetch-document");
+      const data = documentRes.data;
+      setDocumentData(data);
+    }
+    HttpGetDocument();
+  }, []);
+
+  // useEffect(() => {
+  //   async function HttpGetVideo() {
+  //     const videoRes = await axios.get("/api/fetch-video");
+  //     const data = videoRes.data;
+  //     setVideoData(data);
+  //   }
+  //   HttpGetVideo();
+  // }, []);
+
+  // console.log(eventData)
 
   return (
     <>
       <section className="flex flex-col bg-white p-5 pt-10 w-full border">
-        <header className="mb-7 px-10">
+        <header className="">
           <DashboardHeader
             header={"Lecturer Creator"}
             subHeader={
@@ -526,9 +569,9 @@ export const UploadContainer: React.FC = () => {
           />
         </header>
 
-        <section className="flex flex-col flex-wrap gap-3 mb-7 px-10 relative">
+        <section className="flex flex-col flex-wrap gap-3 mb-7 relative">
           <section className="mt-7 flex items-center gap-3 flex-wrap">
-            <button
+            {/* <button
               onClick={OpenUploadVideoModalHandler}
               type="submit"
               className="flex text-sm items-center gap-2 bg-blue-950 text-white p-2 rounded transition-all duration-700 ease-linear hover:bg-blue-900"
@@ -537,7 +580,7 @@ export const UploadContainer: React.FC = () => {
                 <LearningIcon />
               </span>
               <span>Upload video</span>
-            </button>
+            </button> */}
             <button
               type="submit"
               onClick={OpenUploadFileModalHandler}
@@ -571,53 +614,8 @@ export const UploadContainer: React.FC = () => {
           </section>
         </section>
 
-        <section className="flex flex-wrap px-10 mb-5 gap-3">
-          <LecturerTracker
-            header="0 Uploaded docs"
-            bgStyle="bg-violet-50 hover:cursor-pointer"
-            iconStyle="text-violet-500"
-            explanation="Track how many students are enrolled in your course. You'll get some motivation"
-            children={<ReportIcon />}
-          />
-
-          <LecturerTracker
-            header="0 Uploaded videos"
-            bgStyle="bg-blue-50 hover:cursor-pointer"
-            iconStyle="text-blue-500"
-            explanation="Track how many videos you have already posted so far. You'll get some motivation"
-            styles="text-3xl"
-            children={<LearningIcon />}
-          />
-          <LecturerTracker
-            header={`${
-              announcementData ? announcementData.length : 0
-            } Announcements`}
-            bgStyle="bg-violet-50 hover:cursor-pointer"
-            iconStyle="text-violet-500"
-            styles="text-3xl"
-            explanation="Track how many students have comments in your course. You'll get some motivation"
-            children={<WriteIcon />}
-          />
-          <LecturerTracker
-            header={`${eventData ? eventData.length : 0} Events`}
-            bgStyle="bg-yellow-50 hover:cursor-pointer"
-            iconStyle="text-yellow-500"
-            explanation="Track how many ratings you already have so far. You'll get some motivation"
-            styles="text-3xl"
-            children={<EventIcon />}
-          />
-          {/* <LecturerTracker
-            header="0 Reports"
-            bgStyle="bg-red-50 hover:cursor-pointer"
-            iconStyle="text-red-500"
-            explanation="Track how many reports you already have so far. So that you can improve based on that report"
-            styles="text-3xl"
-            children={<ReportIcon />}
-          /> */}
-        </section>
-
         {isUploadVideoModal && (
-          <section className="absolute top-0 left-0 transition-all duration-700 ease-linear flex justify-center items-center bg-black w-full h-full bg-opacity-80">
+          <section className="absolute top-0 left-0 z-[999999999] transition-all duration-700 ease-linear flex justify-center items-center bg-black w-full h-full bg-opacity-80">
             <section className="bg-white w-2/5 p-7 border rounded">
               <header className="flex items-center justify-between mb-8">
                 <DashboardActionHeader
@@ -746,7 +744,7 @@ export const UploadContainer: React.FC = () => {
         )}
 
         {isUploadFileModal && (
-          <section className="absolute top-0 left-0 transition-all duration-700 ease-linear flex justify-center items-center bg-black w-full h-full bg-opacity-80">
+          <section className="absolute top-0 z-[999999999] left-0 transition-all duration-700 ease-linear flex justify-center items-center bg-black w-full h-full bg-opacity-80">
             <section className="bg-white w-2/5 p-7 border rounded">
               <header className="flex items-center justify-between mb-8">
                 <DashboardActionHeader
@@ -783,7 +781,7 @@ export const UploadContainer: React.FC = () => {
                     htmlFor="lecturer-file"
                   >
                     <span>
-                      <LearningIcon />
+                      <ReportIcon />
                     </span>
                     <span>{!fileUpload ? "Upload File" : fileUpload.name}</span>
                   </label>
@@ -869,7 +867,7 @@ export const UploadContainer: React.FC = () => {
         )}
 
         {isUploadEventModal && (
-          <section className="absolute top-0 left-0 transition-all duration-700 ease-linear flex justify-center items-center bg-black w-full h-full bg-opacity-80">
+          <section className="absolute top-0 z-[999999999] left-0 transition-all duration-700 ease-linear flex justify-center items-center bg-black w-full h-full bg-opacity-80">
             <section className="bg-white w-2/5 p-7 border rounded">
               <header className="flex items-center justify-between mb-8">
                 <DashboardActionHeader
@@ -1009,7 +1007,7 @@ export const UploadContainer: React.FC = () => {
         )}
 
         {isUploadAnnouncementModal && (
-          <section className="absolute top-0 left-0 transition-all duration-700 ease-linear flex justify-center items-center bg-black w-full h-full bg-opacity-80">
+          <section className="absolute top-0 z-[999999999] left-0 transition-all duration-700 ease-linear flex justify-center items-center bg-black w-full h-full bg-opacity-80">
             <section className="bg-white w-2/5 p-7 border rounded">
               <header className="flex items-center justify-between mb-8">
                 <DashboardActionHeader
@@ -1112,7 +1110,7 @@ export const UploadContainer: React.FC = () => {
                   type="submit"
                   className="p-2 text-sm bg-blue-950 text-white w-full rounded"
                 >
-                  Write Announcement
+                  <span>Write Announcement</span>
                 </button>
               </form>
             </section>
@@ -1120,11 +1118,19 @@ export const UploadContainer: React.FC = () => {
         )}
       </section>
 
-      <section className="px-14 mt-10">
+      {/* <section className="mt-10">
+        <VideoUpload data={documentData} />
+      </section> */}
+
+      <section className="mt-10">
+        <FileUpload data={documentData} />
+      </section>
+
+      <section className="mt-10">
         <Announcement data={announcementData} />
       </section>
 
-      <section className="px-14 mt-10">
+      <section className="mt-10">
         <Event data={eventData} />
       </section>
     </>

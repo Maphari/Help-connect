@@ -1,10 +1,14 @@
 require("./models/student/students.model");
-require("./models/student/student.passport.model");
+// require("./models/student/student.passport.model");
 require("./models/lecturer/lecturer.model");
 require("./api/passport.student.api");
 require("./models/quotes/quotes.model");
 require("./models/announcement/announcement.model");
 require("./models/event/event.model");
+require("./models/document/document.model");
+require("./models/video/video.model");
+require("./models/post/post.model");
+require("./models/post/postImage.model");
 
 import express, { urlencoded } from "express";
 import cors from "cors";
@@ -13,16 +17,21 @@ import passport from "passport";
 import { registerRouter } from "./routes/auth/register/register.route";
 import { loginRouter } from "./routes/auth/login/login.route";
 import { pinRouter } from "./routes/auth/pinGenerator/pinGenerator.route";
-import { passportAuthRouter } from "./routes/auth/passportAuth/passportAuth.route";
+// import { passportAuthRouter } from "./routes/auth/passportAuth/passportAuth.route";
 import { fetchUserRoute } from "./routes/fetchData/userData.route";
 import { quoteRoute } from "./routes/quotes/quotes.route";
 import { cookie } from "./cookie/cookie.session";
 import { HttpMongoDBConnection } from "./database/database.connection";
 import { announcementRouter } from "./routes/announcement/announcement.route";
-import { fetchAnnouncement } from "./routes/fetchData/fetchAnnouncement";
-import { fetchEventRouter } from "./routes/fetchData/fetchEvent";
-
+import { fetchAnnouncement } from "./routes/announcement/fetchAnnouncement";
+import { fetchEventRouter } from "./routes/event/fetchEvent";
+import { fileUploadRouter } from "./routes/fileUpload/fileUpload.route";
 import { eventRouter } from "./routes/event/event.route";
+import { fetchDocumentRouter } from "./routes/fetchData/fetchDocuments";
+import { videoRouter } from "./routes/video/video.route";
+import { fetchVideoRouter } from "./routes/video/fetchVideo";
+import { postRouter } from "./routes/post/post.route";
+import { fetchLecturerRouter } from "./routes/fetchData/fetchLecturer.controller";
 
 const app = express();
 
@@ -37,12 +46,18 @@ app.use(passport.session());
 app.use(registerRouter);
 app.use(loginRouter);
 app.use(pinRouter);
-app.use(passportAuthRouter);
+// app.use(passportAuthRouter);
 app.use(fetchUserRoute);
 app.use(quoteRoute);
 app.use(announcementRouter);
 app.use(fetchAnnouncement);
 app.use(eventRouter);
-app.use(fetchEventRouter)
+app.use(fetchEventRouter);
+app.use(fileUploadRouter);
+app.use(fetchDocumentRouter);
+app.use(videoRouter);
+app.use(fetchVideoRouter);
+app.use(postRouter);
+app.use(fetchLecturerRouter);
 
 export default app;

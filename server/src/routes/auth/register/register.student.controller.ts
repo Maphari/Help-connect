@@ -43,11 +43,11 @@ async function HttpRegisterStudentController(
       newStudent.studentID = studentToken;
 
       // setting students session
-      if (req.session) {
-        req.session.user = { ...newStudent };
-        req.session.user.session = newStudent.studentID;
-        await new Promise<void>((resolve) => setTimeout(() => resolve(), 5)); // wait for the session to be saved before sending response back
-      }
+      // if (req.session) {
+      //   req.session.user = { ...newStudent };
+      //   req.session.user.session = newStudent.studentID;
+      //   await new Promise<void>((resolve) => setTimeout(() => resolve(), 5)); // wait for the session to be saved before sending response back
+      // }
 
       // saving student to database
       await newStudent.save();

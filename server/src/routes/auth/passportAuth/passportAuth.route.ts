@@ -1,32 +1,32 @@
-import express, { Router, Request, Response } from "express";
-import passport from "passport";
+// import express, { Router, Request, Response } from "express";
+// import passport from "passport";
 
-const passportAuthRouter: Router = express.Router();
+// const passportAuthRouter: Router = express.Router();
 
-import { HttpPassportGoogleAuthController } from "./passportAuth.controller";
-// import { authSessionMiddleware } from "../../../middleware/authSession.middleware";
+// import { HttpPassportGoogleAuthController } from "./passportAuth.controller";
+// // import { authSessionMiddleware } from "../../../middleware/authSession.middleware";
 
-passportAuthRouter.get(
-  "/api/auth/google",
-  passport.authenticate("google", { scope: ["profile"] })
-);
+// passportAuthRouter.get(
+//   "/api/auth/google",
+//   passport.authenticate("google", { scope: ["profile"] })
+// );
 
-passportAuthRouter.get(
-  "/api/auth/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "http://localhost:5173/account/login-choice",
-  }),
-  function (req: Request, res: Response) {
-    const { user } = req;
-    if (user) return res.redirect("http://localhost:5173/dashboard");
-  }
-);
+// passportAuthRouter.get(
+//   "/api/auth/google/callback",
+//   passport.authenticate("google", {
+//     failureRedirect: "http://localhost:5173/account/login-choice",
+//   }),
+//   function (req: Request, res: Response) {
+//     const { user } = req;
+//     if (user) return res.redirect("http://localhost:5173/dashboard");
+//   }
+// );
 
-passportAuthRouter.get(
-  "/api/auth/success",
+// passportAuthRouter.get(
+  // "/api/auth/success",
   // authSessionMiddleware,
-  HttpPassportGoogleAuthController
-);
+//   HttpPassportGoogleAuthController
+// );
 
 // passportAuthRouter.get(
 //   "/api/auth/facebook",
@@ -39,4 +39,4 @@ passportAuthRouter.get(
 //   })
 // );
 
-export { passportAuthRouter };
+// export { passportAuthRouter };

@@ -31,4 +31,4 @@ const StudentAuthSchema: mongoose.Schema<IStudentAuth> = new Schema(
   { timestamps: true }
 );
 
-mongoose.model("StudentGoogle", StudentAuthSchema);
+// mongoose.model("StudentGoogle", StudentAuthSchema);

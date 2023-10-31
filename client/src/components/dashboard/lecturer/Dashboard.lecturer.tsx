@@ -1,14 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FetchUserDataContext } from "../../../context/FetchUserData.context";
 import { IDataObject } from "../../../context/Context.config";
 import { greetUserBasedOnTime } from "../../../global/Functions.global";
 import { IoNotifications as NotificationIcon } from "react-icons/io5";
+import { RiFilePaper2Fill as WriteIcon } from "react-icons/ri";
 import {
   HiUser as ProfileIcon,
-  HiUserGroup as CommunityIcon,
+  // HiUserGroup as CommunityIcon,
 } from "react-icons/hi2";
 import {
-  BsCameraVideoFill as LearningIcon,
+  // BsCameraVideoFill as LearningIcon,
   BsFillCalendarEventFill as EventIcon,
 } from "react-icons/bs";
 import { BiSolidReport as ReportIcon } from "react-icons/bi";
@@ -20,8 +21,15 @@ import { RiMenu3Fill as MenuIcon } from "react-icons/ri";
 import { CgClose as MenuCloseIcon } from "react-icons/cg";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { SmallScreenNav } from "../../navigation/SmallScreenNav";
+import axios from "axios";
 
 export const DashBoardLecturer: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [announcementData, setAnnouncementData] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [eventData, setEventData] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [documentData, setDocumentData] = useState<any[]>([]);
   const { lecturer, isLoading, google } =
     useContext<IDataObject>(FetchUserDataContext);
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
@@ -32,6 +40,50 @@ export const DashBoardLecturer: React.FC = () => {
   function navigateToNotification(): void {
     navigate("/notification");
   }
+
+  function showCreated(date: string) {
+    const created = new Date(date);
+    const now = new Date();
+
+    const diffTime = Math.abs(now.getTime() - created.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 1) {
+      return "Today";
+    } else if (diffDays < 1) {
+      return "Yesterday";
+    } else {
+      return created.toLocaleDateString();
+    }
+  }
+
+  useEffect(() => {
+    async function HttpGetAnnouncement() {
+      const announcementRes = await axios.get("/api/fetch-announcement");
+      const data = announcementRes.data;
+      setAnnouncementData(data);
+    }
+    HttpGetAnnouncement();
+  }, []);
+
+  useEffect(() => {
+    async function HttpGetEvent() {
+      const eventRes = await axios.get("/api/fetch-event");
+      const data = eventRes.data;
+      setEventData(data);
+    }
+    HttpGetEvent();
+  }, []);
+
+  useEffect(() => {
+    async function HttpGetDocument() {
+      const documentRes = await axios.get("/api/fetch-document");
+      const data = documentRes.data;
+      setDocumentData(data);
+    }
+    HttpGetDocument();
+  }, []);
+
 
   if (isLoading && lecturer) {
     return <p>Loading....</p>;
@@ -55,11 +107,11 @@ export const DashBoardLecturer: React.FC = () => {
               />
             </div>
             <div className="flex items-center gap-3">
-              <div className="h-10 hide w-10 flex items-center justify-center text-2xl rounded-full bg-slate-200">
+              {/* <div className="h-10 hide w-10 flex items-center justify-center text-2xl rounded-full bg-slate-200">
                 <div className="px-2 py-1 text-2xl text-slate-500">
                   <NotificationIcon />
                 </div>
-              </div>
+              </div> */}
               {lecturer.imageProperties?.fileData ? (
                 <img
                   src={lecturer.imageProperties.fileData}
@@ -122,40 +174,42 @@ export const DashBoardLecturer: React.FC = () => {
                   <section className="mt-7 flex gap-3 items-center">
                     <section className="flex flex-wrap gap-2">
                       <LecturerTracker
-                        header="0 students"
-                        bgStyle="bg-violet-50"
+                        header={`${
+                          documentData ? documentData.length : 0
+                        } Documents`}
+                        bgStyle="bg-violet-50 hover:cursor-pointer"
                         iconStyle="text-violet-500"
                         explanation="Track how many students are enrolled in your course. You'll get some motivation"
-                      >
-                        <CommunityIcon />
-                      </LecturerTracker>
+                        children={<ReportIcon />}
+                      />
+
                       <LecturerTracker
-                        header="0 Videos"
+                        header={`${
+                          announcementData ? announcementData.length : 0
+                        } Announcements`}
+                        bgStyle="bg-violet-50 hover:cursor-pointer"
+                        iconStyle="text-violet-500"
+                        styles="text-3xl"
+                        explanation="Track how many students have comments in your course. You'll get some motivation"
+                        children={<WriteIcon />}
+                      />
+                      <LecturerTracker
+                        header={`${eventData ? eventData.length : 0} Events`}
+                        bgStyle="bg-indigo-50 hover:cursor-pointer"
+                        iconStyle="text-indigo-500"
+                        explanation="Track how many ratings you already have so far. You'll get some motivation"
+                        styles="text-3xl"
+                        children={<EventIcon />}
+                      />
+                      {/* <LecturerTracker
+                        header={`0 Video`}
                         bgStyle="bg-blue-50"
                         iconStyle="text-blue-500"
                         explanation="Track how many videos you have already posted so far. You'll get some motivation"
                         styles="text-3xl"
                       >
                         <LearningIcon />
-                      </LecturerTracker>
-                      <LecturerTracker
-                        header="0 Events"
-                        bgStyle="bg-indigo-50"
-                        iconStyle="text-indigo-500"
-                        explanation="Track how many events you already have so far. You'll get some motivation"
-                        styles="text-2xl"
-                      >
-                        <EventIcon />
-                      </LecturerTracker>
-                      <LecturerTracker
-                        header="0 Reports"
-                        bgStyle="bg-red-50"
-                        iconStyle="text-red-500"
-                        explanation="Track how many reports you already have so far. So that you can improve based on that report"
-                        styles="text-3xl"
-                      >
-                        <ReportIcon />
-                      </LecturerTracker>
+                      </LecturerTracker> */}
                     </section>
                   </section>
                 </section>
@@ -166,14 +220,56 @@ export const DashBoardLecturer: React.FC = () => {
                     header="Lecturer events"
                     subHeader="Here you will find listing of all events so that you created"
                   />
-                  <section className="mt-7"></section>
+                  <section className="mt-7 mb-3">
+                    {eventData.map((item) => (
+                      <div
+                        key={item._id}
+                        className="bg-slate-100 p-3 rounded-xl"
+                      >
+                        <header className="flex items-center">
+                          <div className="flex-1 flex items-center gap-2">
+                            <span className="text-indigo-500">
+                              <EventIcon />
+                            </span>
+                            <h1 className="text-sm text-gray-600">
+                              {item.eventTopic}
+                            </h1>
+                          </div>
+                          <p className="text-xs">
+                            {showCreated(item.updatedAt)}
+                          </p>
+                        </header>
+                      </div>
+                    ))}
+                  </section>
                 </section>
                 <section className="bg-white p-5 flex-1 rounded border">
                   <DashboardHeader
                     header="Latest announcements"
                     subHeader="Here you will find listing of all latest announcement that you created"
                   />
-                  <section className="mt-7"></section>
+                  <section className="mt-7">
+                    {announcementData.map((item) => (
+                      <div
+                        key={item._id}
+                        className="bg-slate-100 p-3 rounded-xl"
+                      >
+                        <header className="flex items-center">
+                          <div className="flex-1 flex items-center gap-2">
+                            <span className="text-violet-500">
+                              <WriteIcon />
+                            </span>
+                            <h1 className="text-sm text-gray-600">
+                              {item.announcementTopic}
+                            </h1>
+                          </div>
+                          <p className="text-xs">
+                            {showCreated(item.updatedAt)}
+                          </p>
+                        </header>
+                      </div>
+                    ))}
+                  </section>
                 </section>
               </section>
               <section className="flex gap-3 flex-wrap">
@@ -183,7 +279,68 @@ export const DashBoardLecturer: React.FC = () => {
                     subHeader=" Here you will find all your history so that you can keep
                       track."
                   />
-                  <section className="mt-7"></section>
+                  <section className="mt-7 flex flex-col gap-3">
+                    {announcementData.map((item) => (
+                      <div
+                        key={item._id}
+                        className="bg-slate-100 p-3 rounded-xl"
+                      >
+                        <header className="flex items-center">
+                          <div className="flex-1 flex items-center gap-2">
+                            <span className="text-indigo-500">
+                              <WriteIcon />
+                            </span>
+                            <h1 className="text-sm text-gray-600">
+                              {item.announcementTopic}
+                            </h1>
+                          </div>
+                          <p className="text-xs">
+                            {showCreated(item.updatedAt)}
+                          </p>
+                        </header>
+                      </div>
+                    ))}
+                    {eventData.map((item) => (
+                      <div
+                        key={item._id}
+                        className="bg-slate-100 p-3 rounded-xl"
+                      >
+                        <header className="flex items-center">
+                          <div className="flex-1 flex items-center gap-2">
+                            <span className="text-indigo-500">
+                              <EventIcon />
+                            </span>
+                            <h1 className="text-sm text-gray-600">
+                              {item.eventTopic}
+                            </h1>
+                          </div>
+                          <p className="text-xs">
+                            {showCreated(item.updatedAt)}
+                          </p>
+                        </header>
+                      </div>
+                    ))}
+                    {documentData.map((item) => (
+                      <div
+                        key={item._id}
+                        className="bg-slate-100 p-3 rounded-xl"
+                      >
+                        <header className="flex items-center">
+                          <div className="flex-1 flex items-center gap-2">
+                            <span className="text-indigo-500">
+                              <ReportIcon />
+                            </span>
+                            <h1 className="text-sm text-gray-600">
+                              {item.fileProperties.name}
+                            </h1>
+                          </div>
+                          <p className="text-xs">
+                            {showCreated(item.updatedAt)}
+                          </p>
+                        </header>
+                      </div>
+                    ))}
+                  </section>
                 </section>
               </section>
             </section>
