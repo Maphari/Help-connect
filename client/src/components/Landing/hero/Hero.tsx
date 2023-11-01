@@ -6,6 +6,8 @@ import Hero_Image from "../../../assets/images/hero-image.png";
 // import Hero_Image2 from "../../../assets/images/hero-img.png";
 
 import { motion } from "framer-motion";
+import axios from "axios";
+import { successNotification } from "../../../global/ToastNotification.function";
 
 interface IFramerTransition {
   ease: string;
@@ -20,15 +22,23 @@ const transition: IFramerTransition = {
 };
 
 export const Hero: React.FC = () => {
-  const [email, setEmail] = useState<string>();
+  const [email, setEmail] = useState<string>("");
 
-  function onSubmitHandler(e: React.FormEvent<HTMLFormElement>): void {
-    e.preventDefault();
+  async function onSubmitHandler(e: React.FormEvent<HTMLFormElement>): Promise<void> {
+    try {
+      e.preventDefault();
+
+      const response = await axios.post("/api/email", { email });
+
+      if (response) {
+        successNotification("you have successfully subscribe");
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  function onEmailChangeHandler(e: React.ChangeEvent<HTMLInputElement>): void {
-    setEmail(e.target.value);
-  }
 
   return (
     <>
@@ -43,8 +53,8 @@ export const Hero: React.FC = () => {
           />
           <section className="hero-container__inner">
             <motion.h1
-              initial={{ opacity: 0, y: -23}}
-              whileInView={{ opacity: 1, y: 0}}
+              initial={{ opacity: 0, y: -23 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={transition}
               className="main-header"
             >
@@ -71,13 +81,13 @@ export const Hero: React.FC = () => {
               <motion.div
                 className="flex items-center justify-center email-container flex-wrap  mx-auto border border-[#042767] border-opacity-40 rounded-lg"
                 initial={{ opacity: 0, y: -23 }}
-                whileInView={{ opacity: 1, y: 0}}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={transition}
               >
                 <input
                   type="email"
                   placeholder="Enter your email to subscribe"
-                  onChange={(e) => onEmailChangeHandler(e)}
+                  onChange={(e) => setEmail(e.target.value)}
                   value={email}
                   className="flex-1 email bg-slate-200 rounded-l-lg outline-none py-2 px-4"
                 />

@@ -58,12 +58,12 @@ export const Navigation: React.FC = () => {
             <li>
               <LinkTag to="/" name="Home" />
             </li>
-            <li>
+            {/* <li>
               <LinkTag to="#course" name="Course" />
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <LinkTag to="#pricing" name="Pricing" />
-            </li>
+            </li> */}
             <li>
               <LinkTag to="#about" name="About" />
             </li>
@@ -105,12 +105,12 @@ export const Navigation: React.FC = () => {
               <li className="p-2 bg-slate-200 rounded">
                 <LinkTag to="/" name="Home" />
               </li>
-              <li  className="p-2 bg-slate-200 rounded">
+              {/* <li  className="p-2 bg-slate-200 rounded">
                 <LinkTag to="#course" name="Course" />
-              </li>
-              <li className="p-2 bg-slate-200 rounded">
+              </li> */}
+              {/* <li className="p-2 bg-slate-200 rounded">
                 <LinkTag to="#pricing" name="Pricing" />
-              </li>
+              </li> */}
               <li className="p-2 bg-slate-200 rounded">
                 <LinkTag to="#about" name="About" />
               </li>

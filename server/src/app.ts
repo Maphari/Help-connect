@@ -9,6 +9,8 @@ require("./models/document/document.model");
 require("./models/video/video.model");
 require("./models/post/post.model");
 require("./models/post/postImage.model");
+require("./models/subscribe/email.model");
+require("./models/assist/assist.model")
 
 import express, { urlencoded } from "express";
 import cors from "cors";
@@ -32,6 +34,8 @@ import { videoRouter } from "./routes/video/video.route";
 import { fetchVideoRouter } from "./routes/video/fetchVideo";
 import { postRouter } from "./routes/post/post.route";
 import { fetchLecturerRouter } from "./routes/fetchData/fetchLecturer.controller";
+import { subscribeRouter } from "./routes/subscribe/subscribe.route";
+import {assistRouter} from "./routes/assist/assist.route"
 
 const app = express();
 
@@ -59,5 +63,7 @@ app.use(videoRouter);
 app.use(fetchVideoRouter);
 app.use(postRouter);
 app.use(fetchLecturerRouter);
+app.use(subscribeRouter);
+app.use(assistRouter)
 
 export default app;

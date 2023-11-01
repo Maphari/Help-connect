@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import React, { useContext, useState } from "react";
 // import {
 //   FaHandshake as UsefulIcon,
 //   FaHandshakeSlash as UnUsefulIcon,
 // } from "react-icons/fa6";
 import { BiSolidLike as LikeIcon, BiLike as UnlikeIcon } from "react-icons/bi";
 import { FaGraduationCap as AssistIcon } from "react-icons/fa6";
+import { successNotification } from "../../global/ToastNotification.function";
+import { FetchUserDataContext } from "../../context/FetchUserData.context";
+import { IDataObject } from "../../context/Context.config";
 
 interface IPostImage {
   username: string;
@@ -27,6 +32,12 @@ export const PostImage: React.FC<IPostImage> = ({
 }) => {
   const [likeCounter, setLikeCounter] = useState<number>(0);
   // const [usefulCounter, setUsefulCounter] = useState<number>(0);
+  const tokenLecturer = Cookies.get("lecturer-token");
+  const [isAssist, setIstAssist] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [yourName, setYourName] = useState<string>("");
+  const [meetingId, setMeetingId] = useState<string>("");
+  const { lecturer } = useContext<IDataObject>(FetchUserDataContext);
 
   function likesHandler() {
     setLikeCounter(likeCounter + 1);
@@ -36,6 +47,25 @@ export const PostImage: React.FC<IPostImage> = ({
     if (likeCounter === 0) return;
 
     setLikeCounter(likeCounter - 1);
+  }
+
+  async function submitHandler(e: React.FormEvent<HTMLFormElement>) {
+    try {
+      e.preventDefault();
+      const res = await axios.post("/api/assist", {
+        meetingId,
+        yourName,
+        email,
+        lecturerEmail: lecturer.email,
+      });
+      if (res.data) {
+        successNotification(res.data.message);
+        setIstAssist(false)
+      }
+      // console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // function usefulHandler() {
@@ -89,15 +119,17 @@ export const PostImage: React.FC<IPostImage> = ({
               <span className="text-sm">Like {likeCounter}</span>
             </button>
           )}
-          <button
-            type="submit"
-            className="flex px-3 items-center gap-2 bg-slate-200 p-2 text-slate-600"
-          >
-            <span>
-              <AssistIcon />
-            </span>
-            <span className="text-sm">Assist {0}</span>
-          </button>
+          {tokenLecturer && (
+            <button
+              type="submit"
+              className="flex px-3 items-center gap-2 bg-slate-200 p-2 text-slate-600"
+            >
+              <span>
+                <AssistIcon />
+              </span>
+              <span className="text-sm">Assist {0}</span>
+            </button>
+          )}
           {/* {usefulCounter >= 1 ? (
             <button
               type="submit"
@@ -123,6 +155,66 @@ export const PostImage: React.FC<IPostImage> = ({
           )} */}
         </section>
       </section>
+      {isAssist && (
+        <section className="absolute top-0 left-0 h-screen w-full bg-opacity-60 bg-black z-[999999999] flex items-center justify-center">
+          <section className="bg-white w-1/2 p-3 rounded">
+            <header className="flex items-center justify-between">
+              <div>
+                <h1 className="text-lg text-gra-600">Assist student</h1>
+                <p className="text-xs opacity-60">
+                  assist students with video call{" "}
+                </p>
+              </div>
+              <button
+                className="bg-red-500 text-sm p-2 rounded"
+                type="submit"
+                onClick={() => setIstAssist(false)}
+              >
+                Close
+              </button>
+            </header>
+
+            <form
+              onSubmit={(e) => submitHandler(e)}
+              className="mt-7 w-full flex items-center flex-col gap-3"
+            >
+              <input
+                type="text"
+                className="outline-none text-sm p-2 bg-slate-100 w-full rounded border border-slate-500"
+                placeholder="Enter meeting ID"
+                value={meetingId}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setMeetingId(e.target.value)
+                }
+              />
+              <input
+                type="text"
+                className="outline-none text-sm p-2 bg-slate-100 w-full rounded border border-slate-500"
+                placeholder="Enter your name"
+                value={yourName}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setYourName(e.target.value)
+                }
+              />
+              <input
+                type="email"
+                className="outline-none text-sm p-2 bg-slate-100 w-full rounded border border-slate-500"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
+              />
+              <button
+                className="outline-none text-sm p-2 bg-blue-500 w-full rounded text-white"
+                type="submit"
+              >
+                Assist
+              </button>
+            </form>
+          </section>
+        </section>
+      )}
     </>
   );
 };
